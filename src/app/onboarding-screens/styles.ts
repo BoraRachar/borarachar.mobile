@@ -7,6 +7,9 @@ export const styles = StyleSheet.create({
     height: '100%',
     paddingHorizontal: 16,
   },
+  containerText: {
+    paddingTop: 12,
+  },
   buttonArea: {
     width: '100%',
     height: 36,
@@ -25,5 +28,17 @@ export const styles = StyleSheet.create({
   onboardingLink: {
     fontSize: 16,
     textDecorationLine: 'underline',
+  },
+  Title: {
+    fontSize: 24,
+    lineHeight: 32,
+    fontWeight: '700',
+    color: theme.colors.Gray[600],
+  },
+  Text: {
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: '400',
+    color: theme.colors.Gray[600],
   },
 })
