@@ -32,7 +32,7 @@ export default function OnboardingScreenOne() {
       <View>
         <ButtonCustomizer.Root
           type={'primary'}
-          onPress={() => router.push('/onboarding-screens/onboarding2/')}
+          onPress={() => router.push('/onboarding-screens/onboardingTwo/')}
           customStyles={globalStyles.primaryButton}
         >
           <ButtonCustomizer.Title
