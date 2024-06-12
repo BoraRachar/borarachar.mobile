@@ -1,5 +1,4 @@
-import { Text } from 'react-native'
-
+import OnboardingScreenOne from './onboarding-screens/onboardingOne'
 export default function App() {
-  return <Text>Bora Rachar App</Text>
+  return <OnboardingScreenOne />
 }
