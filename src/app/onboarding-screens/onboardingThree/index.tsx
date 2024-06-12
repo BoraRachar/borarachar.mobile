@@ -3,17 +3,17 @@ import { Link, router } from 'expo-router'
 import { styles } from '../styles'
 import { styles as globalStyles } from '../../styles'
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
-import OnboardingScreenTwoImage from '../../../assets/images/OnboardingScreenTwoImage.svg'
+import OnboardingScreenThreeImage from '../../../assets/images/OnboardingScreenThreeImage.svg'
 import ArrowBack from '../../../assets/images/arrowBack.svg'
 
 const windowHeight = Dimensions.get('window').height
 const adaptativePaddingTopScreen = Number((windowHeight * 0.2 - 50).toFixed(0))
 
-export default function OnboardingScreenTwo() {
+export default function OnboardingScreenThree() {
   return (
     <View style={{ position: 'relative' }}>
       <View style={{ padding: 6, position: 'absolute', zIndex: 1 }}>
-        <Link href="/onboarding-screens/onboardingOne/">
+        <Link href="/onboarding-screens/onboardingTwo/">
           <ArrowBack />
         </Link>
       </View>
@@ -25,24 +25,27 @@ export default function OnboardingScreenTwo() {
       >
         <View style={{ marginBottom: 20 }}>
           <View style={{ alignItems: 'center' }}>
-            <OnboardingScreenTwoImage />
+            <OnboardingScreenThreeImage />
           </View>
-          <Text style={styles.Title}>Calcule quanto cada um deverá pagar.</Text>
+          <Text style={styles.Title}>
+            Crie grupos, adicione{'\n'}amigos e escolha o jeito {'\n'}que
+            prefere dividir
+          </Text>
           <View style={styles.containerText}>
             <Text style={styles.Text}>
-              Use a nossa calculadora de divisões para {'\n'}despesas rápidas
-              como uma conta de {'\n'}restaurante.
+              Criando uma conta, você terá acesso a {'\n'}mais funcionalidades
+              como grupos, {'\n'}histórioco e novas modalidades de divisão.
             </Text>
           </View>
         </View>
         <View>
           <ButtonCustomizer.Root
             type={'primary'}
-            onPress={() => router.push('/onboarding-screens/onboardingThree/')}
+            onPress={() => router.push('/onboarding-screens/onboarding2/')}
             customStyles={globalStyles.primaryButton}
           >
             <ButtonCustomizer.Title
-              title="E para gastos mais complexos?"
+              title="Criar minha conta"
               customStyles={globalStyles.primaryButtonText}
             />
           </ButtonCustomizer.Root>
@@ -50,7 +53,9 @@ export default function OnboardingScreenTwo() {
             <View style={styles.buttonArea}>
               <View style={globalStyles.textButton}>
                 <Link push href="/">
-                  <Text style={globalStyles.textButtonText}>Pular</Text>
+                  <Text style={globalStyles.textButtonText}>
+                    Usar a calculadora
+                  </Text>
                 </Link>
               </View>
             </View>

@@ -22,10 +22,9 @@ export default function OnboardingScreenOne() {
         </View>
         <Text style={styles.Title}>Rápido, fácil e seguro.</Text>
         <View style={styles.containerText}>
-          <Text style={styles.Text}>Dividir as contas é moleza!</Text>
           <Text style={styles.Text}>
-            Basta adicionar as pessoas, escolher o pronto! O aplicativo faz o
-            resto.
+            Dividir as contas é moleza! {'\n'}Basta adicionar as pessoas,
+            escolher o {'\n'}valor e pronto! O aplicativo faz o resto.
           </Text>
         </View>
       </View>

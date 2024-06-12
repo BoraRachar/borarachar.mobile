@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, ViewStyle, View } from 'react-native'
+import { ViewStyle, View, Pressable } from 'react-native'
 import { styles } from '../../app/styles'
 
 interface ButtonRootProps {
@@ -43,7 +43,7 @@ export function ButtonRoot({
                 : {}
 
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={handleClickButton}
       style={[buttonStyle, customStyles]}
       disabled={disabled}
@@ -51,6 +51,6 @@ export function ButtonRoot({
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         {children}
       </View>
-    </TouchableOpacity>
+    </Pressable>
   )
 }
