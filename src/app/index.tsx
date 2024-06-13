@@ -1,4 +1,4 @@
-import OnboardingScreenOne from './onboarding-screens/onboardingOne'
+import { Text } from 'react-native'
 export default function App() {
-  return <OnboardingScreenOne />
+  return <Text>Welcome Screen</Text>
 }
