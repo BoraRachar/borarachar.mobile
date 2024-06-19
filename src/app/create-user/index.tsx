@@ -3,7 +3,7 @@ import { styles } from './styles'
 import { styles as globalStyles } from '../styles'
 import Header from '../../components/HeaderComponent'
 import ProgressBarComponent from '../../components/ProgressBarComponent'
-import EmailInput from './emailInput'
+import UserNameInput from './UserNameInput'
 
 export default function CreateUser() {
   return (
@@ -11,7 +11,7 @@ export default function CreateUser() {
       <Header title="Criar conta" />
       <ProgressBarComponent totalSteps={3} currentStep={1} />
       <View style={globalStyles.formContainer}>
-        <EmailInput />
+        <UserNameInput />
       </View>
     </View>
   )
