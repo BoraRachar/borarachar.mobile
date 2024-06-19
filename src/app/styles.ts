@@ -142,6 +142,12 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
     color: theme.colors.primaryColor,
   },
+  text: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: theme.colors.primaryColor,
+    marginBottom: 22,
+  },
   formContainer: {
     width: '90%',
     height: '80%',
