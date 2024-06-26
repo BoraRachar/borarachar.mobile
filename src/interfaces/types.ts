@@ -4,4 +4,13 @@ interface Step {
   decreaseStep: () => void
 }
 
-export { Step }
+interface UserData {
+  nome: string
+  email: string
+  usuario: string
+  password: string
+  termosUso: boolean
+  politicasPrivacidade: boolean
+}
+
+export { Step, UserData }
