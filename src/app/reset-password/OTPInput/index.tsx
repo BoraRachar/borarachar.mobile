@@ -33,7 +33,7 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
     setOTP(newOTP)
   }
 
-  const handleOTPChangeText = (text: string, index: number) => {
+  const handleOTPNextInput = (text: string, index: number) => {
     if (text.length === 0 && index > 0) {
       if (index === 4) {
         inputRefs.current[index - 2].focus()
@@ -92,7 +92,7 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
                 maxLength={1}
                 keyboardType="numeric"
                 secureTextEntry={true}
-                onChangeText={(text) => handleOTPChangeText(text, index)}
+                onChangeText={(text) => handleOTPNextInput(text, index)}
                 onKeyPress={({
                   nativeEvent,
                 }: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
