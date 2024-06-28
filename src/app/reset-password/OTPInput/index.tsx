@@ -39,7 +39,6 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
 
   const handleButtonDisable = (newOTP: string[]) => {
     const newOtpOnlyValue = newOTP.filter((item) => item !== '')
-    console.log(newOtpOnlyValue)
 
     if (newOtpOnlyValue.length === 7) {
       setIsButtonDisabled(false)
@@ -126,15 +125,6 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
       </View>
 
       <View style={styles.footer}>
-        {/* <TouchableOpacity style={styles.button} onPress={onSubmit}>
-          <Text style={styles.buttonText}>Nova Senha</Text>
-          <Ionicons
-            name="arrow-forward-outline"
-            size={16}
-            color={theme.colors.white}
-          />
-        </TouchableOpacity> */}
-
         <ButtonCustomizer.Root
           type={'primary'}
           onPress={onSubmit}
