@@ -57,7 +57,7 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
     getOTPvalue(text, index)
   }
 
-  const handleBackspace = (index: number) => {
+  const handleBackspaceKeyboardKey = (index: number) => {
     if (index > 0) {
       if (index === 4) {
         inputRefs.current[index - 2].focus()
@@ -105,7 +105,7 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
                   nativeEvent,
                 }: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
                   if (nativeEvent.key === 'Backspace') {
-                    handleBackspace(index)
+                    handleBackspaceKeyboardKey(index)
                   }
                 }}
               />
