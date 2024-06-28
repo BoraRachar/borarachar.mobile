@@ -24,15 +24,15 @@ type OTPInputProps = {
 }
 
 export default function OTPInput({ increaseStep }: OTPInputProps) {
-  const [otp, setOTP] = useState<string[]>([])
+  const [otpValue, setOTPValue] = useState<string[]>([])
   const inputRefs = useRef<TextInput[]>([])
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const { setResetPassword } = resetPasswordStore()
 
   const getOTPvalue = (text: string, index: number) => {
-    const newOTP = [...otp]
+    const newOTP = [...otpValue]
     newOTP[index] = text
-    setOTP(newOTP)
+    setOTPValue(newOTP)
 
     handleButtonDisable(newOTP)
   }
@@ -78,7 +78,7 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
   }
 
   const onSubmit = () => {
-    const otpString = otp.join('')
+    const otpString = otpValue.join('')
     const otpNumber = parseInt(otpString, 10)
     setResetPassword({ code: otpNumber })
     increaseStep()
