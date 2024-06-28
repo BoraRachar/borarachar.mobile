@@ -15,7 +15,11 @@ import { Ionicons } from '@expo/vector-icons'
 import { theme } from '@/src/theme'
 
 import resetPasswordStore from '@/src/store/ResetPasswordStore'
+import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
+import ArrowRight from '@/src/assets/images/arrowRight.svg'
+import ArrowRightDisable from '@/src/assets/images/arrowRightDisable.svg'
 
+import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
 
 type OTPInputProps = {
@@ -25,6 +29,7 @@ type OTPInputProps = {
 export default function OTPInput({ increaseStep }: OTPInputProps) {
   const [otp, setOTP] = useState<string[]>([])
   const inputRefs = useRef<TextInput[]>([])
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const { setResetPassword } = resetPasswordStore()
 
   const getOTPvalue = (text: string, index: number) => {
@@ -110,14 +115,41 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
       </View>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.button} onPress={onSubmit}>
+        {/* <TouchableOpacity style={styles.button} onPress={onSubmit}>
           <Text style={styles.buttonText}>Nova Senha</Text>
           <Ionicons
             name="arrow-forward-outline"
             size={16}
             color={theme.colors.white}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
+        <ButtonCustomizer.Root
+          type={'primary'}
+          onPress={onSubmit}
+          customStyles={
+            isButtonDisabled
+              ? globalStyles.primaryButtonDisabled
+              : globalStyles.primaryButton
+          }
+        >
+          <ButtonCustomizer.Title
+            title="Nova Senha"
+            customStyles={
+              isButtonDisabled
+                ? globalStyles.primaryButtonTextDisabled
+                : globalStyles.primaryButtonText
+            }
+          />
+          <ButtonCustomizer.Icon
+            icon={isButtonDisabled ? ArrowRightDisable : ArrowRight}
+            customStyles={
+              isButtonDisabled
+                ? globalStyles.primaryButtonIconDisabled
+                : globalStyles.primaryButtonIcon
+            }
+          />
+        </ButtonCustomizer.Root>
 
         <View style={styles.receivedCodeContainer}>
           <Text style={styles.receivedCodeText}>Não recebeu o código?</Text>
