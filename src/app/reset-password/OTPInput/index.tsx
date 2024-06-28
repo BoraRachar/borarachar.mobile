@@ -7,18 +7,15 @@ import {
   Text,
   TextInput,
   TextInputKeyPressEventData,
-  TouchableOpacity,
   View,
 } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
-
-import { theme } from '@/src/theme'
 
 import resetPasswordStore from '@/src/store/ResetPasswordStore'
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import ArrowRight from '@/src/assets/images/arrowRight.svg'
 import ArrowRightDisable from '@/src/assets/images/arrowRightDisable.svg'
 
+import { theme } from '@/src/theme'
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
 
@@ -36,6 +33,20 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
     const newOTP = [...otp]
     newOTP[index] = text
     setOTP(newOTP)
+
+    handleButtonDisable(newOTP)
+  }
+
+  const handleButtonDisable = (newOTP: string[]) => {
+    const newOtpOnlyValue = newOTP.filter((item) => item !== '')
+    console.log(newOtpOnlyValue)
+
+    if (newOtpOnlyValue.length === 7) {
+      setIsButtonDisabled(false)
+      return
+    }
+
+    setIsButtonDisabled(true)
   }
 
   const handleOTPNextInput = (text: string, index: number) => {
