@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     height: 48,
     textAlign: 'center',
   },
-  separator: {
+  otpSeparator: {
     width: 20,
     height: 5,
     backgroundColor: theme.colors.primaryColor,
@@ -60,6 +60,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
+    marginBottom: 18,
   },
   receivedCodeText: {
     color: theme.colors.primaryColor,

@@ -82,7 +82,7 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
         <View style={styles.otpContainer}>
           {Array.from({ length: 7 }, (_, index) => {
             if (index === 3) {
-              return <View key={index} style={styles.separator}></View>
+              return <View key={index} style={styles.otpSeparator}></View>
             }
             return (
               <TextInput
