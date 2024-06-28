@@ -22,12 +22,16 @@ export const styles = StyleSheet.create({
     marginTop: 24,
   },
   otpInput: {
-    borderRadius: 6,
-    borderColor: theme.colors.primaryColor,
     borderWidth: 2,
+    borderColor: theme.colors.Gray[300],
+    borderRadius: 6,
+    color: theme.colors.Gray[700],
+    fontSize: 30,
     width: 48,
     height: 48,
     textAlign: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 5,
   },
   otpSeparator: {
     width: 20,

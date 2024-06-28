@@ -89,9 +89,12 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
                 key={index}
                 ref={(ref) => (inputRefs.current[index] = ref as TextInput)}
                 style={styles.otpInput}
+                placeholder="0"
+                placeholderTextColor={theme.colors.Gray[300]}
+                cursorColor={theme.colors.Gray[700]}
                 maxLength={1}
                 keyboardType="numeric"
-                secureTextEntry={true}
+                secureTextEntry={false}
                 onChangeText={(text) => handleOTPNextInput(text, index)}
                 onKeyPress={({
                   nativeEvent,
