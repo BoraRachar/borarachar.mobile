@@ -18,7 +18,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import resetPasswordStore from '@/src/store/ResetPasswordStore'
 
-import PasswordInfoComponent from '@/src/components/PasswordInfoComponent'
 import CloseEye from '@/src/assets/images/closeEye.svg'
 import OpenEye from '@/src/assets/images/openEye.svg'
 import { theme } from '@/src/theme'
@@ -138,6 +137,8 @@ export default function NewPasswordInput() {
                 <View style={styles.input}>
                   <TextInput
                     style={styles.textInput}
+                    placeholderTextColor={theme.colors.secondaryColor}
+                    cursorColor={theme.colors.secondaryColor}
                     secureTextEntry={!showPassword2}
                     value={value}
                     onChangeText={onChange}
@@ -153,7 +154,6 @@ export default function NewPasswordInput() {
             )}
           </View>
         </View>
-        <PasswordInfoComponent password={newPassword} />
       </ScrollView>
 
       <TouchableOpacity
