@@ -5,7 +5,7 @@ import Header from '@/src/components/HeaderComponent'
 import ProgressBarComponent from '@/src/components/ProgressBarComponent'
 
 import OTPInput from './OTPInput'
-import NewPassword from './NewPassword'
+import NewPassword from './NewPasswordInput'
 
 import { styles as globalStyles } from '@/src/app/styles'
 
