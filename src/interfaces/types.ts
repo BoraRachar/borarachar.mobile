@@ -20,4 +20,9 @@ interface ResetPasswordData {
   confirmacaoSenha: string
 }
 
-export { Step, UserData, ResetPasswordData }
+interface ErrorResponse {
+  statusCode: number
+  errors: { userMessage: string }[]
+}
+
+export { Step, UserData, ResetPasswordData, ErrorResponse }
