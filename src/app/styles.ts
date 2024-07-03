@@ -154,13 +154,27 @@ export const styles = StyleSheet.create({
     marginLeft: '5%',
     marginTop: 30,
   },
+  inputContainer: {
+    width: '100%',
+    gap: 4,
+    marginTop: 10,
+  },
+  inputLabelContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  inputLabelText: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '500',
+    color: theme.colors.Gray[600],
+  },
   input: {
     width: '100%',
     height: 48,
     borderColor: theme.colors.Gray[300],
     borderWidth: 1,
     borderRadius: 8,
-    marginTop: 20,
     padding: 10,
     color: theme.colors.primaryColor,
   },

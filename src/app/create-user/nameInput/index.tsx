@@ -20,6 +20,7 @@ import { theme } from '@/src/theme'
 import ArrowRight from '../../../assets/images/arrowRight.svg'
 import ArrowRightDisable from '../../../assets/images/arrowRightDisable.svg'
 import WarningCircle from '../../../assets/images/WarningCircle.svg'
+import InputComponent from '@/src/components/InputComponent'
 
 const schema = yup
   .object({
@@ -86,6 +87,7 @@ export default function NameInput() {
           {errors.nome && (
             <Text style={globalStyles.errorText}>{errors.nome.message}</Text>
           )}
+          <InputComponent label="Confirmar senha" placeholder="Bora Rachar" />
         </View>
       </View>
       {!isKeyboardVisible && (
