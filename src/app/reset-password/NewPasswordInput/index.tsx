@@ -2,28 +2,30 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
-  ScrollView,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native'
 import { useState } from 'react'
 import { router } from 'expo-router'
 import { axiosClient } from '@/src/utils/axios'
 import { AxiosError } from 'axios'
-import { ErrorResponse } from '@/src/interfaces/types'
 import { useForm, Controller, FieldValues, useWatch } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
+import { ErrorResponse } from '@/src/interfaces/types'
 import resetPasswordStore from '@/src/store/ResetPasswordStore'
+import BadgeComponent from '@/src/components/BadgeComponent'
 
 import CloseEye from '@/src/assets/images/closeEye.svg'
 import OpenEye from '@/src/assets/images/openEye.svg'
-import { theme } from '@/src/theme'
+import ArrowRight from '@/src/assets/images/arrowRight.svg'
 
+import { theme } from '@/src/theme'
+import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
-import BadgeComponent from '@/src/components/BadgeComponent'
 
 const schema = yup.object().shape({
   newPassword: yup
@@ -42,14 +44,15 @@ const schema = yup.object().shape({
     .required('O campo "Confirmar nova senha" não pode ser vázio')
     .oneOf([yup.ref('newPassword')], 'A senhas não conferem'),
 })
+
 export default function NewPasswordInput() {
+  const [showPassword1, setShowPassword1] = useState(false)
+  const [showPassword2, setShowPassword2] = useState(false)
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) })
-  const [showPassword1, setShowPassword1] = useState(false)
-  const [showPassword2, setShowPassword2] = useState(false)
   const { setResetPassword, resetPassword } = resetPasswordStore()
 
   const newPassword = useWatch({
@@ -87,16 +90,16 @@ export default function NewPasswordInput() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
+      style={{ flex: 1 }}
     >
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.subTitle}>Redefina sua senha</Text>
+      <View style={{ paddingVertical: 24, flex: 1 }}>
+        <Text style={styles.subTitle}>Definir nova senha</Text>
         <Text style={styles.description}>
-          Siga as instruções abaixo para criar uma senha segura para a sua
-          conta.
+          Sua senha deve ter 8 caracteres, inclua uma letra maiúscula, um número
+          e um caractere especial (como @, #, $, &).
         </Text>
 
-        <View style={styles.inputContainer}>
+        <View style={{ gap: 16, marginTop: 24 }}>
           <View>
             <View style={styles.labelContainer}>
               <Text style={styles.label}>Nova Senha</Text>
@@ -154,14 +157,24 @@ export default function NewPasswordInput() {
             )}
           </View>
         </View>
-      </ScrollView>
+      </View>
 
-      <TouchableOpacity
-        style={[styles.button, { flexShrink: 1, marginBottom: 24 }]}
-        onPress={handleSubmit(onSubmit)}
-      >
-        <Text style={styles.buttonText}>Criar nova senha</Text>
-      </TouchableOpacity>
+      <View style={{ paddingVertical: 24 }}>
+        <ButtonCustomizer.Root
+          type="primary"
+          customStyles={globalStyles.primaryButton}
+          onPress={handleSubmit(onSubmit)}
+        >
+          <ButtonCustomizer.Title
+            title="Criar nova senha"
+            customStyles={globalStyles.primaryButtonText}
+          />
+          <ButtonCustomizer.Icon
+            icon={ArrowRight}
+            customStyles={globalStyles.primaryButtonIcon}
+          />
+        </ButtonCustomizer.Root>
+      </View>
     </KeyboardAvoidingView>
   )
 }
