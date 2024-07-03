@@ -5,7 +5,7 @@ import Header from '@/src/components/HeaderComponent'
 import ProgressBarComponent from '@/src/components/ProgressBarComponent'
 
 import OTPInput from './OTPInput'
-import NewPassword from './NewPasswordInput'
+import NewPasswordInput from './NewPasswordInput'
 
 import { styles as globalStyles } from '@/src/app/styles'
 
@@ -19,13 +19,17 @@ export default function ResetPassword() {
   }
 
   return (
-    <View style={[globalStyles.container, { flex: 1 }]}>
+    <View style={{ flex: 1, paddingHorizontal: 24 }}>
       <View>
         <Header title="Redefinir senha" />
         <ProgressBarComponent totalSteps={totalSteps} currentStep={step} />
       </View>
 
-      {step === 1 ? <OTPInput increaseStep={increaseStep} /> : <NewPassword />}
+      {step === 1 ? (
+        <OTPInput increaseStep={increaseStep} />
+      ) : (
+        <NewPasswordInput />
+      )}
     </View>
   )
 }
