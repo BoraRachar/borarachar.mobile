@@ -12,7 +12,16 @@ const adaptativePaddingTopScreen = Number((windowHeight * 0.2 - 50).toFixed(0))
 export default function OnboardingScreenThree() {
   return (
     <View style={{ position: 'relative' }}>
-      <View style={{ padding: 6, position: 'absolute', zIndex: 1 }}>
+      <View
+        style={{
+          paddingTop: 6,
+          paddingRight: 6,
+          paddingLeft: 6,
+          paddingBottom: 5,
+          position: 'absolute',
+          zIndex: 1,
+        }}
+      >
         <Link href="/onboarding-screens/onboardingTwo/">
           <ArrowBack />
         </Link>
@@ -41,7 +50,7 @@ export default function OnboardingScreenThree() {
         <View>
           <ButtonCustomizer.Root
             type={'primary'}
-            onPress={() => router.push('/onboarding-screens/onboarding2/')}
+            onPress={() => router.push('/')}
             customStyles={globalStyles.primaryButton}
           >
             <ButtonCustomizer.Title
