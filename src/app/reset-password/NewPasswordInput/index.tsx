@@ -72,7 +72,7 @@ export default function NewPasswordInput() {
     if (resetPassword.novaSenha && resetPassword.confirmacaoSenha) {
       try {
         await axiosClient.post('/user/reset-password', resetPassword)
-        router.push('/reset-password/success/')
+        router.push('/reset-password/Success/')
       } catch (err) {
         const error = err as AxiosError
         const responseData = error.response?.data as ErrorResponse
