@@ -5,6 +5,7 @@ import {
   Text,
   TextInput,
   View,
+  ScrollView,
 } from 'react-native'
 import { useState } from 'react'
 import { router } from 'expo-router'
@@ -92,72 +93,76 @@ export default function NewPasswordInput() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
     >
-      <View style={{ paddingVertical: 24, flex: 1 }}>
-        <Text style={styles.subTitle}>Definir nova senha</Text>
-        <Text style={styles.description}>
-          Sua senha deve ter 8 caracteres, inclua uma letra maiúscula, um número
-          e um caractere especial (como @, #, $, &).
-        </Text>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{ paddingVertical: 24, flex: 1 }}>
+          <Text style={styles.subTitle}>Definir nova senha</Text>
+          <Text style={styles.description}>
+            Sua senha deve ter 8 caracteres, inclua uma letra maiúscula, um
+            número e um caractere especial (como @, #, $, &).
+          </Text>
 
-        <View style={{ gap: 16, marginTop: 24 }}>
-          <View>
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>Nova Senha</Text>
-              {BadgeComponent(newPassword)}
+          <View style={{ gap: 16, marginTop: 24 }}>
+            <View>
+              <View style={styles.labelContainer}>
+                <Text style={styles.label}>Nova Senha</Text>
+                {BadgeComponent(newPassword)}
+              </View>
+
+              <Controller
+                control={control}
+                name="newPassword"
+                render={({ field: { onChange, value } }) => (
+                  <View style={styles.input}>
+                    <TextInput
+                      style={styles.textInput}
+                      placeholderTextColor={theme.colors.secondaryColor}
+                      cursorColor={theme.colors.secondaryColor}
+                      secureTextEntry={!showPassword1}
+                      value={value}
+                      onChangeText={onChange}
+                    />
+                    <Pressable onPress={() => setShowPassword1(!showPassword1)}>
+                      {!showPassword1 ? <OpenEye /> : <CloseEye />}
+                    </Pressable>
+                  </View>
+                )}
+              />
+              {errors.newPassword && (
+                <Text style={styles.error}>{errors.newPassword.message}</Text>
+              )}
             </View>
 
-            <Controller
-              control={control}
-              name="newPassword"
-              render={({ field: { onChange, value } }) => (
-                <View style={styles.input}>
-                  <TextInput
-                    style={styles.textInput}
-                    placeholderTextColor={theme.colors.secondaryColor}
-                    cursorColor={theme.colors.secondaryColor}
-                    secureTextEntry={!showPassword1}
-                    value={value}
-                    onChangeText={onChange}
-                  />
-                  <Pressable onPress={() => setShowPassword1(!showPassword1)}>
-                    {!showPassword1 ? <OpenEye /> : <CloseEye />}
-                  </Pressable>
-                </View>
-              )}
-            />
-            {errors.newPassword && (
-              <Text style={styles.error}>{errors.newPassword.message}</Text>
-            )}
-          </View>
+            <View>
+              <Text style={styles.label}>Confirmar nova senha</Text>
 
-          <View>
-            <Text style={styles.label}>Confirmar nova senha</Text>
-
-            <Controller
-              control={control}
-              name="confirmPassword"
-              render={({ field: { onChange, value } }) => (
-                <View style={styles.input}>
-                  <TextInput
-                    style={styles.textInput}
-                    placeholderTextColor={theme.colors.secondaryColor}
-                    cursorColor={theme.colors.secondaryColor}
-                    secureTextEntry={!showPassword2}
-                    value={value}
-                    onChangeText={onChange}
-                  />
-                  <Pressable onPress={() => setShowPassword2(!showPassword2)}>
-                    {!showPassword2 ? <OpenEye /> : <CloseEye />}
-                  </Pressable>
-                </View>
+              <Controller
+                control={control}
+                name="confirmPassword"
+                render={({ field: { onChange, value } }) => (
+                  <View style={styles.input}>
+                    <TextInput
+                      style={styles.textInput}
+                      placeholderTextColor={theme.colors.secondaryColor}
+                      cursorColor={theme.colors.secondaryColor}
+                      secureTextEntry={!showPassword2}
+                      value={value}
+                      onChangeText={onChange}
+                    />
+                    <Pressable onPress={() => setShowPassword2(!showPassword2)}>
+                      {!showPassword2 ? <OpenEye /> : <CloseEye />}
+                    </Pressable>
+                  </View>
+                )}
+              />
+              {errors.confirmPassword && (
+                <Text style={styles.error}>
+                  {errors.confirmPassword.message}
+                </Text>
               )}
-            />
-            {errors.confirmPassword && (
-              <Text style={styles.error}>{errors.confirmPassword.message}</Text>
-            )}
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
 
       <View style={{ paddingVertical: 24 }}>
         <ButtonCustomizer.Root
