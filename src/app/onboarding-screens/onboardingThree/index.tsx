@@ -14,10 +14,7 @@ export default function OnboardingScreenThree() {
     <View style={{ position: 'relative' }}>
       <View
         style={{
-          paddingTop: 6,
-          paddingRight: 6,
-          paddingLeft: 6,
-          paddingBottom: 5,
+          padding: 6,
           position: 'absolute',
           zIndex: 1,
         }}
@@ -32,7 +29,7 @@ export default function OnboardingScreenThree() {
           styles.onboardingContainer,
         ]}
       >
-        <View style={{ marginBottom: 20 }}>
+        <View style={{ marginBottom: 15 }}>
           <View style={{ alignItems: 'center' }}>
             <OnboardingScreenThreeImage />
           </View>
