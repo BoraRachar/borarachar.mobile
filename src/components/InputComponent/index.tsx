@@ -4,7 +4,7 @@ import { styles } from '../../app/styles'
 import { theme } from '@/src/theme'
 
 interface InputComponentProps {
-  label: string
+  label?: string
   placeholder?: string
   secureTextEntry?: boolean
   value: string
@@ -28,7 +28,6 @@ const InputComponent: React.FC<InputComponentProps> = ({
     <View style={styles.inputContainer}>
       <View style={styles.inputLabelContainer}>
         <Text style={styles.inputLabelText}>{label}</Text>
-        <Text>Forte</Text>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TextInput
