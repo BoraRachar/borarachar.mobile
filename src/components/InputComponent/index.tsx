@@ -1,41 +1,55 @@
-import { View, Text, TextInput } from 'react-native'
+import React from 'react'
+import { View, Text, TextInput, Pressable } from 'react-native'
 import { styles } from '../../app/styles'
 import { theme } from '@/src/theme'
 
 interface InputComponentProps {
-  control?: Control
-  name?: string
-  label?: string
+  label: string
   placeholder?: string
   secureTextEntry?: boolean
-  errors?: Record<string, FieldErrors>
+  value: string
+  onChangeText: (text: string) => void
+  error?: string
   icon?: React.FC
   onIconPress?: () => void
 }
 
-export default function InputComponent({
-  control,
-  name,
+const InputComponent: React.FC<InputComponentProps> = ({
   label,
   placeholder,
   secureTextEntry,
-  errors,
-  icon,
+  value,
+  onChangeText,
+  error,
+  icon: Icon,
   onIconPress,
-}: InputComponentProps) {
+}) => {
   return (
     <View style={styles.inputContainer}>
       <View style={styles.inputLabelContainer}>
         <Text style={styles.inputLabelText}>{label}</Text>
         <Text>Forte</Text>
       </View>
-      <TextInput
-        style={styles.input}
-        placeholder={placeholder}
-        secureTextEntry={secureTextEntry}
-        placeholderTextColor={theme.colors.Gray[500]}
-        cursorColor={theme.colors.Gray[500]}
-      />
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <TextInput
+          style={error ? styles.inputError : styles.input}
+          placeholder={placeholder}
+          secureTextEntry={secureTextEntry}
+          placeholderTextColor={theme.colors.Gray[500]}
+          cursorColor={theme.colors.Gray[500]}
+          value={value}
+          onChangeText={onChangeText}
+        />
+        {error ? (
+          <Text style={styles.errorText}>{error}</Text>
+        ) : Icon ? (
+          <Pressable onPress={onIconPress} style={styles.iconForm}>
+            <Icon />
+          </Pressable>
+        ) : null}
+      </View>
     </View>
   )
 }
+
+export default InputComponent
