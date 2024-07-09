@@ -6,10 +6,15 @@ import CheckCircle from '@/src/assets/images/CheckCircle.svg'
 import { styles } from './styles'
 import { useState } from 'react'
 
+type NameSuggestionComponentsProps = {
+  namesSuggestionFromApi: string[]
+  onSelect?: (name: string) => void
+}
+
 export default function NameSuggestionComponents({
   namesSuggestionFromApi,
   onSelect,
-}) {
+}: NameSuggestionComponentsProps) {
   const [selected, setSelected] = useState(null)
 
   const handleSelect = (name) => {
