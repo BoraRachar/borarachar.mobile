@@ -1,10 +1,10 @@
+import { useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 
 import UnCheckCircle from '@/src/assets/images/unCheckCircle.svg'
 import CheckCircle from '@/src/assets/images/CheckCircle.svg'
 
 import { styles } from './styles'
-import { useState } from 'react'
 
 type NameSuggestionComponentsProps = {
   namesSuggestionFromApi: string[]
@@ -15,9 +15,9 @@ export default function NameSuggestionComponents({
   namesSuggestionFromApi,
   onSelect,
 }: NameSuggestionComponentsProps) {
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState('')
 
-  const handleSelect = (name) => {
+  const handleSelect = (name: string) => {
     setSelected(name)
     if (onSelect) {
       onSelect(name)
@@ -25,7 +25,7 @@ export default function NameSuggestionComponents({
   }
 
   return (
-    <View>
+    <View style={{ marginHorizontal: 24 }}>
       {namesSuggestionFromApi.map((name, index) => (
         <TouchableOpacity key={index} onPress={() => handleSelect(name)}>
           <View
