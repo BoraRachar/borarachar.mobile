@@ -6,7 +6,6 @@ import { ButtonCustomizer } from '../components/ButtonCustomizer'
 import { styles } from './styles'
 import OnboardingScreenOne from './onboarding-screens/onboardingOne'
 import Logo from '../assets/images/logo.svg'
-import NameSuggestionComponents from '../components/NameSuggestionComponents'
 
 export default function Index() {
   const windowHeight = Dimensions.get('window').height
@@ -33,17 +32,6 @@ export default function Index() {
     }
     checkFirstTime()
   }, [])
-
-  // Limpar depois
-  const namesSuggestionFromApi = [
-    '@joão_silva95',
-    '@joãosilva2024',
-    'joão.silva-br',
-  ]
-
-  const handleSelect = (option) => {
-    console.log('selected option:', option)
-  }
 
   return (
     <View>
@@ -93,10 +81,6 @@ export default function Index() {
                   ></ButtonCustomizer.Title>
                 </ButtonCustomizer.Root>
               </View>
-              <NameSuggestionComponents
-                namesSuggestionFromApi={namesSuggestionFromApi}
-                onSelect={handleSelect}
-              />
             </View>
           )}
         </>
