@@ -1,7 +1,7 @@
 # Como usar o componente
 
 ```js
-  import NameSuggestionComponents from '../components/NameSuggestionComponents'
+  import NameSuggestion from '@/src/components/NameSuggestion'
 ```
 
 ## Buscar os nomes na API
@@ -15,15 +15,15 @@
 
 ## Função para lidar com o retorno do componente com o nome selecionado
   ```js
-    const handleNameSelected = (nameSelected: string) => {
+    const getNameSelected = (nameSelected: string) => {
       console.log('name selected:', nameSelected)
     }
   ```
 
 ## Usar o componentes
   ```js
-    <NameSuggestionComponents
-      namesSuggestionFromApi={namesSuggestionFromApi}
-      onSelect={handleNameSelected}
+    <NameSuggestion
+      suggestions={namesSuggestionFromApi}
+      onNameSelect={getNameSelected}
     />
   ```
