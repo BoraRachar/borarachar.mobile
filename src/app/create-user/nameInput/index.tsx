@@ -16,7 +16,7 @@ import ArrowRightDisable from '../../../assets/images/arrowRightDisable.svg'
 
 const schema = yup
   .object({
-    nome: yup.string().required('O campo deve ser preenchido'),
+    nome: yup.string().required().min(3),
   })
   .required()
 
@@ -66,7 +66,7 @@ export default function NameInput() {
                 placeholder="João Silva"
                 value={value}
                 onChangeText={onChange}
-                error={errors.nome?.message}
+                errorOrSucess={errors.nome?.message}
               />
             )}
           />

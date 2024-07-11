@@ -9,7 +9,7 @@ interface InputComponentProps {
   secureTextEntry?: boolean
   value: string
   onChangeText: (text: string) => void
-  error?: string
+  errorOrSucess?: string
   icon?: React.FC
   onIconPress?: () => void
 }
@@ -20,7 +20,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
   secureTextEntry,
   value,
   onChangeText,
-  error,
+  errorOrSucess,
   icon: Icon,
   onIconPress,
 }) => {
@@ -31,7 +31,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TextInput
-          style={error ? styles.inputError : styles.input}
+          style={errorOrSucess ? styles.inputError : styles.input}
           placeholder={placeholder}
           secureTextEntry={secureTextEntry}
           placeholderTextColor={theme.colors.Gray[500]}
@@ -39,8 +39,8 @@ const InputComponent: React.FC<InputComponentProps> = ({
           value={value}
           onChangeText={onChangeText}
         />
-        {error ? (
-          <Text style={styles.errorText}>{error}</Text>
+        {errorOrSucess ? (
+          <Text style={styles.errorText}>{errorOrSucess}</Text>
         ) : Icon ? (
           <Pressable onPress={onIconPress} style={styles.iconForm}>
             <Icon />
