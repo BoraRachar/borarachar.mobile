@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, TextInput, Pressable } from 'react-native'
 import { styles } from '../../app/styles'
 import { theme } from '@/src/theme'
+import WarningCircle from '../../assets/images/WarningCircle.svg'
 
 interface InputComponentProps {
   label?: string
@@ -29,9 +30,10 @@ const InputComponent: React.FC<InputComponentProps> = ({
       <View style={styles.inputLabelContainer}>
         <Text style={styles.inputLabelText}>{label}</Text>
       </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View
+        style={errorOrSucess ? styles.inputWrapperError : styles.inputWrapper}
+      >
         <TextInput
-          style={errorOrSucess ? styles.inputError : styles.input}
           placeholder={placeholder}
           secureTextEntry={secureTextEntry}
           placeholderTextColor={theme.colors.Gray[500]}
@@ -40,7 +42,9 @@ const InputComponent: React.FC<InputComponentProps> = ({
           onChangeText={onChangeText}
         />
         {errorOrSucess ? (
-          <Text style={styles.errorText}>{errorOrSucess}</Text>
+          <>
+            <WarningCircle />
+          </>
         ) : Icon ? (
           <Pressable onPress={onIconPress} style={styles.iconForm}>
             <Icon />

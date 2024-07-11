@@ -16,7 +16,10 @@ import ArrowRightDisable from '../../../assets/images/arrowRightDisable.svg'
 
 const schema = yup
   .object({
-    nome: yup.string().required().min(3),
+    nome: yup
+      .string()
+      .required('O campo deve ter pelo menos 3 caracteres')
+      .min(3, 'O campo deve ter pelo menos 3 caracteres'),
   })
   .required()
 
