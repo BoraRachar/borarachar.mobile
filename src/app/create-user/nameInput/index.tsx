@@ -70,6 +70,9 @@ export default function NameInput() {
                 value={value}
                 onChangeText={onChange}
                 errorOrSucess={errors.nome?.message}
+                isValid={
+                  !errors.nome && typeof value === 'string' && value.length >= 3
+                }
               />
             )}
           />

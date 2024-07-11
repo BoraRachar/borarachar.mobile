@@ -191,6 +191,16 @@ export const styles = StyleSheet.create({
     height: 48,
     paddingHorizontal: 10,
   },
+  inputWrapperSuccess: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderColor: theme.colors.Success[300],
+    borderWidth: 1,
+    borderRadius: 8,
+    height: 48,
+    paddingHorizontal: 10,
+  },
   iconForm: {
     position: 'absolute',
     right: 15,
