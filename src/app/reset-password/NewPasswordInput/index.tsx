@@ -27,6 +27,7 @@ import ArrowRight from '@/src/assets/images/arrowRight.svg'
 import { theme } from '@/src/theme'
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
+import InputComponent from '@/src/components/InputComponent'
 
 const schema = yup.object().shape({
   newPassword: yup
@@ -88,6 +89,9 @@ export default function NewPasswordInput() {
     handleSubmitToApi()
   }
 
+  const eyesIconTopassword1 = showPassword1 ? CloseEye : OpenEye
+  const eyesIconToPassword2 = showPassword2 ? CloseEye : OpenEye
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -103,28 +107,18 @@ export default function NewPasswordInput() {
 
           <View style={{ gap: 16, marginTop: 24 }}>
             <View>
-              <View style={styles.labelContainer}>
-                <Text style={styles.label}>Nova Senha</Text>
-                {BadgeComponent(newPassword)}
-              </View>
-
               <Controller
                 control={control}
                 name="newPassword"
                 render={({ field: { onChange, value } }) => (
-                  <View style={styles.input}>
-                    <TextInput
-                      style={styles.textInput}
-                      placeholderTextColor={theme.colors.secondaryColor}
-                      cursorColor={theme.colors.secondaryColor}
-                      secureTextEntry={!showPassword1}
-                      value={value}
-                      onChangeText={onChange}
-                    />
-                    <Pressable onPress={() => setShowPassword1(!showPassword1)}>
-                      {!showPassword1 ? <OpenEye /> : <CloseEye />}
-                    </Pressable>
-                  </View>
+                  <InputComponent
+                    label="Nova senha"
+                    value={value}
+                    onChangeText={onChange}
+                    secureTextEntry={!showPassword1}
+                    icon={eyesIconTopassword1}
+                    onIconPress={() => setShowPassword1(!showPassword1)}
+                  />
                 )}
               />
               {errors.newPassword && (
@@ -133,31 +127,22 @@ export default function NewPasswordInput() {
             </View>
 
             <View>
-              <Text style={styles.label}>Confirmar nova senha</Text>
-
               <Controller
                 control={control}
                 name="confirmPassword"
                 render={({ field: { onChange, value } }) => (
-                  <View style={styles.input}>
-                    <TextInput
-                      style={styles.textInput}
-                      placeholderTextColor={theme.colors.secondaryColor}
-                      cursorColor={theme.colors.secondaryColor}
-                      secureTextEntry={!showPassword2}
-                      value={value}
-                      onChangeText={onChange}
-                    />
-                    <Pressable onPress={() => setShowPassword2(!showPassword2)}>
-                      {!showPassword2 ? <OpenEye /> : <CloseEye />}
-                    </Pressable>
-                  </View>
+                  <InputComponent
+                    label="Confirmar nova senha"
+                    value={value}
+                    onChangeText={onChange}
+                    secureTextEntry={!showPassword2}
+                    icon={eyesIconToPassword2}
+                    onIconPress={() => setShowPassword2(!showPassword2)}
+                  />
                 )}
               />
-              {errors.confirmPassword && (
-                <Text style={styles.error}>
-                  {errors.confirmPassword.message}
-                </Text>
+              {errors.newPassword && (
+                <Text style={styles.error}>{errors.newPassword.message}</Text>
               )}
             </View>
           </View>
