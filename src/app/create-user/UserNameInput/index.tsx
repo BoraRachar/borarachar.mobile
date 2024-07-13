@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native'
+import { View, Text, KeyboardAvoidingView, Platform } from 'react-native'
 import { useNavigationControls } from '@/src/utils/CreateUserButtonsNavigation'
 import useStore from '../../../store/CreateUserstore'
 import useKeyboardStatus from '@/src/utils/keyboardUtils'
@@ -15,10 +9,9 @@ import { useState, useEffect } from 'react'
 import * as yup from 'yup'
 import { styles } from '../styles'
 import { styles as globalStyles } from '../../styles'
-import { theme } from '@/src/theme'
+import InputComponent from '@/src/components/InputComponent'
 import ArrowRight from '../../../assets/images/arrowRight.svg'
 import ArrowRightDisable from '../../../assets/images/arrowRightDisable.svg'
-import WarningCircle from '../../../assets/images/WarningCircle.svg'
 
 const schema = yup
   .object({
@@ -63,30 +56,21 @@ export default function UserName() {
       <View style={styles.contentForm}>
         <View>
           <Text style={globalStyles.createUserTitle}>
-            Agora escolha um nome de usuário
+            Agora escolha um {'\n'}nome de usuário
           </Text>
           <Controller
             control={control}
             name="usuario"
             defaultValue=""
-            render={({ field: { onChange, value } }) => (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TextInput
-                  style={
-                    errors.usuario
-                      ? globalStyles.inputError
-                      : globalStyles.input
-                  }
+            render={({ field: { onChange, value } }) => {
+              return (
+                <InputComponent
                   placeholder="BoraRachar123"
-                  placeholderTextColor={theme.colors.Gray[300]}
                   value={value}
                   onChangeText={onChange}
                 />
-                {errors.usuario && (
-                  <WarningCircle style={globalStyles.iconForm} />
-                )}
-              </View>
-            )}
+              )
+            }}
           />
           {errors.usuario && (
             <Text style={globalStyles.errorText}>{errors.usuario.message}</Text>
