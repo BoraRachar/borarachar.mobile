@@ -10,6 +10,7 @@ import * as yup from 'yup'
 import { styles } from '../styles'
 import { styles as globalStyles } from '../../styles'
 import InputComponent from '@/src/components/InputComponent'
+import SeparatorComponent from '@/src/components/SeparatorComponent'
 import ArrowRight from '../../../assets/images/arrowRight.svg'
 import ArrowRightDisable from '../../../assets/images/arrowRightDisable.svg'
 
@@ -75,6 +76,7 @@ export default function UserName() {
           {errors.usuario && (
             <Text style={globalStyles.errorText}>{errors.usuario.message}</Text>
           )}
+          <SeparatorComponent />
         </View>
       </View>
       {!isKeyboardVisible && (
