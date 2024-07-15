@@ -1,9 +1,7 @@
 import {
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   Text,
-  TextInput,
   View,
   ScrollView,
 } from 'react-native'
@@ -17,17 +15,15 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import { ErrorResponse } from '@/src/interfaces/types'
+import InputComponent from '@/src/components/InputComponent'
 import resetPasswordStore from '@/src/store/ResetPasswordStore'
-import BadgeComponent from '@/src/components/BadgeComponent'
 
 import CloseEye from '@/src/assets/images/closeEye.svg'
 import OpenEye from '@/src/assets/images/openEye.svg'
 import ArrowRight from '@/src/assets/images/arrowRight.svg'
 
-import { theme } from '@/src/theme'
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
-import InputComponent from '@/src/components/InputComponent'
 
 const schema = yup.object().shape({
   newPassword: yup
