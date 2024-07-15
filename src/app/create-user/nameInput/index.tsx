@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-  View,
-  Text,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native'
+import { View, Text, KeyboardAvoidingView, Platform } from 'react-native'
 import { useNavigationControls } from '@/src/utils/CreateUserButtonsNavigation'
 import useStore from '../../../store/CreateUserstore'
 import usekeyboardStatus from '../../../utils/keyboardUtils'
@@ -16,14 +10,16 @@ import * as yup from 'yup'
 import { router } from 'expo-router'
 import { styles } from '../styles'
 import { styles as globalStyles } from '../../styles'
-import { theme } from '@/src/theme'
+import InputComponent from '@/src/components/InputComponent'
 import ArrowRight from '../../../assets/images/arrowRight.svg'
 import ArrowRightDisable from '../../../assets/images/arrowRightDisable.svg'
-import WarningCircle from '../../../assets/images/WarningCircle.svg'
 
 const schema = yup
   .object({
-    nome: yup.string().required('O campo deve ser preenchido'),
+    nome: yup
+      .string()
+      .required('O campo deve ter pelo menos 3 caracteres')
+      .min(3, 'O campo deve ter pelo menos 3 caracteres'),
   })
   .required()
 
@@ -69,18 +65,15 @@ export default function NameInput() {
             control={control}
             name="nome"
             render={({ field: { onChange, value } }) => (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TextInput
-                  style={
-                    errors.nome ? globalStyles.inputError : globalStyles.input
-                  }
-                  placeholder="Bora Rachar"
-                  placeholderTextColor={theme.colors.Gray[300]}
-                  value={value}
-                  onChangeText={onChange}
-                />
-                {errors.nome && <WarningCircle style={globalStyles.iconForm} />}
-              </View>
+              <InputComponent
+                placeholder="João Silva"
+                value={value}
+                onChangeText={onChange}
+                errorOrSucess={errors.nome?.message}
+                isValid={
+                  !errors.nome && typeof value === 'string' && value.length >= 3
+                }
+              />
             )}
           />
           {errors.nome && (
