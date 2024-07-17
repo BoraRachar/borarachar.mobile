@@ -4,6 +4,8 @@ import { styles } from '../../app/styles'
 import { theme } from '@/src/theme'
 import WarningCircle from '../../assets/images/WarningCircle.svg'
 import CheckCircle from '../../assets/images/CheckCircle.svg'
+import Badge from '../BadgeComponent'
+
 interface InputComponentProps {
   label?: string
   placeholder?: string
@@ -14,6 +16,7 @@ interface InputComponentProps {
   isValid?: boolean
   icon?: React.FC
   onIconPress?: () => void
+  strength?: 'Fraca' | 'Média' | 'Forte'
 }
 
 const InputComponent: React.FC<InputComponentProps> = ({
@@ -26,11 +29,13 @@ const InputComponent: React.FC<InputComponentProps> = ({
   isValid,
   icon: Icon,
   onIconPress,
+  strength,
 }) => {
   return (
     <View style={styles.inputContainer}>
       <View style={styles.inputLabelContainer}>
         <Text style={styles.inputLabelText}>{label}</Text>
+        {strength && <Badge strength={strength} />}
       </View>
       <View
         style={[
