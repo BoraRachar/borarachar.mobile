@@ -2,10 +2,8 @@ import { useState, useRef, useEffect } from 'react'
 import {
   View,
   Text,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
 } from 'react-native'
 import { useNavigationControls } from '@/src/utils/CreateUserButtonsNavigation'
@@ -17,12 +15,11 @@ import useKeyboardStatus from '@/src/utils/keyboardUtils'
 import { ButtonCustomizer } from '../../../components/ButtonCustomizer'
 import { styles } from '../styles'
 import { styles as globalStyles } from '../../styles'
-import { theme } from '@/src/theme'
+import InputComponent from '@/src/components/InputComponent'
 import ArrowRight from '../../../assets/images/arrowRight.svg'
 import ArrowRightDisable from '../../../assets/images/arrowRightDisable.svg'
 import OpenEye from '../../../assets/images/openEye.svg'
 import CloseEye from '../../../assets/images/closeEye.svg'
-import WarningCircle from '../../../assets/images/WarningCircle.svg'
 
 const schema = yup
   .object({
@@ -30,6 +27,10 @@ const schema = yup
       .string()
       .required('O campo deve ser preenchido')
       .min(8, 'A senha deve ter pelo menos 8 caracteres'),
+    confirmPassword: yup
+      .string()
+      .required('O campo deve ser preenchido')
+      .oneOf([yup.ref('password')], 'As senhas devem ser iguais'),
   })
   .required()
 
@@ -42,6 +43,7 @@ export default function PasswordInput() {
     resolver: yupResolver(schema),
   })
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
   const { handleNavigationButton } = useNavigationControls()
   const password = useWatch({ control, name: 'password', defaultValue: '' })
   const { addUser } = useStore()
@@ -51,6 +53,10 @@ export default function PasswordInput() {
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword)
+  }
+
+  const handleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword)
   }
 
   const handleScrollToEnd = () => {
@@ -94,31 +100,39 @@ export default function PasswordInput() {
             <Controller
               control={control}
               name="password"
-              render={({ field: { onChange, value } }) => (
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <TextInput
-                    style={
-                      errors.password
-                        ? globalStyles.inputError
-                        : globalStyles.input
-                    }
-                    secureTextEntry={!showPassword}
-                    placeholderTextColor={theme.colors.Gray[300]}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <InputComponent
                     value={value}
                     onChangeText={onChange}
+                    label="Senha"
+                    secureTextEntry={!showPassword}
+                    icon={showPassword ? CloseEye : OpenEye}
+                    onIconPress={handleShowPassword}
                   />
-                  {!errors.password ? (
-                    <Pressable
-                      onPress={handleShowPassword}
-                      style={globalStyles.iconForm}
-                    >
-                      {!showPassword ? <OpenEye /> : <CloseEye />}
-                    </Pressable>
-                  ) : (
-                    <WarningCircle style={globalStyles.iconForm} />
-                  )}
-                </View>
-              )}
+                )
+              }}
+            />
+            {errors.password && (
+              <Text style={globalStyles.errorText}>
+                {errors.password.message}
+              </Text>
+            )}
+            <Controller
+              control={control}
+              name="confirmPassword"
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <InputComponent
+                    value={value}
+                    onChangeText={onChange}
+                    label="Confirmar senha"
+                    secureTextEntry={!showConfirmPassword}
+                    icon={showConfirmPassword ? CloseEye : OpenEye}
+                    onIconPress={handleShowConfirmPassword}
+                  />
+                )
+              }}
             />
             {errors.password && (
               <Text style={globalStyles.errorText}>
