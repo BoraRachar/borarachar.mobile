@@ -1,10 +1,4 @@
-import {
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-  View,
-  ScrollView,
-} from 'react-native'
+import { KeyboardAvoidingView, Platform, Text, View } from 'react-native'
 import { useState } from 'react'
 import { router } from 'expo-router'
 import { axiosClient } from '@/src/utils/axios'
@@ -17,6 +11,8 @@ import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import { ErrorResponse } from '@/src/interfaces/types'
 import InputComponent from '@/src/components/InputComponent'
 import resetPasswordStore from '@/src/store/ResetPasswordStore'
+
+import useKeyboardStatus from '@/src/utils/keyboardUtils'
 
 import CloseEye from '@/src/assets/images/closeEye.svg'
 import OpenEye from '@/src/assets/images/openEye.svg'
@@ -52,6 +48,7 @@ export default function NewPasswordInput() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) })
   const { setResetPassword, resetPassword } = resetPasswordStore()
+  const iskeyboardVisible = useKeyboardStatus()
 
   const newPassword = useWatch({
     control,
@@ -93,74 +90,79 @@ export default function NewPasswordInput() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
     >
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ paddingVertical: 24, flex: 1 }}>
-          <Text style={styles.subTitle}>Definir nova senha</Text>
-          <Text style={styles.description}>
-            Sua senha deve ter 8 caracteres, inclua uma letra maiúscula, um
-            número e um caractere especial (como @, #, $, &).
-          </Text>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.subTitle}>Definir nova senha</Text>
+        <Text style={styles.description}>
+          Sua senha deve ter 8 caracteres, inclua uma letra maiúscula, um número
+          e um caractere especial (como @, #, $, &).
+        </Text>
 
-          <View style={{ gap: 16, marginTop: 24 }}>
-            <View>
-              <Controller
-                control={control}
-                name="newPassword"
-                render={({ field: { onChange, value } }) => (
-                  <InputComponent
-                    label="Nova senha"
-                    value={value}
-                    onChangeText={onChange}
-                    secureTextEntry={!showPassword1}
-                    icon={eyesIconTopassword1}
-                    onIconPress={() => setShowPassword1(!showPassword1)}
-                  />
-                )}
-              />
-              {errors.newPassword && (
-                <Text style={styles.error}>{errors.newPassword.message}</Text>
+        <View style={{ gap: 16, marginTop: 24 }}>
+          <View>
+            <Controller
+              control={control}
+              name="newPassword"
+              render={({ field: { onChange, value } }) => (
+                <InputComponent
+                  label="Nova senha"
+                  value={value}
+                  onChangeText={onChange}
+                  secureTextEntry={!showPassword1}
+                  icon={eyesIconTopassword1}
+                  onIconPress={() => setShowPassword1(!showPassword1)}
+                />
               )}
-            </View>
+            />
+            {errors.newPassword && (
+              <Text style={globalStyles.errorText}>
+                {errors.newPassword.message}
+              </Text>
+            )}
+          </View>
 
-            <View>
-              <Controller
-                control={control}
-                name="confirmPassword"
-                render={({ field: { onChange, value } }) => (
-                  <InputComponent
-                    label="Confirmar nova senha"
-                    value={value}
-                    onChangeText={onChange}
-                    secureTextEntry={!showPassword2}
-                    icon={eyesIconToPassword2}
-                    onIconPress={() => setShowPassword2(!showPassword2)}
-                  />
-                )}
-              />
-              {errors.newPassword && (
-                <Text style={styles.error}>{errors.newPassword.message}</Text>
+          <View>
+            <Controller
+              control={control}
+              name="confirmPassword"
+              render={({ field: { onChange, value } }) => (
+                <InputComponent
+                  label="Confirmar nova senha"
+                  value={value}
+                  onChangeText={onChange}
+                  secureTextEntry={!showPassword2}
+                  icon={eyesIconToPassword2}
+                  onIconPress={() => setShowPassword2(!showPassword2)}
+                />
               )}
-            </View>
+            />
+            {errors.newPassword && (
+              <Text style={globalStyles.errorText}>
+                {errors.newPassword.message}
+              </Text>
+            )}
           </View>
         </View>
-      </ScrollView>
-
-      <View style={{ paddingVertical: 24 }}>
-        <ButtonCustomizer.Root
-          type="primary"
-          customStyles={globalStyles.primaryButton}
-          onPress={handleSubmit(onSubmit)}
-        >
-          <ButtonCustomizer.Title
-            title="Criar nova senha"
-            customStyles={globalStyles.primaryButtonText}
-          />
-          <ButtonCustomizer.Icon
-            icon={ArrowRight}
-            customStyles={globalStyles.primaryButtonIcon}
-          />
-        </ButtonCustomizer.Root>
       </View>
+
+      {!iskeyboardVisible && (
+        <View>
+          <ButtonCustomizer.Root
+            type="primary"
+            customStyles={globalStyles.primaryButton}
+            // onPress={handleSubmit(onSubmit)}
+            onPress={() => router.push('/reset-password/Success/')}
+          >
+            <ButtonCustomizer.Title
+              title="Criar nova senha"
+              customStyles={globalStyles.primaryButtonText}
+            />
+            <ButtonCustomizer.Icon
+              icon={ArrowRight}
+              customStyles={globalStyles.primaryButtonIcon}
+            />
+          </ButtonCustomizer.Root>
+        </View>
+      )}
     </KeyboardAvoidingView>
   )
 }
