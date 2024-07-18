@@ -5,8 +5,8 @@ export const styles = StyleSheet.create({
   title: {
     fontFamily: theme.fontFamily.bold,
     fontWeight: 'bold',
-    fontSize: theme.sizes.fontSize30,
-    lineHeight: 38,
+    fontSize: theme.sizes.fontSize36,
+    lineHeight: 42,
     color: theme.colors.Gray[600],
   },
   subtitle: {
@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     fontSize: theme.sizes.fontSize16,
     lineHeight: 24,
     color: theme.colors.Gray[600],
+    marginTop: 8,
   },
   forgotPassword: {
     fontFamily: theme.fontFamily.semiBold,

@@ -15,6 +15,7 @@ import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
 import useKeyboardStatus from '@/src/utils/keyboardUtils'
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
+import { useState } from 'react'
 
 const schema = yup.object().shape({
   email: yup
@@ -25,6 +26,7 @@ const schema = yup.object().shape({
 })
 
 export default function Login() {
+  const [showPassword, setShowPassword] = useState(true)
   const {
     control,
     formState: { errors },
@@ -32,6 +34,8 @@ export default function Login() {
     resolver: yupResolver(schema),
   })
   const isKeyboardVisible = useKeyboardStatus()
+
+  const eyesIcon = showPassword ? opeEye : closeEye
 
   return (
     <View style={{ flex: 1 }}>
@@ -55,7 +59,7 @@ export default function Login() {
             Faça login e comece a dividir suas contas.
           </Text>
 
-          <View style={{ marginTop: 32 }}>
+          <View style={{ marginTop: 26 }}>
             <Controller
               control={control}
               name="email"
@@ -82,11 +86,9 @@ export default function Login() {
                   label="Senha"
                   value={value}
                   onChangeText={onChange}
-                  secureTextEntry={true}
-                  icon={opeEye}
-                  onIconPress={() => {
-                    console.log('clicou')
-                  }}
+                  secureTextEntry={showPassword}
+                  icon={eyesIcon}
+                  onIconPress={() => setShowPassword(!showPassword)}
                 />
               )}
             />
