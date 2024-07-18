@@ -12,12 +12,14 @@ import {
 
 import resetPasswordStore from '@/src/store/ResetPasswordStore'
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
+
 import ArrowRight from '@/src/assets/images/arrowRight.svg'
 import ArrowRightDisable from '@/src/assets/images/arrowRightDisable.svg'
+import usekeyboardStatus from '@/src/utils/keyboardUtils'
 
-import { theme } from '@/src/theme'
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
+import { theme } from '@/src/theme'
 
 type OTPInputProps = {
   increaseStep: () => void
@@ -28,6 +30,7 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
   const inputRefs = useRef<TextInput[]>([])
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const { setResetPassword } = resetPasswordStore()
+  const isKeyboardVisible = usekeyboardStatus()
 
   const getOTPvalue = (text: string, index: number) => {
     const newOTP = [...otpValue]
@@ -87,9 +90,9 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
+      style={{ flex: 1 }}
     >
-      <View style={styles.content}>
+      <View style={{ flex: 1 }}>
         <Text style={styles.subTitle}>
           Insira o código enviado ao seu e-mail
         </Text>
@@ -124,41 +127,43 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
         </View>
       </View>
 
-      <View style={styles.footer}>
-        <ButtonCustomizer.Root
-          type={'primary'}
-          onPress={onSubmit}
-          customStyles={
-            isButtonDisabled
-              ? globalStyles.primaryButtonDisabled
-              : globalStyles.primaryButton
-          }
-        >
-          <ButtonCustomizer.Title
-            title="Nova Senha"
+      {!isKeyboardVisible && (
+        <View>
+          <ButtonCustomizer.Root
+            type={'primary'}
+            onPress={onSubmit}
             customStyles={
               isButtonDisabled
-                ? globalStyles.primaryButtonTextDisabled
-                : globalStyles.primaryButtonText
+                ? globalStyles.primaryButtonDisabled
+                : globalStyles.primaryButton
             }
-          />
-          <ButtonCustomizer.Icon
-            icon={isButtonDisabled ? ArrowRightDisable : ArrowRight}
-            customStyles={
-              isButtonDisabled
-                ? globalStyles.primaryButtonIconDisabled
-                : globalStyles.primaryButtonIcon
-            }
-          />
-        </ButtonCustomizer.Root>
+          >
+            <ButtonCustomizer.Title
+              title="Nova Senha"
+              customStyles={
+                isButtonDisabled
+                  ? globalStyles.primaryButtonTextDisabled
+                  : globalStyles.primaryButtonText
+              }
+            />
+            <ButtonCustomizer.Icon
+              icon={isButtonDisabled ? ArrowRightDisable : ArrowRight}
+              customStyles={
+                isButtonDisabled
+                  ? globalStyles.primaryButtonIconDisabled
+                  : globalStyles.primaryButtonIcon
+              }
+            />
+          </ButtonCustomizer.Root>
 
-        <View style={styles.receivedCodeContainer}>
-          <Text style={styles.receivedCodeText}>Não recebeu o código?</Text>
-          <Pressable>
-            <Text style={styles.receivedCodeLink}>Enviar novamente</Text>
-          </Pressable>
+          <View style={styles.ressendCodeContainer}>
+            <Text style={styles.ressendCodeText}>Não recebeu o código?</Text>
+            <Pressable>
+              <Text style={styles.ressendCodeLink}>Enviar novamente</Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
+      )}
     </KeyboardAvoidingView>
   )
 }

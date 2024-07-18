@@ -14,22 +14,27 @@ export default function ResetPassword() {
 
   const totalSteps = 3
 
-  const increaseStep = () => {
-    setStep(step + 1)
+  const increaseStep = () => setStep(step + 1)
+
+  let formStep
+
+  switch (step) {
+    case 1:
+      formStep = <OTPInput increaseStep={increaseStep} />
+      break
+    case 2:
+      formStep = <NewPasswordInput />
+      break
+    default:
+      formStep = <OTPInput increaseStep={increaseStep} />
+      break
   }
 
   return (
     <View style={{ flex: 1, paddingHorizontal: 24 }}>
-      <View>
-        <Header title="Redefinir senha" />
-        <ProgressBarComponent totalSteps={totalSteps} currentStep={step} />
-      </View>
-
-      {step === 1 ? (
-        <OTPInput increaseStep={increaseStep} />
-      ) : (
-        <NewPasswordInput />
-      )}
+      <Header title="Redefinir senha" />
+      <ProgressBarComponent totalSteps={totalSteps} currentStep={step} />
+      <View style={globalStyles.formContainer}>{formStep}</View>
     </View>
   )
 }

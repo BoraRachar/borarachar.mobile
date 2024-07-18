@@ -2,13 +2,6 @@ import { theme } from '@/src/theme'
 import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 24,
-  },
-  content: {
-    flex: 1,
-  },
   subTitle: {
     color: theme.colors.primaryColor,
     fontFamily: theme.fontFamily.bold,
@@ -38,39 +31,19 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.primaryColor,
     borderRadius: 6,
   },
-  footer: {
-    flexShrink: 1,
-    paddingBottom: 24,
-    gap: 8,
-  },
-  button: {
-    width: '100%',
-    height: 48,
-    backgroundColor: theme.colors.primaryColor,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-    borderRadius: 6,
-  },
-  buttonText: {
-    color: theme.colors.white,
-    fontFamily: theme.fontFamily.semiBold,
-    fontSize: 16,
-  },
-  receivedCodeContainer: {
+  ressendCodeContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
-    marginBottom: 18,
+    marginTop: 8,
   },
-  receivedCodeText: {
+  ressendCodeText: {
     color: theme.colors.primaryColor,
     fontFamily: theme.fontFamily.regular,
     fontSize: 14,
   },
-  receivedCodeLink: {
+  ressendCodeLink: {
     color: theme.colors.primaryColor,
     fontFamily: theme.fontFamily.bold,
     fontSize: 14,
