@@ -1,18 +1,20 @@
+import { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, Platform, Text, View } from 'react-native'
 import { Link, router } from 'expo-router'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import Header from '@/src/components/HeaderComponent'
 import InputComponent from '@/src/components/InputComponent'
-import useKeyboardStatus from '@/src/utils/keyboardUtils'
+import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 
+import useKeyboardStatus from '@/src/utils/keyboardUtils'
+import emailValidation from '@/src/utils/emailValidation'
 import ArrowBack from '@/src/assets/images/arrowBack.svg'
 
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
-import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 
 const schema = yup.object().shape({
   email: yup
@@ -22,14 +24,24 @@ const schema = yup.object().shape({
 })
 
 export default function ForgotPassword() {
+  const [isValidEmail, setIsValidEmail] = useState(false)
   const {
     control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   })
-
   const iskeyboardVisible = useKeyboardStatus()
+
+  const email = useWatch({ control, name: 'email', defaultValue: '' })
+
+  useEffect(() => {
+    if (emailValidation(email)) {
+      setIsValidEmail(true)
+    } else {
+      setIsValidEmail(false)
+    }
+  }, [email])
 
   return (
     <View style={{ flex: 1 }}>
@@ -59,6 +71,7 @@ export default function ForgotPassword() {
                   placeholder="joão@email.com"
                   value={value}
                   onChangeText={onChange}
+                  isValid={isValidEmail}
                 />
               )}
             />
@@ -72,11 +85,21 @@ export default function ForgotPassword() {
           <View style={{ marginHorizontal: 24 }}>
             <ButtonCustomizer.Root
               type="primary"
-              onPress={() => console.log('click')}
+              onPress={() => router.push('/reset-password')}
+              disabled={!isValidEmail}
+              customStyles={
+                isValidEmail
+                  ? globalStyles.primaryButton
+                  : globalStyles.primaryButtonDisabled
+              }
             >
               <ButtonCustomizer.Title
                 title="Enviar código de recuperação"
-                customStyles={globalStyles.primaryButtonText}
+                customStyles={
+                  isValidEmail
+                    ? globalStyles.primaryButtonText
+                    : globalStyles.primaryButtonTextDisabled
+                }
               />
             </ButtonCustomizer.Root>
             <Link href={'/login'} style={styles.link}>
