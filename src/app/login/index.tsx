@@ -13,6 +13,8 @@ import closeEye from '@/src/assets/images/closeEye.svg'
 
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
+import useKeyboardStatus from '@/src/utils/keyboardUtils'
+import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 
 const schema = yup.object().shape({
   email: yup
@@ -29,8 +31,10 @@ export default function Login() {
   } = useForm({
     resolver: yupResolver(schema),
   })
+  const isKeyboardVisible = useKeyboardStatus()
+
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <Header
         title="Login"
         leftIcon={{
@@ -43,61 +47,98 @@ export default function Login() {
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
       >
-        <View>
+        <View style={globalStyles.formContainer}>
           <Text style={styles.title}>Que bom que você voltou!</Text>
           <Text style={styles.subtitle}>
             Faça login e comece a dividir suas contas.
           </Text>
-        </View>
 
-        <View>
-          <Controller
-            control={control}
-            name="email"
-            render={({ field: { onChange, value } }) => (
-              <InputComponent
-                label="E-mail ou usuário"
-                value={value}
-                onChangeText={onChange}
-                placeholder="joão@mail.com"
-              />
+          <View style={{ marginTop: 32 }}>
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onChange, value } }) => (
+                <InputComponent
+                  label="E-mail ou usuário"
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder="joão@mail.com"
+                />
+              )}
+            />
+            {errors.email && (
+              <Text style={globalStyles.errorText}>{errors.email.message}</Text>
             )}
-          />
-          {errors.email && <Text>{errors.email.message}</Text>}
-        </View>
+          </View>
 
-        <View>
-          <Controller
-            control={control}
-            name="password"
-            render={({ field: { onChange, value } }) => (
-              <InputComponent
-                label="Senha"
-                value={value}
-                onChangeText={onChange}
-                secureTextEntry={true}
-                icon={opeEye}
-                onIconPress={() => {
-                  console.log('clicou')
-                }}
-              />
-            )}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            {/* {errors.password && <Text>{errors.password.message}</Text>} */}
-            <Text style={globalStyles.errorText}>Senha incorreta</Text>
-            <Link href={'/forgot-password'} style={styles.forgotPassword}>
-              Esqueceu a senha?
-            </Link>
+          <View style={{ marginTop: 20 }}>
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, value } }) => (
+                <InputComponent
+                  label="Senha"
+                  value={value}
+                  onChangeText={onChange}
+                  secureTextEntry={true}
+                  icon={opeEye}
+                  onIconPress={() => {
+                    console.log('clicou')
+                  }}
+                />
+              )}
+            />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%',
+              }}
+            >
+              {errors.password ? (
+                <Text style={globalStyles.errorText}>
+                  {errors.password.message}
+                </Text>
+              ) : (
+                <Text></Text>
+              )}
+              <Link href={'/forgot-password'} style={styles.forgotPassword}>
+                Esqueceu a senha?
+              </Link>
+            </View>
           </View>
         </View>
+
+        {!isKeyboardVisible && (
+          <View style={{ paddingHorizontal: 24 }}>
+            <ButtonCustomizer.Root
+              type="primary"
+              onPress={() => {
+                console.log('login')
+              }}
+            >
+              <ButtonCustomizer.Title
+                title="Login"
+                customStyles={globalStyles.primaryButtonText}
+              />
+            </ButtonCustomizer.Root>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginTop: 16,
+              }}
+            >
+              <Text style={styles.signUp}>Ainda não possui uma conta?</Text>
+              <Link href={'/create-user'} style={styles.span}>
+                Crie agora
+              </Link>
+            </View>
+          </View>
+        )}
       </KeyboardAvoidingView>
     </View>
   )
