@@ -1,9 +1,10 @@
 import { Pressable, Text, View } from 'react-native'
-import { styles } from './styles'
 import { useRouter } from 'expo-router'
 
 import CloseFramer from '@/src/assets/images/closeFrame.svg'
 import ResetPasswordSucess from '@/src/assets/images/reset-password-sucess.svg'
+
+import { styles } from './styles'
 
 export default function Sucess() {
   const router = useRouter()

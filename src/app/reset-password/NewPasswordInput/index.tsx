@@ -91,7 +91,7 @@ export default function NewPasswordInput() {
       style={{ flex: 1 }}
     >
       <View style={{ flex: 1 }}>
-        <Text style={styles.subTitle}>Definir nova senha</Text>
+        <Text style={styles.subTitle}>Redefinir sua senha</Text>
         <Text style={styles.description}>
           Sua senha deve ter 8 caracteres, inclua uma letra maiúscula, um número
           e um caractere especial (como @, #, $, &).
