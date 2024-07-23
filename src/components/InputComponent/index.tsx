@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, Text, TextInput, Pressable } from 'react-native'
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  StyleProp,
+  TextStyle,
+} from 'react-native'
 import { styles } from '../../app/styles'
 import { theme } from '@/src/theme'
 import WarningCircle from '../../assets/images/WarningCircle.svg'
@@ -17,6 +24,7 @@ interface InputComponentProps {
   icon?: React.FC
   onIconPress?: () => void
   strength?: 'Fraca' | 'Média' | 'Forte'
+  customStyle?: StyleProp<TextStyle>
 }
 
 const InputComponent: React.FC<InputComponentProps> = ({
@@ -30,7 +38,16 @@ const InputComponent: React.FC<InputComponentProps> = ({
   icon: Icon,
   onIconPress,
   strength,
+  customStyle,
 }) => {
+  const getInputStyle = (): StyleProp<TextStyle> => {
+    if (errorOrSucess) return [styles.inputWrapper, styles.inputWrapperError]
+    if (isValid) return [styles.inputWrapper, styles.inputWrapperSuccess]
+    if (strength && value.trim().length > 0)
+      return [styles.inputWrapper, customStyle]
+    return styles.inputWrapper
+  }
+
   return (
     <View style={styles.inputContainer}>
       <View style={styles.inputLabelContainer}>
@@ -39,15 +56,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
           <Badge strength={strength} />
         )}
       </View>
-      <View
-        style={[
-          errorOrSucess
-            ? styles.inputWrapperError
-            : isValid
-              ? styles.inputWrapperSuccess
-              : styles.inputWrapper,
-        ]}
-      >
+      <View style={getInputStyle()}>
         <TextInput
           placeholder={placeholder}
           secureTextEntry={secureTextEntry}

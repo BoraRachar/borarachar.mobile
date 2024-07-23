@@ -5,6 +5,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StyleProp,
+  TextStyle,
 } from 'react-native'
 import { useNavigationControls } from '@/src/utils/CreateUserButtonsNavigation'
 import useStore from '../../../store/CreateUserstore'
@@ -85,6 +87,19 @@ export default function PasswordInput() {
     }
   }, [isKeyboardVisible])
 
+  const getInputStyle = (strength: Strength): StyleProp<TextStyle> => {
+    switch (strength) {
+      case 'Fraca':
+        return { borderColor: '#FDA29B' }
+      case 'Média':
+        return { borderColor: '#FEC84B' }
+      case 'Forte':
+        return { borderColor: '#6CE9A6' }
+      default:
+        return { borderColor: '' }
+    }
+  }
+
   const getPasswordStrength = (password: string) => {
     if (password.length < 8) return 'Fraca'
 
@@ -135,6 +150,7 @@ export default function PasswordInput() {
                     secureTextEntry={!showPassword}
                     icon={showPassword ? CloseEye : OpenEye}
                     onIconPress={handleShowPassword}
+                    customStyle={getInputStyle(passwordStrength)}
                   />
                 )
               }}
