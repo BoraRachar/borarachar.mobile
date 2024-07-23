@@ -11,8 +11,10 @@ import { styles } from '../styles'
 import { styles as globalStyles } from '../../styles'
 import InputComponent from '@/src/components/InputComponent'
 import SeparatorComponent from '@/src/components/SeparatorComponent'
+import NameSuggestion from '@/src/components/NameSuggestion'
 import ArrowRight from '../../../assets/images/arrowRight.svg'
 import ArrowRightDisable from '../../../assets/images/arrowRightDisable.svg'
+import { axiosClient } from '@/src/utils/axios'
 
 const schema = yup
   .object({
@@ -25,6 +27,7 @@ export default function UserName() {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
   })
@@ -32,13 +35,27 @@ export default function UserName() {
   const { handleNavigationButton } = useNavigationControls()
   const { addUser } = useStore()
   const [isButtonDisable, setIsButtonDisable] = useState(true)
+  const [userNameSuggestions, setUserNameSuggestions] = useState([])
+  const [selectedUserName, setSelectedUserName] = useState<string | null>(null)
   const isKeyboardVisible = useKeyboardStatus()
 
   const usuario = useWatch({ control, name: 'usuario', defaultValue: '' })
 
-  const onSubmit = (data: FieldValues) => {
-    addUser({ usuario: data.usuario })
-    handleNavigationButton()
+  const onSubmit = async (data: FieldValues) => {
+    try {
+      const response = await axiosClient.get('user/find-usuario', {
+        params: { usuario: data.usuario },
+      })
+
+      if (response.data.statusCode === 204) {
+        addUser({ usuario: data.usuario })
+        handleNavigationButton()
+      } else if (response.data?.data?.userNames?.length > 0) {
+        setUserNameSuggestions(response.data.data.userNames)
+      }
+    } catch (error) {
+      console.log('Error fetching user names:', error)
+    }
   }
 
   useEffect(() => {
@@ -48,6 +65,18 @@ export default function UserName() {
       setIsButtonDisable(true)
     }
   }, [usuario])
+
+  const handleUserNameSelect = (userName: string) => {
+    setValue('usuario', userName)
+    setSelectedUserName(userName)
+  }
+
+  const handleAdvace = () => {
+    if (selectedUserName) {
+      addUser({ usuario: selectedUserName })
+      handleNavigationButton()
+    }
+  }
 
   return (
     <KeyboardAvoidingView
@@ -77,13 +106,24 @@ export default function UserName() {
             <Text style={globalStyles.errorText}>{errors.usuario.message}</Text>
           )}
           <SeparatorComponent />
+          {userNameSuggestions.length > 0 && (
+            <NameSuggestion
+              suggestions={userNameSuggestions}
+              onNameSelect={handleUserNameSelect}
+            />
+          )}
         </View>
       </View>
       {!isKeyboardVisible && (
         <View style={styles.buttonsContainer}>
           <ButtonCustomizer.Root
             type={'primary'}
-            onPress={handleSubmit(onSubmit)}
+            onPress={handleSubmit(async (data) => {
+              await onSubmit(data)
+              if (userNameSuggestions.length > 0 && !selectedUserName) {
+                handleAdvace()
+              }
+            })}
             disabled={isButtonDisable}
             customStyles={
               isButtonDisable

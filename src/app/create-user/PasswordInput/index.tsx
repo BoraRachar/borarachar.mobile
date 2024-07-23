@@ -106,6 +106,7 @@ export default function PasswordInput() {
                     value={value}
                     onChangeText={onChange}
                     label="Senha"
+                    strength="Forte"
                     secureTextEntry={!showPassword}
                     icon={showPassword ? CloseEye : OpenEye}
                     onIconPress={handleShowPassword}

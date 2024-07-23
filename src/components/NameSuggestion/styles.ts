@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 16,
+    marginBottom: 10,
     width: '100%',
     borderWidth: 1,
     borderColor: theme.colors.Gray[300],
@@ -16,6 +16,13 @@ export const styles = StyleSheet.create({
   },
   containerSelected: {
     borderColor: theme.colors.Success[300],
+  },
+  title: {
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: '400',
+    color: theme.colors.primaryColor,
+    marginBottom: 16,
   },
   text: {
     fontFamily: theme.fontFamily.regular,

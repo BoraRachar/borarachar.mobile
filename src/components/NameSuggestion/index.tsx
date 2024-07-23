@@ -25,7 +25,12 @@ export default function NameSuggestion({
   }
 
   return (
-    <View style={{ marginHorizontal: 24 }}>
+    <View style={{ marginHorizontal: 4 }}>
+      {suggestions.length > 0 && (
+        <Text style={styles.title}>
+          Escolha uma das opcões sugeridas abaixo
+        </Text>
+      )}
       {suggestions.map((name, index) => (
         <TouchableOpacity key={index} onPress={() => handleNameSelect(name)}>
           <View

@@ -2,13 +2,16 @@ import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
   badge: {
-    paddingVertical: 4,
     paddingHorizontal: 10,
-    alignSelf: 'flex-start',
-    borderRadius: 10,
-    marginTop: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 16,
+    width: 62,
+    height: 22,
   },
   text: {
-    fontWeight: 'bold',
+    fontWeight: '500',
+    fontSize: 12,
+    lineHeight: 18,
   },
 })

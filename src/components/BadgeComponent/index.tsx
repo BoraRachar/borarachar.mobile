@@ -15,8 +15,8 @@ const Badge: React.FC<BadgeProps> = ({ strength }) => {
 
   switch (strength) {
     case 'Fraca':
-      backgroundColor = theme.colors.Error[500]
-      textColor = theme.colors.Error[100]
+      backgroundColor = theme.colors.Error[200]
+      textColor = theme.colors.Error[700]
       break
     case 'Média':
       backgroundColor = theme.colors.Warning[300]
