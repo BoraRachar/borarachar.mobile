@@ -35,7 +35,9 @@ const InputComponent: React.FC<InputComponentProps> = ({
     <View style={styles.inputContainer}>
       <View style={styles.inputLabelContainer}>
         <Text style={styles.inputLabelText}>{label}</Text>
-        {strength && <Badge strength={strength} />}
+        {value && value.trim().length > 0 && strength && (
+          <Badge strength={strength} />
+        )}
       </View>
       <View
         style={[

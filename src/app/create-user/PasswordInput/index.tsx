@@ -34,6 +34,8 @@ const schema = yup
   })
   .required()
 
+type Strength = 'Fraca' | 'Média' | 'Forte'
+
 export default function PasswordInput() {
   const {
     control,
@@ -49,6 +51,7 @@ export default function PasswordInput() {
   const { addUser } = useStore()
   const [isButtonDisable, setIsButtonDisable] = useState(true)
   const isKeyboardVisible = useKeyboardStatus()
+  const [passwordStrength, setPasswordStrength] = useState<Strength>('Fraca')
   const scrollViewRef = useRef<ScrollView>(null)
 
   const handleShowPassword = () => {
@@ -82,6 +85,28 @@ export default function PasswordInput() {
     }
   }, [isKeyboardVisible])
 
+  const getPasswordStrength = (password: string) => {
+    if (password.length < 8) return 'Fraca'
+
+    const hasUpperCase = /[A-Z]/.test(password)
+    const hasNumber = /\d/.test(password)
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+
+    if (hasUpperCase && hasNumber && hasSpecialChar) return 'Forte'
+    if (
+      (hasUpperCase && hasNumber) ||
+      (hasUpperCase && hasSpecialChar) ||
+      (hasNumber && hasSpecialChar)
+    )
+      return 'Média'
+
+    return 'Fraca'
+  }
+
+  useEffect(() => {
+    setPasswordStrength(getPasswordStrength(password))
+  }, [password])
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -106,7 +131,7 @@ export default function PasswordInput() {
                     value={value}
                     onChangeText={onChange}
                     label="Senha"
-                    strength="Forte"
+                    strength={passwordStrength}
                     secureTextEntry={!showPassword}
                     icon={showPassword ? CloseEye : OpenEye}
                     onIconPress={handleShowPassword}
