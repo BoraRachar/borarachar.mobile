@@ -13,6 +13,7 @@ import { styles as globalStyles } from '../../styles'
 import InputComponent from '@/src/components/InputComponent'
 import ArrowRight from '../../../assets/images/arrowRight.svg'
 import ArrowRightDisable from '../../../assets/images/arrowRightDisable.svg'
+import { isValidInput } from '@/src/utils/isValidInput'
 
 const schema = yup
   .object({
@@ -64,17 +65,18 @@ export default function NameInput() {
           <Controller
             control={control}
             name="nome"
-            render={({ field: { onChange, value } }) => (
-              <InputComponent
-                placeholder="João Silva"
-                value={value}
-                onChangeText={onChange}
-                errorOrSucess={errors.nome?.message}
-                isValid={
-                  !errors.nome && typeof value === 'string' && value.length >= 3
-                }
-              />
-            )}
+            render={({ field: { onChange, value } }) => {
+              const isValid = isValidInput(schema, 'nome', value)
+              return (
+                <InputComponent
+                  placeholder="João Silva"
+                  value={value}
+                  onChangeText={onChange}
+                  errorOrSucess={errors.nome?.message}
+                  isValid={isValid}
+                />
+              )
+            }}
           />
           {errors.nome && (
             <Text style={globalStyles.errorText}>{errors.nome.message}</Text>

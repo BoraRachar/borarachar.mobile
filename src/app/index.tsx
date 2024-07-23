@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { router } from 'expo-router'
 import { useAsyncStorage } from '@react-native-async-storage/async-storage'
-import { View, Text, Dimensions } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import { ButtonCustomizer } from '../components/ButtonCustomizer'
 import { styles } from './styles'
 import OnboardingScreenOne from './onboarding-screens/onboardingOne'
+import SeparatorComponent from '../components/SeparatorComponent'
 import Logo from '../assets/images/logo.svg'
 
 export default function Index() {
@@ -57,11 +58,7 @@ export default function Index() {
                     customStyles={styles.primaryButtonText}
                   ></ButtonCustomizer.Title>
                 </ButtonCustomizer.Root>
-                <View style={styles.horizontalLineWithTextContainer}>
-                  <View style={styles.horizontalLine} />
-                  <Text style={styles.horizontalText}>OU</Text>
-                  <View style={styles.horizontalLine} />
-                </View>
+                <SeparatorComponent />
                 <ButtonCustomizer.Root
                   type="secondary"
                   onPress={() => router.push('/login/')}

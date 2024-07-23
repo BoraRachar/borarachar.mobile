@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native'
+import { View, Text, KeyboardAvoidingView, Platform } from 'react-native'
 import { useNavigationControls } from '@/src/utils/CreateUserButtonsNavigation'
 import { useState, useEffect } from 'react'
 import useStore from '../../../store/CreateUserstore'
@@ -15,10 +9,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { styles } from '../styles'
 import { styles as globalStyles } from '../../styles'
-import { theme } from '@/src/theme'
+import InputComponent from '@/src/components/InputComponent'
 import ArrowRight from '../../../assets/images/arrowRight.svg'
 import ArrowRightDisable from '../../../assets/images/arrowRightDisable.svg'
-import WarningCircle from '../../../assets/images/WarningCircle.svg'
+import { isValidInput } from '@/src/utils/isValidInput'
 
 const schema = yup
   .object({
@@ -39,7 +33,7 @@ export default function EmailInput() {
   })
 
   const { handleNavigationButton } = useNavigationControls()
-  const { addUser } = useStore()
+  const { addUser, user } = useStore()
   const [isButtonDisable, setIsButtonDisable] = useState(true)
   const isKeyboardVisible = usekeyboardStatus()
 
@@ -47,6 +41,7 @@ export default function EmailInput() {
 
   const onSubmit = (data: FieldValues) => {
     addUser({ email: data.email })
+    console.log(user.email)
     handleNavigationButton()
   }
 
@@ -71,22 +66,18 @@ export default function EmailInput() {
           <Controller
             control={control}
             name="email"
-            render={({ field: { onChange, value } }) => (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TextInput
-                  style={
-                    errors.email ? globalStyles.inputError : globalStyles.input
-                  }
+            render={({ field: { onChange, value } }) => {
+              const isValid = isValidInput(schema, 'email', value)
+              return (
+                <InputComponent
                   placeholder="borarachar@mail.com"
-                  placeholderTextColor={theme.colors.Gray[500]}
                   value={value}
                   onChangeText={onChange}
+                  errorOrSucess={errors.email?.message}
+                  isValid={isValid}
                 />
-                {errors.email && (
-                  <WarningCircle style={globalStyles.iconForm} />
-                )}
-              </View>
-            )}
+              )
+            }}
           />
           {errors.email && (
             <Text style={globalStyles.errorText}>{errors.email.message}</Text>

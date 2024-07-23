@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native'
+import { View, Text, KeyboardAvoidingView, Platform } from 'react-native'
 import { useNavigationControls } from '@/src/utils/CreateUserButtonsNavigation'
 import useStore from '../../../store/CreateUserstore'
 import useKeyboardStatus from '@/src/utils/keyboardUtils'
@@ -15,10 +9,12 @@ import { useState, useEffect } from 'react'
 import * as yup from 'yup'
 import { styles } from '../styles'
 import { styles as globalStyles } from '../../styles'
-import { theme } from '@/src/theme'
+import InputComponent from '@/src/components/InputComponent'
+import SeparatorComponent from '@/src/components/SeparatorComponent'
+import NameSuggestion from '@/src/components/NameSuggestion'
 import ArrowRight from '../../../assets/images/arrowRight.svg'
 import ArrowRightDisable from '../../../assets/images/arrowRightDisable.svg'
-import WarningCircle from '../../../assets/images/WarningCircle.svg'
+import { axiosClient } from '@/src/utils/axios'
 
 const schema = yup
   .object({
@@ -31,6 +27,7 @@ export default function UserName() {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
   })
@@ -38,13 +35,27 @@ export default function UserName() {
   const { handleNavigationButton } = useNavigationControls()
   const { addUser } = useStore()
   const [isButtonDisable, setIsButtonDisable] = useState(true)
+  const [userNameSuggestions, setUserNameSuggestions] = useState([])
+  const [selectedUserName, setSelectedUserName] = useState<string | null>(null)
   const isKeyboardVisible = useKeyboardStatus()
 
   const usuario = useWatch({ control, name: 'usuario', defaultValue: '' })
 
-  const onSubmit = (data: FieldValues) => {
-    addUser({ usuario: data.usuario })
-    handleNavigationButton()
+  const onSubmit = async (data: FieldValues) => {
+    try {
+      const response = await axiosClient.get('user/find-usuario', {
+        params: { usuario: data.usuario },
+      })
+
+      if (response.data.statusCode === 204) {
+        addUser({ usuario: data.usuario })
+        handleNavigationButton()
+      } else if (response.data?.data?.userNames?.length > 0) {
+        setUserNameSuggestions(response.data.data.userNames)
+      }
+    } catch (error) {
+      console.log('Error fetching user names:', error)
+    }
   }
 
   useEffect(() => {
@@ -55,6 +66,18 @@ export default function UserName() {
     }
   }, [usuario])
 
+  const handleUserNameSelect = (userName: string) => {
+    setValue('usuario', userName)
+    setSelectedUserName(userName)
+  }
+
+  const handleAdvace = () => {
+    if (selectedUserName) {
+      addUser({ usuario: selectedUserName })
+      handleNavigationButton()
+    }
+  }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -63,33 +86,31 @@ export default function UserName() {
       <View style={styles.contentForm}>
         <View>
           <Text style={globalStyles.createUserTitle}>
-            Agora escolha um nome de usuário
+            Agora escolha um {'\n'}nome de usuário
           </Text>
           <Controller
             control={control}
             name="usuario"
             defaultValue=""
-            render={({ field: { onChange, value } }) => (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TextInput
-                  style={
-                    errors.usuario
-                      ? globalStyles.inputError
-                      : globalStyles.input
-                  }
+            render={({ field: { onChange, value } }) => {
+              return (
+                <InputComponent
                   placeholder="BoraRachar123"
-                  placeholderTextColor={theme.colors.Gray[300]}
                   value={value}
                   onChangeText={onChange}
                 />
-                {errors.usuario && (
-                  <WarningCircle style={globalStyles.iconForm} />
-                )}
-              </View>
-            )}
+              )
+            }}
           />
           {errors.usuario && (
             <Text style={globalStyles.errorText}>{errors.usuario.message}</Text>
+          )}
+          <SeparatorComponent />
+          {userNameSuggestions.length > 0 && (
+            <NameSuggestion
+              suggestions={userNameSuggestions}
+              onNameSelect={handleUserNameSelect}
+            />
           )}
         </View>
       </View>
@@ -97,7 +118,12 @@ export default function UserName() {
         <View style={styles.buttonsContainer}>
           <ButtonCustomizer.Root
             type={'primary'}
-            onPress={handleSubmit(onSubmit)}
+            onPress={handleSubmit(async (data) => {
+              await onSubmit(data)
+              if (userNameSuggestions.length > 0 && !selectedUserName) {
+                handleAdvace()
+              }
+            })}
             disabled={isButtonDisable}
             customStyles={
               isButtonDisable
