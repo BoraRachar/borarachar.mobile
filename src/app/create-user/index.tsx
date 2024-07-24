@@ -9,6 +9,7 @@ import NameInput from './nameInput'
 import EmailInput from './emailInput'
 import UserNameInput from './UserNameInput'
 import PasswordInput from './PasswordInput'
+import TermosLegais from '../termos/termos-legais'
 import ArrowBack from '../../assets/images/arrowBack.svg'
 
 export default function CreateUser() {
@@ -45,6 +46,9 @@ export default function CreateUser() {
       break
     case 4:
       formStep = <PasswordInput />
+      break
+    case 5:
+      formStep = <TermosLegais />
       break
     default:
       formStep = <NameInput />

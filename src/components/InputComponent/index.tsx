@@ -4,8 +4,8 @@ import {
   Text,
   TextInput,
   Pressable,
-  StyleProp,
-  TextStyle,
+  // StyleProp,
+  // TextStyle,
 } from 'react-native'
 import { styles } from '../../app/styles'
 import { theme } from '@/src/theme'
@@ -24,7 +24,7 @@ interface InputComponentProps {
   icon?: React.FC
   onIconPress?: () => void
   strength?: 'Fraca' | 'Média' | 'Forte'
-  customStyle?: StyleProp<TextStyle>
+  // customStyle?: StyleProp<TextStyle>
 }
 
 const InputComponent: React.FC<InputComponentProps> = ({
@@ -38,15 +38,15 @@ const InputComponent: React.FC<InputComponentProps> = ({
   icon: Icon,
   onIconPress,
   strength,
-  customStyle,
+  // customStyle,
 }) => {
-  const getInputStyle = (): StyleProp<TextStyle> => {
-    if (errorOrSucess) return [styles.inputWrapper, styles.inputWrapperError]
-    if (isValid) return [styles.inputWrapper, styles.inputWrapperSuccess]
-    if (strength && value.trim().length > 0)
-      return [styles.inputWrapper, customStyle]
-    return styles.inputWrapper
-  }
+  // const getInputStyle = (): StyleProp<TextStyle> => {
+  // if (errorOrSucess) return [styles.inputWrapper, styles.inputWrapperError]
+  // if (isValid) return [styles.inputWrapper, styles.inputWrapperSuccess]
+  // if (strength && value.trim().length > 0)
+  // return [styles.inputWrapper, customStyle]
+  // return styles.inputWrapper
+  // }
 
   return (
     <View style={styles.inputContainer}>
@@ -56,7 +56,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
           <Badge strength={strength} />
         )}
       </View>
-      <View style={getInputStyle()}>
+      <View style={styles.inputWrapper}>
         <TextInput
           placeholder={placeholder}
           secureTextEntry={secureTextEntry}

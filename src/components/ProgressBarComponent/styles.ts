@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   progressBarBackground: {
-    width: '100%',
+    width: '90%',
     height: 8,
     backgroundColor: theme.colors.Gray[100],
     borderRadius: 8,
