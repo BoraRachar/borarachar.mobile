@@ -1,25 +1,34 @@
 import { FlatList, Pressable, Text, View } from 'react-native'
-
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import { termosServicos } from './termos&servicos'
 
 import UnCheckSquare from '@/src/assets/images/unCheckSquare.svg'
 import CheckSquare from '@/src/assets/images/checkSquare.svg'
 import ArrowRight from '@/src/assets/images/arrowRight.svg'
+import ArrowRightDisable from '@/src/assets/images/arrowRightDisable.svg'
 
 import { theme } from '@/src/theme'
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from '../styles'
-import { router } from 'expo-router'
 import { useState } from 'react'
 
+// import { useNavigationControls } from '@/src/utils/CreateUserButtonsNavigation'
+// import useStore from '@/src/store/CreateUserstore'
+
 export default function TermosServicos() {
-  const [isChecked, setIsChecked] = useState(true)
+  const [isChecked, setIsChecked] = useState<boolean>(false)
+  // const { addUser, user } = useStore()
+  // const { handleNavigationButton } = useNavigationControls()
+
+  const handleNavigationButton = () => {
+    console.log('Essa função foi chamada')
+  }
 
   return (
-    <View style={{ flex: 1, paddingHorizontal: 24, paddingVertical: 10 }}>
+    <View style={styles.termsContainer}>
       <View style={{ gap: 24 }}>
         <Text style={styles.title}>Termos de Serviço</Text>
+        <Text>{isChecked.toString()}</Text>
         <Text style={styles.text}>Bem-vindo ao Bora Rachar!</Text>
         <Text style={styles.text}>
           Ao utilizar nosso serviço, você concorda com os seguintes termos e
@@ -63,31 +72,32 @@ export default function TermosServicos() {
         }}
         onPress={() => setIsChecked(!isChecked)}
       >
-        {isChecked ? <UnCheckSquare /> : <CheckSquare />}
+        {isChecked ? <CheckSquare /> : <UnCheckSquare />}
         <Text style={styles.checkText}>
           Eu li e concordo com os Termos de Serviço
         </Text>
       </Pressable>
-
       <ButtonCustomizer.Root
         type="primary"
-        onPress={() => router.push('/termos/politica-privacidade/')}
+        onPress={handleNavigationButton}
         disabled={isChecked}
         customStyles={
           isChecked
-            ? globalStyles.primaryButtonDisabled
-            : globalStyles.primaryButton
+            ? globalStyles.primaryButton
+            : globalStyles.primaryButtonDisabled
         }
       >
         <ButtonCustomizer.Title
           title="Política de Privacidade"
           customStyles={
             isChecked
-              ? globalStyles.primaryButtonTextDisabled
-              : globalStyles.primaryButtonText
+              ? globalStyles.primaryButtonText
+              : globalStyles.primaryButtonTextDisabled
           }
         />
-        <ButtonCustomizer.Icon icon={ArrowRight} />
+        <ButtonCustomizer.Icon
+          icon={isChecked ? ArrowRight : ArrowRightDisable}
+        />
       </ButtonCustomizer.Root>
     </View>
   )
