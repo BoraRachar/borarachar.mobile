@@ -33,7 +33,7 @@ export default function EmailInput() {
   })
 
   const { handleNavigationButton } = useNavigationControls()
-  const { addUser, user } = useStore()
+  const { addUser } = useStore()
   const [isButtonDisable, setIsButtonDisable] = useState(true)
   const isKeyboardVisible = usekeyboardStatus()
 
@@ -41,7 +41,6 @@ export default function EmailInput() {
 
   const onSubmit = (data: FieldValues) => {
     addUser({ email: data.email })
-    console.log(user.email)
     handleNavigationButton()
   }
 
