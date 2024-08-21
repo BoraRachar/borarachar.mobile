@@ -11,17 +11,19 @@ import { theme } from '@/src/theme'
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from '../styles'
 import { useState } from 'react'
-
-// import { useNavigationControls } from '@/src/utils/CreateUserButtonsNavigation'
-// import useStore from '@/src/store/CreateUserstore'
+import { useNavigationControls } from '@/src/utils/CreateUserButtonsNavigation'
+import useStore from '@/src/store/CreateUserstore'
 
 export default function TermosServicos() {
   const [isChecked, setIsChecked] = useState<boolean>(false)
-  // const { addUser, user } = useStore()
-  // const { handleNavigationButton } = useNavigationControls()
+  const { addUser } = useStore()
+  const { handleNavigationButton } = useNavigationControls()
 
-  const handleNavigationButton = () => {
-    console.log('Essa função foi chamada')
+  const onSubmit = () => {
+    if (isChecked) {
+      addUser({ termosUso: isChecked })
+      handleNavigationButton()
+    }
   }
 
   return (
@@ -79,8 +81,8 @@ export default function TermosServicos() {
       </Pressable>
       <ButtonCustomizer.Root
         type="primary"
-        onPress={handleNavigationButton}
-        disabled={isChecked}
+        onPress={onSubmit}
+        disabled={!isChecked}
         customStyles={
           isChecked
             ? globalStyles.primaryButton

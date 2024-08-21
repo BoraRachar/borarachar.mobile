@@ -54,6 +54,9 @@ export default function CreateUser() {
     case 6:
       formStep = <TermosServicos />
       break
+    case 7:
+      formStep = <TermosLegais />
+      break
     default:
       formStep = <NameInput />
   }
