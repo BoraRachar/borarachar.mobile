@@ -11,6 +11,7 @@ import UserNameInput from './UserNameInput'
 import PasswordInput from './PasswordInput'
 import TermosLegais from '../termos/termos-legais'
 import TermosServicos from '../termos/termos-servicos'
+import PoliticasPrivacidade from '../termos/politica-privacidade'
 import ArrowBack from '../../assets/images/arrowBack.svg'
 
 export default function CreateUser() {
@@ -55,10 +56,8 @@ export default function CreateUser() {
       formStep = <TermosServicos />
       break
     case 7:
-      formStep = <TermosLegais />
+      formStep = <PoliticasPrivacidade />
       break
-    default:
-      formStep = <NameInput />
   }
 
   return (
