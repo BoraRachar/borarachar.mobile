@@ -1,6 +1,6 @@
 import { KeyboardAvoidingView, Platform, Text, View } from 'react-native'
 import { Link, router } from 'expo-router'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, FieldValues, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -16,6 +16,9 @@ import { styles } from './styles'
 import useKeyboardStatus from '@/src/utils/keyboardUtils'
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import { useState } from 'react'
+import { axiosClient } from '@/src/utils/axios'
+import { ErrorResponse } from '@/src/interfaces/types'
+import { AxiosError } from 'axios'
 
 const schema = yup.object().shape({
   email: yup
@@ -26,9 +29,10 @@ const schema = yup.object().shape({
 })
 
 export default function Login() {
-  const [showPassword, setShowPassword] = useState(true)
+  const [showPassword, setShowPassword] = useState<boolean>(true)
   const {
     control,
+    handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -36,6 +40,23 @@ export default function Login() {
   const isKeyboardVisible = useKeyboardStatus()
 
   const eyesIcon = showPassword ? opeEye : closeEye
+
+  const handleLogin = async (data: FieldValues) => {
+    try {
+      const response = await axiosClient.post('login', {
+        email: data.email,
+        password: data.password,
+      })
+      if (response) {
+        alert('Login efetuado com sucesso')
+      }
+    } catch (err) {
+      const error = err as AxiosError
+      const responseData = error.response?.data as ErrorResponse
+      const userMessage = responseData.errors[0]?.userMessage
+      alert(userMessage)
+    }
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -118,9 +139,7 @@ export default function Login() {
           <View style={{ paddingHorizontal: 24 }}>
             <ButtonCustomizer.Root
               type="primary"
-              onPress={() => {
-                console.log('login')
-              }}
+              onPress={handleSubmit(handleLogin)}
             >
               <ButtonCustomizer.Title
                 title="Login"
