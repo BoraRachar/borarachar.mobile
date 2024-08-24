@@ -43,7 +43,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
   const getInputStyle = (): StyleProp<TextStyle> => {
     if (errorOrSucess) return [styles.inputWrapper, styles.inputWrapperError]
     if (isValid) return [styles.inputWrapper, styles.inputWrapperSuccess]
-    if (strength && value.trim().length > 0)
+    if (strength && value && value.trim().length > 0)
       return [styles.inputWrapper, customStyle]
     return styles.inputWrapper
   }
@@ -56,7 +56,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
           <Badge strength={strength} />
         )}
       </View>
-      <View style={getInputStyle()}>
+      <View style={[styles.inputWrapper, getInputStyle()]}>
         <TextInput
           placeholder={placeholder}
           secureTextEntry={secureTextEntry}

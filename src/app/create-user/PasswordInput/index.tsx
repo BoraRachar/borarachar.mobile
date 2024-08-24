@@ -50,6 +50,11 @@ export default function PasswordInput() {
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
   const { handleNavigationButton } = useNavigationControls()
   const password = useWatch({ control, name: 'password', defaultValue: '' })
+  const confirmPassword = useWatch({
+    control,
+    name: 'confirmPassword',
+    defaultValue: '',
+  })
   const { addUser } = useStore()
   const [isButtonDisable, setIsButtonDisable] = useState(true)
   const isKeyboardVisible = useKeyboardStatus()
@@ -74,12 +79,16 @@ export default function PasswordInput() {
   }
 
   useEffect(() => {
-    if (password.trim().length > 0) {
+    if (
+      password.trim().length > 0 &&
+      !errors.password &&
+      !errors.confirmPassword
+    ) {
       setIsButtonDisable(false)
     } else {
       setIsButtonDisable(true)
     }
-  }, [password])
+  }, [password, confirmPassword])
 
   useEffect(() => {
     if (isKeyboardVisible) {
@@ -176,9 +185,9 @@ export default function PasswordInput() {
                 )
               }}
             />
-            {errors.password && (
+            {errors.confirmPassword && (
               <Text style={globalStyles.errorText}>
-                {errors.password.message}
+                {errors.confirmPassword.message}
               </Text>
             )}
           </View>

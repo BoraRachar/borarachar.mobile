@@ -1,22 +1,21 @@
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
+import { useNavigationControls } from '@/src/utils/CreateUserButtonsNavigation'
 import { Text, View } from 'react-native'
 
 import ArrowRight from '@/src/assets/images/arrowRight.svg'
 
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from '../styles'
-import { router } from 'expo-router'
 
 export default function TermosLegais() {
+  const { handleNavigationButton } = useNavigationControls()
+
+  const onSubmit = () => {
+    handleNavigationButton()
+  }
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'space-between',
-        paddingHorizontal: 24,
-        paddingVertical: 10,
-      }}
-    >
+    <View style={styles.termsContainer}>
       <View>
         <Text style={styles.title}>Termos e política de privacidade</Text>
         <Text style={[styles.text, { marginTop: 24 }]}>
@@ -30,7 +29,7 @@ export default function TermosLegais() {
         <ButtonCustomizer.Root
           type={'primary'}
           customStyles={globalStyles.primaryButton}
-          onPress={() => router.push('/termos/termos-servicos/')}
+          onPress={onSubmit}
         >
           <ButtonCustomizer.Title
             title="Termos de Serviço"

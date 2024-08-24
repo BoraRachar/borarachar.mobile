@@ -2,6 +2,11 @@ import { theme } from '@/src/theme'
 import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
+  termsContainer: {
+    flex: 1,
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+  },
   title: {
     fontFamily: theme.fontFamily.bold,
     fontSize: theme.sizes.fontSize30,
