@@ -30,7 +30,6 @@ export default function TermosServicos() {
     <View style={styles.termsContainer}>
       <View style={{ gap: 24 }}>
         <Text style={styles.title}>Termos de Serviço</Text>
-        <Text>{isChecked.toString()}</Text>
         <Text style={styles.text}>Bem-vindo ao Bora Rachar!</Text>
         <Text style={styles.text}>
           Ao utilizar nosso serviço, você concorda com os seguintes termos e
