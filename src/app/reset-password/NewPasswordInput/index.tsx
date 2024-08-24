@@ -47,14 +47,14 @@ export default function NewPasswordInput() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) })
-  const { setResetPassword, resetPassword } = resetPasswordStore()
+  const { resetPassword, setResetPassword } = resetPasswordStore()
   const iskeyboardVisible = useKeyboardStatus()
 
-  const newPassword = useWatch({
-    control,
-    name: 'newPassword',
-    defaultValue: '',
-  })
+  // const newPassword = useWatch({
+  //   control,
+  //   name: 'newPassword',
+  //   defaultValue: '',
+  // })
 
   const handleSaveToSate = (data: FieldValues) => {
     setResetPassword({
@@ -63,10 +63,10 @@ export default function NewPasswordInput() {
     })
   }
 
-  const handleSubmitToApi = async () => {
-    if (resetPassword.novaSenha && resetPassword.confirmacaoSenha) {
+  const handleSubmitToApi = async (resetPasswordToApi) => {
+    if (resetPasswordToApi.novaSenha && resetPasswordToApi.confirmacaoSenha) {
       try {
-        await axiosClient.post('/user/reset-password', resetPassword)
+        await axiosClient.post('/user/reset-password', resetPasswordToApi)
         router.push('/reset-password/Success/')
       } catch (err) {
         const error = err as AxiosError
@@ -77,10 +77,12 @@ export default function NewPasswordInput() {
     }
   }
 
-  const onSubmit = async (data: FieldValues) => {
-    await handleSaveToSate(data)
-    console.log(resetPassword)
-    handleSubmitToApi()
+  const onSubmit = (data: FieldValues) => {
+    handleSaveToSate(data)
+    const resetPasswordToApi = {
+      ...resetPassword, novaSenha: data.newPassword, confirmacaoSenha: data.confirmPassword
+    }
+    handleSubmitToApi(resetPasswordToApi)
   }
 
   const eyesIconTopassword1 = showPassword1 ? CloseEye : OpenEye
@@ -151,7 +153,6 @@ export default function NewPasswordInput() {
             type="primary"
             customStyles={globalStyles.primaryButton}
             onPress={handleSubmit((data) => onSubmit(data))}
-          // onPress={() => router.push('/reset-password/Success/')}
           >
             <ButtonCustomizer.Title
               title="Criar nova senha"

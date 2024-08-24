@@ -47,18 +47,15 @@ export default function ForgotPassword() {
     }
   }, [email])
 
-  const onSubmit = async (data: FieldValues) => {
-    console.log('entrou no submit', data)
+  const handleToSaveData = async (data) => await setResetPassword({ email: data.email })
 
+  const handleSubmitToApi = async (data: FieldValues) => {
     try {
       const response = await axiosClient.get('user/forgot-password', {
         params: { email: data.email }
       })
 
-      console.log(response)
-
       if (response.data.statusCode === 204) {
-        setResetPassword({ email: data.email })
         router.push('/reset-password')
       } else {
         console.log('Não recebeu o código 204 da API')
@@ -67,7 +64,11 @@ export default function ForgotPassword() {
     } catch (error) {
       console.log('Error send email to forgote-password:', error)
     }
+  }
 
+  const onSubmit = async (data: FieldValues) => {
+    await handleToSaveData(data)
+    handleSubmitToApi(data)
   }
 
   return (
