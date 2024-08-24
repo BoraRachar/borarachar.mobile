@@ -77,8 +77,9 @@ export default function NewPasswordInput() {
     }
   }
 
-  const onSubmit = (data: FieldValues) => {
-    handleSaveToSate(data)
+  const onSubmit = async (data: FieldValues) => {
+    await handleSaveToSate(data)
+    console.log(resetPassword)
     handleSubmitToApi()
   }
 
@@ -149,8 +150,8 @@ export default function NewPasswordInput() {
           <ButtonCustomizer.Root
             type="primary"
             customStyles={globalStyles.primaryButton}
-            // onPress={handleSubmit(onSubmit)}
-            onPress={() => router.push('/reset-password/Success/')}
+            onPress={handleSubmit((data) => onSubmit(data))}
+          // onPress={() => router.push('/reset-password/Success/')}
           >
             <ButtonCustomizer.Title
               title="Criar nova senha"

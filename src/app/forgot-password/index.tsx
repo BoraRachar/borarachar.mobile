@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, Platform, Text, View } from 'react-native'
+import { KeyboardAvoidingView, Platform, Pressable, Text, View } from 'react-native'
 import { Link, router } from 'expo-router'
 import { Controller, useForm, useWatch, FieldValues } from 'react-hook-form'
 import * as yup from 'yup'
@@ -132,6 +132,9 @@ export default function ForgotPassword() {
             <Link href={'/login'} style={styles.link}>
               Lembrou sua senha?
             </Link>
+            <Pressable onPress={() => router.push('/reset-password')}>
+              <Text>OTP</Text>
+            </Pressable>
           </View>
         )}
       </KeyboardAvoidingView>
