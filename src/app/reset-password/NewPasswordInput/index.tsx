@@ -142,9 +142,6 @@ export default function NewPasswordInput() {
               </Text>
             )}
           </View>
-          <View>
-            <Text>{resetPassword.confirmacaoSenha}</Text>
-          </View>
         </View>
       </View>
 
