@@ -47,8 +47,6 @@ export default function ForgotPassword() {
     }
   }, [email])
 
-  const handleToSaveData = async (data) => await setResetPassword({ email: data.email })
-
   const handleSubmitToApi = async (data: FieldValues) => {
     try {
       const response = await axiosClient.get('user/forgot-password', {
@@ -67,7 +65,7 @@ export default function ForgotPassword() {
   }
 
   const onSubmit = async (data: FieldValues) => {
-    await handleToSaveData(data)
+    await setResetPassword({ email: data.email })
     handleSubmitToApi(data)
   }
 
@@ -133,9 +131,6 @@ export default function ForgotPassword() {
             <Link href={'/login'} style={styles.link}>
               Lembrou sua senha?
             </Link>
-            <Pressable onPress={() => router.push('/reset-password')}>
-              <Text>OTP</Text>
-            </Pressable>
           </View>
         )}
       </KeyboardAvoidingView>
