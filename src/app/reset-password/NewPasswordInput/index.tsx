@@ -39,6 +39,11 @@ const schema = yup.object().shape({
     .oneOf([yup.ref('newPassword')], 'A senhas não conferem'),
 })
 
+type handleSubmitToApiPROPS = {
+  novaSenha: string
+  confirmacaoSenha: string
+}
+
 export default function NewPasswordInput() {
   const [showPassword1, setShowPassword1] = useState(false)
   const [showPassword2, setShowPassword2] = useState(false)
@@ -47,7 +52,7 @@ export default function NewPasswordInput() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) })
-  const { resetPassword, setResetPassword } = resetPasswordStore()
+  const [resetPassword, setResetPassword] = resetPasswordStore((state) => [state.resetPassword, state.setResetPassword])
   const iskeyboardVisible = useKeyboardStatus()
 
   // const newPassword = useWatch({
@@ -56,14 +61,7 @@ export default function NewPasswordInput() {
   //   defaultValue: '',
   // })
 
-  const handleSaveToSate = (data: FieldValues) => {
-    setResetPassword({
-      novaSenha: data.newPassword,
-      confirmacaoSenha: data.confirmPassword,
-    })
-  }
-
-  const handleSubmitToApi = async (resetPasswordToApi) => {
+  const handleSubmitToApi = async (resetPasswordToApi: handleSubmitToApiPROPS) => {
     if (resetPasswordToApi.novaSenha && resetPasswordToApi.confirmacaoSenha) {
       try {
         await axiosClient.post('/user/reset-password', resetPasswordToApi)
@@ -77,11 +75,11 @@ export default function NewPasswordInput() {
     }
   }
 
-  const onSubmit = (data: FieldValues) => {
-    handleSaveToSate(data)
+  const onSubmit = ({ newPassword, confirmPassword }: { newPassword: string; confirmPassword: string }) => {
     const resetPasswordToApi = {
-      ...resetPassword, novaSenha: data.newPassword, confirmacaoSenha: data.confirmPassword
+      ...resetPassword, novaSenha: newPassword, confirmacaoSenha: confirmPassword
     }
+    setResetPassword(resetPasswordToApi)
     handleSubmitToApi(resetPasswordToApi)
   }
 
@@ -143,6 +141,9 @@ export default function NewPasswordInput() {
                 {errors.newPassword.message}
               </Text>
             )}
+          </View>
+          <View>
+            <Text>{resetPassword.confirmacaoSenha}</Text>
           </View>
         </View>
       </View>
