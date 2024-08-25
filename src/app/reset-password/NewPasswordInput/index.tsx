@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { router } from 'expo-router'
 import { axiosClient } from '@/src/utils/axios'
 import { AxiosError } from 'axios'
-import { useForm, Controller, FieldValues, useWatch } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -52,7 +52,10 @@ export default function NewPasswordInput() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) })
-  const [resetPassword, setResetPassword] = resetPasswordStore((state) => [state.resetPassword, state.setResetPassword])
+  const [resetPassword, setResetPassword] = resetPasswordStore((state) => [
+    state.resetPassword,
+    state.setResetPassword,
+  ])
   const iskeyboardVisible = useKeyboardStatus()
 
   // const newPassword = useWatch({
@@ -61,7 +64,9 @@ export default function NewPasswordInput() {
   //   defaultValue: '',
   // })
 
-  const handleSubmitToApi = async (resetPasswordToApi: handleSubmitToApiPROPS) => {
+  const handleSubmitToApi = async (
+    resetPasswordToApi: handleSubmitToApiPROPS,
+  ) => {
     if (resetPasswordToApi.novaSenha && resetPasswordToApi.confirmacaoSenha) {
       try {
         await axiosClient.post('/user/reset-password', resetPasswordToApi)
@@ -75,9 +80,17 @@ export default function NewPasswordInput() {
     }
   }
 
-  const onSubmit = ({ newPassword, confirmPassword }: { newPassword: string; confirmPassword: string }) => {
+  const onSubmit = ({
+    newPassword,
+    confirmPassword,
+  }: {
+    newPassword: string
+    confirmPassword: string
+  }) => {
     const resetPasswordToApi = {
-      ...resetPassword, novaSenha: newPassword, confirmacaoSenha: confirmPassword
+      ...resetPassword,
+      novaSenha: newPassword,
+      confirmacaoSenha: confirmPassword,
     }
     setResetPassword(resetPasswordToApi)
     handleSubmitToApi(resetPasswordToApi)

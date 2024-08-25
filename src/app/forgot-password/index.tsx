@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, Platform, Pressable, Text, View } from 'react-native'
+import { KeyboardAvoidingView, Platform, Text, View } from 'react-native'
 import { Link, router } from 'expo-router'
 import { Controller, useForm, useWatch, FieldValues } from 'react-hook-form'
 import * as yup from 'yup'
@@ -50,7 +50,7 @@ export default function ForgotPassword() {
   const handleSubmitToApi = async (data: FieldValues) => {
     try {
       const response = await axiosClient.get('user/forgot-password', {
-        params: { email: data.email }
+        params: { email: data.email },
       })
 
       if (response.data.statusCode === 204) {
@@ -58,7 +58,6 @@ export default function ForgotPassword() {
       } else {
         console.log('Não recebeu o código 204 da API')
       }
-
     } catch (error) {
       console.log('Error send email to forgote-password:', error)
     }

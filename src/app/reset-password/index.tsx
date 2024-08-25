@@ -31,7 +31,7 @@ export default function ResetPassword() {
   }
 
   return (
-    <View style={{ flex: 1, paddingHorizontal: 24 }}>
+    <View style={{ flex: 1 }}>
       <Header title="Redefinir senha" />
       <ProgressBarComponent totalSteps={totalSteps} currentStep={step} />
       <View style={globalStyles.formContainer}>{formStep}</View>
