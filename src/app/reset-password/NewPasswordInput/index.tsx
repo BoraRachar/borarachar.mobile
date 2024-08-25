@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { router } from 'expo-router'
 import { axiosClient } from '@/src/utils/axios'
 import { AxiosError } from 'axios'
-import { useForm, Controller, FieldValues, useWatch } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -39,6 +39,11 @@ const schema = yup.object().shape({
     .oneOf([yup.ref('newPassword')], 'A senhas não conferem'),
 })
 
+type handleSubmitToApiPROPS = {
+  novaSenha: string
+  confirmacaoSenha: string
+}
+
 export default function NewPasswordInput() {
   const [showPassword1, setShowPassword1] = useState(false)
   const [showPassword2, setShowPassword2] = useState(false)
@@ -47,26 +52,24 @@ export default function NewPasswordInput() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) })
-  const { setResetPassword, resetPassword } = resetPasswordStore()
+  const [resetPassword, setResetPassword] = resetPasswordStore((state) => [
+    state.resetPassword,
+    state.setResetPassword,
+  ])
   const iskeyboardVisible = useKeyboardStatus()
 
-  const newPassword = useWatch({
-    control,
-    name: 'newPassword',
-    defaultValue: '',
-  })
+  // const newPassword = useWatch({
+  //   control,
+  //   name: 'newPassword',
+  //   defaultValue: '',
+  // })
 
-  const handleSaveToSate = (data: FieldValues) => {
-    setResetPassword({
-      novaSenha: data.newPassword,
-      confirmacaoSenha: data.confirmPassword,
-    })
-  }
-
-  const handleSubmitToApi = async () => {
-    if (resetPassword.novaSenha && resetPassword.confirmacaoSenha) {
+  const handleSubmitToApi = async (
+    resetPasswordToApi: handleSubmitToApiPROPS,
+  ) => {
+    if (resetPasswordToApi.novaSenha && resetPasswordToApi.confirmacaoSenha) {
       try {
-        await axiosClient.post('/user/reset-password', resetPassword)
+        await axiosClient.post('/user/reset-password', resetPasswordToApi)
         router.push('/reset-password/Success/')
       } catch (err) {
         const error = err as AxiosError
@@ -77,9 +80,20 @@ export default function NewPasswordInput() {
     }
   }
 
-  const onSubmit = (data: FieldValues) => {
-    handleSaveToSate(data)
-    handleSubmitToApi()
+  const onSubmit = ({
+    newPassword,
+    confirmPassword,
+  }: {
+    newPassword: string
+    confirmPassword: string
+  }) => {
+    const resetPasswordToApi = {
+      ...resetPassword,
+      novaSenha: newPassword,
+      confirmacaoSenha: confirmPassword,
+    }
+    setResetPassword(resetPasswordToApi)
+    handleSubmitToApi(resetPasswordToApi)
   }
 
   const eyesIconTopassword1 = showPassword1 ? CloseEye : OpenEye
@@ -149,8 +163,7 @@ export default function NewPasswordInput() {
           <ButtonCustomizer.Root
             type="primary"
             customStyles={globalStyles.primaryButton}
-            // onPress={handleSubmit(onSubmit)}
-            onPress={() => router.push('/reset-password/Success/')}
+            onPress={handleSubmit((data) => onSubmit(data))}
           >
             <ButtonCustomizer.Title
               title="Criar nova senha"

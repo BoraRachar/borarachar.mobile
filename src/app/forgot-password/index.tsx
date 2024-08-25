@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, Platform, Text, View } from 'react-native'
 import { Link, router } from 'expo-router'
-import { Controller, useForm, useWatch } from 'react-hook-form'
+import { Controller, useForm, useWatch, FieldValues } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import resetPasswordStore from '@/src/store/ResetPasswordStore'
 
 import Header from '@/src/components/HeaderComponent'
 import InputComponent from '@/src/components/InputComponent'
@@ -15,6 +16,7 @@ import ArrowBack from '@/src/assets/images/arrowBack.svg'
 
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
+import { axiosClient } from '@/src/utils/axios'
 
 const schema = yup.object().shape({
   email: yup
@@ -27,11 +29,13 @@ export default function ForgotPassword() {
   const [isValidEmail, setIsValidEmail] = useState(false)
   const {
     control,
+    handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   })
   const iskeyboardVisible = useKeyboardStatus()
+  const { setResetPassword } = resetPasswordStore()
 
   const email = useWatch({ control, name: 'email', defaultValue: '' })
 
@@ -42,6 +46,27 @@ export default function ForgotPassword() {
       setIsValidEmail(false)
     }
   }, [email])
+
+  const handleSubmitToApi = async (data: FieldValues) => {
+    try {
+      const response = await axiosClient.get('user/forgot-password', {
+        params: { email: data.email },
+      })
+
+      if (response.data.statusCode === 204) {
+        router.push('/reset-password')
+      } else {
+        console.log('Não recebeu o código 204 da API')
+      }
+    } catch (error) {
+      console.log('Error send email to forgote-password:', error)
+    }
+  }
+
+  const onSubmit = async (data: FieldValues) => {
+    await setResetPassword({ email: data.email })
+    handleSubmitToApi(data)
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -85,7 +110,7 @@ export default function ForgotPassword() {
           <View style={{ marginHorizontal: 24 }}>
             <ButtonCustomizer.Root
               type="primary"
-              onPress={() => router.push('/reset-password')}
+              onPress={handleSubmit((data) => onSubmit(data))}
               disabled={!isValidEmail}
               customStyles={
                 isValidEmail
