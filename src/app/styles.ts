@@ -163,9 +163,11 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     height: 48,
     paddingHorizontal: 10,
+    justifyContent: 'space-between',
   },
   input: {
     flex: 1,
+    paddingRight: 5,
   },
   inputWrapperError: {
     flexDirection: 'row',

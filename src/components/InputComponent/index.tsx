@@ -64,6 +64,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
           cursorColor={theme.colors.Gray[500]}
           value={value}
           onChangeText={onChangeText}
+          style={styles.input}
         />
         {errorOrSucess ? (
           <WarningCircle />
