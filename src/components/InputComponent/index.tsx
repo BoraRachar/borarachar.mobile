@@ -64,7 +64,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
           cursorColor={theme.colors.Gray[500]}
           value={value}
           onChangeText={onChangeText}
-          maxLength={55}
+          style={styles.input}
         />
         {errorOrSucess ? (
           <WarningCircle />
