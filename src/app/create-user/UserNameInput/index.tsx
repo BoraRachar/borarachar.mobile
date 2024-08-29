@@ -105,12 +105,14 @@ export default function UserName() {
           {errors.usuario && (
             <Text style={globalStyles.errorText}>{errors.usuario.message}</Text>
           )}
-          <SeparatorComponent />
           {userNameSuggestions.length > 0 && (
-            <NameSuggestion
-              suggestions={userNameSuggestions}
-              onNameSelect={handleUserNameSelect}
-            />
+            <View>
+              <SeparatorComponent />
+              <NameSuggestion
+                suggestions={userNameSuggestions}
+                onNameSelect={handleUserNameSelect}
+              />
+            </View>
           )}
         </View>
       </View>
