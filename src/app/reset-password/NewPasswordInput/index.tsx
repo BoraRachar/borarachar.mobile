@@ -29,8 +29,8 @@ const schema = yup.object().shape({
     .matches(/[a-z]/, 'Deve conter pelo menos uma letra minúscula')
     .matches(/[0-9]/, 'Deve conter pelo menos um número')
     .matches(
-      /[!@#$%^&*()_]/,
-      'Deve conter pelo menos um dos caracteres: !, @, #, $, %, &, -, ...',
+      /[!@#$%^&*(),._?":{}|<>]/,
+      'Deve conter pelo menos um dos caracteres: [!@#$%^&*(),._?":{}|<>]',
     )
     .min(8, 'A senha deve conter no mínimo 8 caracteres'),
   confirmPassword: yup
