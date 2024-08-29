@@ -1,9 +1,9 @@
-import { KeyboardAvoidingView, Platform, Text, View } from 'react-native'
-import { useState } from 'react'
+import { KeyboardAvoidingView, Platform, Text, View, StyleProp, TextStyle, ScrollView } from 'react-native'
+import { useState, useEffect, useRef } from 'react'
 import { router } from 'expo-router'
 import { axiosClient } from '@/src/utils/axios'
 import { AxiosError } from 'axios'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, useWatch } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -44,9 +44,15 @@ type handleSubmitToApiPROPS = {
   confirmacaoSenha: string
 }
 
+type Strength = 'Fraca' | 'Média' | 'Forte'
+
 export default function NewPasswordInput() {
   const [showPassword1, setShowPassword1] = useState(false)
   const [showPassword2, setShowPassword2] = useState(false)
+  const [passwordStrength, setPasswordStrength] = useState<Strength>('Fraca')
+  const [isButtonDisable, setIsButtonDisable] = useState(true)
+  const isKeyboardVisible = useKeyboardStatus()
+  const scrollViewRef = useRef<ScrollView>(null)
   const {
     control,
     handleSubmit,
@@ -58,11 +64,74 @@ export default function NewPasswordInput() {
   ])
   const iskeyboardVisible = useKeyboardStatus()
 
-  // const newPassword = useWatch({
-  //   control,
-  //   name: 'newPassword',
-  //   defaultValue: '',
-  // })
+  const newPassword = useWatch({
+    control,
+    name: 'newPassword',
+    defaultValue: '',
+  })
+
+  const confirmPassword = useWatch({
+    control,
+    name: 'newPassword',
+    defaultValue: '',
+  })
+
+  const handleScrollToEnd = () => {
+    scrollViewRef.current?.scrollToEnd({ animated: true })
+  }
+
+  useEffect(() => {
+    if (
+      newPassword.trim().length > 0 &&
+      !errors.newPassword &&
+      !errors.confirmPassword
+    ) {
+      setIsButtonDisable(false)
+    } else {
+      setIsButtonDisable(true)
+    }
+  }, [newPassword, confirmPassword])
+
+  useEffect(() => {
+    if (isKeyboardVisible) {
+      handleScrollToEnd()
+    }
+  }, [isKeyboardVisible])
+
+  const getInputStyle = (strength: Strength): StyleProp<TextStyle> => {
+    switch (strength) {
+      case 'Fraca':
+        return { borderColor: '#FDA29B' }
+      case 'Média':
+        return { borderColor: '#FEC84B' }
+      case 'Forte':
+        return { borderColor: '#6CE9A6' }
+      default:
+        return { borderColor: '' }
+    }
+  }
+
+  const getPasswordStrength = (newPassword: string) => {
+    if (newPassword.length < 8) return 'Fraca'
+
+    const hasUpperCase = /[A-Z]/.test(newPassword)
+    const hasNumber = /\d/.test(newPassword)
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword)
+
+    if (hasUpperCase && hasNumber && hasSpecialChar) return 'Forte'
+    if (
+      (hasUpperCase && hasNumber) ||
+      (hasUpperCase && hasSpecialChar) ||
+      (hasNumber && hasSpecialChar)
+    )
+      return 'Média'
+
+    return 'Fraca'
+  }
+
+  useEffect(() => {
+    setPasswordStrength(getPasswordStrength(newPassword))
+  }, [newPassword])
 
   const handleSubmitToApi = async (
     resetPasswordToApi: handleSubmitToApiPROPS,
@@ -124,6 +193,8 @@ export default function NewPasswordInput() {
                   secureTextEntry={!showPassword1}
                   icon={eyesIconTopassword1}
                   onIconPress={() => setShowPassword1(!showPassword1)}
+                  strength={passwordStrength}
+                  customStyle={getInputStyle(passwordStrength)}
                 />
               )}
             />
@@ -159,19 +230,32 @@ export default function NewPasswordInput() {
       </View>
 
       {!iskeyboardVisible && (
-        <View>
+        <View style={{ marginBottom: 24 }}>
           <ButtonCustomizer.Root
             type="primary"
-            customStyles={globalStyles.primaryButton}
             onPress={handleSubmit((data) => onSubmit(data))}
+            disabled={isButtonDisable}
+            customStyles={
+              isButtonDisable
+                ? globalStyles.primaryButtonDisabled
+                : globalStyles.primaryButton
+            }
           >
             <ButtonCustomizer.Title
               title="Criar nova senha"
-              customStyles={globalStyles.primaryButtonText}
+              customStyles={
+                isButtonDisable
+                  ? globalStyles.primaryButtonTextDisabled
+                  : globalStyles.primaryButtonText
+              }
             />
             <ButtonCustomizer.Icon
               icon={ArrowRight}
-              customStyles={globalStyles.primaryButtonIcon}
+              customStyles={
+                isButtonDisable
+                  ? globalStyles.primaryButtonIconDisabled
+                  : globalStyles.primaryButtonIcon
+              }
             />
           </ButtonCustomizer.Root>
         </View>
