@@ -27,6 +27,7 @@ const schema = yup.object().shape({
 
 export default function ForgotPassword() {
   const [isValidEmail, setIsValidEmail] = useState(false)
+  const [isEmailRegistered, setIsEmailRegistered] = useState(true)
   const {
     control,
     handleSubmit,
@@ -45,6 +46,11 @@ export default function ForgotPassword() {
     } else {
       setIsValidEmail(false)
     }
+
+    if (email.trim().length === 0) {
+      setIsEmailRegistered(true)
+    }
+
   }, [email])
 
   const handleSubmitToApi = async (data: FieldValues) => {
@@ -54,12 +60,15 @@ export default function ForgotPassword() {
       })
 
       if (response.data.statusCode === 204) {
+        setIsEmailRegistered(true)
         router.push('/reset-password')
       } else {
         console.log('Não recebeu o código 204 da API')
       }
     } catch (error) {
+      setIsEmailRegistered(false)
       console.log('Error send email to forgote-password:', error)
+
     }
   }
 
@@ -102,6 +111,9 @@ export default function ForgotPassword() {
             />
             {errors.email && (
               <Text style={globalStyles.errorText}>{errors.email.message}</Text>
+            )}
+            {email && isEmailRegistered === false && (
+              <Text style={globalStyles.errorText}>Email não registrado</Text>
             )}
           </View>
         </View>
