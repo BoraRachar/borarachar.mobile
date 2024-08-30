@@ -40,7 +40,7 @@ export default function OnboardingScreenThree() {
           <View style={styles.containerText}>
             <Text style={styles.Text}>
               Criando uma conta, você terá acesso a {'\n'}mais funcionalidades
-              como grupos, {'\n'}histórioco e novas modalidades de divisão.
+              como grupos, {'\n'}histórico e novas modalidades de divisão.
             </Text>
           </View>
         </View>
