@@ -55,7 +55,7 @@ export default function OnboardingScreenThree() {
               customStyles={globalStyles.primaryButtonText}
             />
           </ButtonCustomizer.Root>
-          <View style={styles.linkContainer}>
+          {/* <View style={styles.linkContainer}>
             <View style={styles.buttonArea}>
               <View style={globalStyles.textButton}>
                 <Link push href="/">
@@ -65,7 +65,7 @@ export default function OnboardingScreenThree() {
                 </Link>
               </View>
             </View>
-          </View>
+          </View> */}
         </View>
       </View>
     </View>
