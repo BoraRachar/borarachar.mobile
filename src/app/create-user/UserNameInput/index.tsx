@@ -71,6 +71,7 @@ export default function UserName() {
   const handleUserNameSelect = (userName: string) => {
     setValue('usuario', userName)
     setSelectedUserName(userName)
+    setInvalidUser(false)
   }
 
   const handleAdvace = () => {
@@ -100,6 +101,7 @@ export default function UserName() {
                   placeholder="BoraRachar123"
                   value={value}
                   onChangeText={onChange}
+                  errorInput={invalidUser}
                 />
               )
             }}
