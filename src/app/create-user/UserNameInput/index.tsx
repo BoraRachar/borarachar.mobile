@@ -36,6 +36,7 @@ export default function UserName() {
   const { addUser } = useStore()
   const [isButtonDisable, setIsButtonDisable] = useState(true)
   const [userNameSuggestions, setUserNameSuggestions] = useState([])
+  const [invalidUser, setInvalidUser] = useState(false)
   const [selectedUserName, setSelectedUserName] = useState<string | null>(null)
   const isKeyboardVisible = useKeyboardStatus()
 
@@ -51,6 +52,7 @@ export default function UserName() {
         addUser({ usuario: data.usuario })
         handleNavigationButton()
       } else if (response.data?.data?.userNames?.length > 0) {
+        setInvalidUser(true)
         setUserNameSuggestions(response.data.data.userNames)
       }
     } catch (error) {
@@ -69,6 +71,7 @@ export default function UserName() {
   const handleUserNameSelect = (userName: string) => {
     setValue('usuario', userName)
     setSelectedUserName(userName)
+    setInvalidUser(false)
   }
 
   const handleAdvace = () => {
@@ -98,6 +101,7 @@ export default function UserName() {
                   placeholder="BoraRachar123"
                   value={value}
                   onChangeText={onChange}
+                  errorInput={invalidUser}
                 />
               )
             }}
@@ -105,12 +109,17 @@ export default function UserName() {
           {errors.usuario && (
             <Text style={globalStyles.errorText}>{errors.usuario.message}</Text>
           )}
-          <SeparatorComponent />
+          {invalidUser && (
+            <Text style={globalStyles.errorText}>Usuário não disponível</Text>
+          )}
           {userNameSuggestions.length > 0 && (
-            <NameSuggestion
-              suggestions={userNameSuggestions}
-              onNameSelect={handleUserNameSelect}
-            />
+            <View>
+              <SeparatorComponent />
+              <NameSuggestion
+                suggestions={userNameSuggestions}
+                onNameSelect={handleUserNameSelect}
+              />
+            </View>
           )}
         </View>
       </View>
