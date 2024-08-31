@@ -68,7 +68,7 @@ export default function Index() {
                     customStyles={styles.secondaryButtonText}
                   ></ButtonCustomizer.Title>
                 </ButtonCustomizer.Root>
-                <ButtonCustomizer.Root
+                {/* <ButtonCustomizer.Root
                   type="tertiary"
                   onPress={() => router.push('/')}
                 >
@@ -76,7 +76,7 @@ export default function Index() {
                     title="Calculadora"
                     customStyles={styles.tertiaryButtonText}
                   ></ButtonCustomizer.Title>
-                </ButtonCustomizer.Root>
+                </ButtonCustomizer.Root> */}
               </View>
             </View>
           )}
