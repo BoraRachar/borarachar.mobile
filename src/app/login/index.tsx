@@ -40,6 +40,9 @@ export default function Login() {
   const isKeyboardVisible = useKeyboardStatus()
   const [validPassword, setValidPassword] = useState<boolean | null>(null)
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
+  const [requestErrorMessage, setRequestErrorMessage] = useState<string | null>(
+    null,
+  )
 
   const eyesIcon = showPassword ? opeEye : closeEye
 
@@ -59,7 +62,7 @@ export default function Login() {
       const error = err as AxiosError
       const responseData = error.response?.data as ErrorResponse
       const userMessage = responseData.errors[0]?.userMessage
-      console.log(userMessage)
+      setRequestErrorMessage(userMessage)
       setValidPassword(false)
     }
   }
@@ -96,6 +99,7 @@ export default function Login() {
                   value={value}
                   onChangeText={onChange}
                   placeholder="joão@mail.com"
+                  errorOrSucess={errors.email?.message}
                 />
               )}
             />
@@ -115,11 +119,14 @@ export default function Login() {
                     value={value}
                     onChangeText={(text) => {
                       setValidPassword(null)
+                      setRequestErrorMessage(null)
                       onChange(text)
                     }}
                     secureTextEntry={showPassword}
                     icon={eyesIcon}
                     onIconPress={() => setShowPassword(!showPassword)}
+                    errorOrSucess={isSubmitted ? errors.password?.message : ''}
+                    errorInput={requestErrorMessage !== null}
                   />
                   <View
                     style={{
@@ -130,10 +137,13 @@ export default function Login() {
                     }}
                   >
                     <Text style={globalStyles.errorText}>
-                      {errors.password && !value && errors.password?.message}
+                      {isSubmitted &&
+                        errors.password &&
+                        !value &&
+                        errors.password?.message}
                       {validPassword === false &&
                         isSubmitted &&
-                        'Senha inválida'}
+                        requestErrorMessage}
                     </Text>
                     <Link
                       href={'/forgot-password'}
