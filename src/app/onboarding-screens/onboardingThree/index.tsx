@@ -44,7 +44,7 @@ export default function OnboardingScreenThree() {
             </Text>
           </View>
         </View>
-        <View>
+        <View style={styles.linkContainer}>
           <ButtonCustomizer.Root
             type={'primary'}
             onPress={() => router.push('/')}
