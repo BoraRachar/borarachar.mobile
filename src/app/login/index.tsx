@@ -38,10 +38,15 @@ export default function Login() {
     resolver: yupResolver(schema),
   })
   const isKeyboardVisible = useKeyboardStatus()
+  const [validPassword, setValidPassword] = useState<boolean | null>(null)
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
 
   const eyesIcon = showPassword ? opeEye : closeEye
 
   const handleLogin = async (data: FieldValues) => {
+    setIsSubmitted(true)
+    setValidPassword(null)
+
     try {
       const response = await axiosClient.post('login', {
         email: data.email,
@@ -54,7 +59,8 @@ export default function Login() {
       const error = err as AxiosError
       const responseData = error.response?.data as ErrorResponse
       const userMessage = responseData.errors[0]?.userMessage
-      alert(userMessage)
+      console.log(userMessage)
+      setValidPassword(false)
     }
   }
 
@@ -103,35 +109,42 @@ export default function Login() {
               control={control}
               name="password"
               render={({ field: { onChange, value } }) => (
-                <InputComponent
-                  label="Senha"
-                  value={value}
-                  onChangeText={onChange}
-                  secureTextEntry={showPassword}
-                  icon={eyesIcon}
-                  onIconPress={() => setShowPassword(!showPassword)}
-                />
+                <>
+                  <InputComponent
+                    label="Senha"
+                    value={value}
+                    onChangeText={(text) => {
+                      setValidPassword(null)
+                      onChange(text)
+                    }}
+                    secureTextEntry={showPassword}
+                    icon={eyesIcon}
+                    onIconPress={() => setShowPassword(!showPassword)}
+                  />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: '100%',
+                    }}
+                  >
+                    <Text style={globalStyles.errorText}>
+                      {errors.password && !value && errors.password?.message}
+                      {validPassword === false &&
+                        isSubmitted &&
+                        'Senha inválida'}
+                    </Text>
+                    <Link
+                      href={'/forgot-password'}
+                      style={styles.forgotPassword}
+                    >
+                      Esqueceu a senha?
+                    </Link>
+                  </View>
+                </>
               )}
             />
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '100%',
-              }}
-            >
-              {errors.password ? (
-                <Text style={globalStyles.errorText}>
-                  {errors.password.message}
-                </Text>
-              ) : (
-                <Text></Text>
-              )}
-              <Link href={'/forgot-password'} style={styles.forgotPassword}>
-                Esqueceu a senha?
-              </Link>
-            </View>
           </View>
         </View>
 
