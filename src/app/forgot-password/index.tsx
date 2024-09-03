@@ -67,8 +67,8 @@ export default function ForgotPassword() {
       }
     } catch (error) {
       setIsEmailRegistered(false)
+      setIsValidEmail(false)
       console.log('Error send email to forgote-password:', error)
-
     }
   }
 
