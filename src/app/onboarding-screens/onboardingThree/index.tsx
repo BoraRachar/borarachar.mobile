@@ -40,11 +40,11 @@ export default function OnboardingScreenThree() {
           <View style={styles.containerText}>
             <Text style={styles.Text}>
               Criando uma conta, você terá acesso a {'\n'}mais funcionalidades
-              como grupos, {'\n'}histórioco e novas modalidades de divisão.
+              como grupos, {'\n'}histórico e novas modalidades de divisão.
             </Text>
           </View>
         </View>
-        <View>
+        <View style={styles.linkContainer}>
           <ButtonCustomizer.Root
             type={'primary'}
             onPress={() => router.push('/')}
@@ -55,7 +55,7 @@ export default function OnboardingScreenThree() {
               customStyles={globalStyles.primaryButtonText}
             />
           </ButtonCustomizer.Root>
-          <View style={styles.linkContainer}>
+          {/* <View style={styles.linkContainer}>
             <View style={styles.buttonArea}>
               <View style={globalStyles.textButton}>
                 <Link push href="/">
@@ -65,7 +65,7 @@ export default function OnboardingScreenThree() {
                 </Link>
               </View>
             </View>
-          </View>
+          </View> */}
         </View>
       </View>
     </View>

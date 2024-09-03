@@ -20,6 +20,7 @@ interface InputComponentProps {
   value: string
   onChangeText: (text: string) => void
   errorOrSucess?: string
+  errorInput?: boolean
   isValid?: boolean
   icon?: React.FC
   onIconPress?: () => void
@@ -34,6 +35,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
   value,
   onChangeText,
   errorOrSucess,
+  errorInput,
   isValid,
   icon: Icon,
   onIconPress,
@@ -41,7 +43,8 @@ const InputComponent: React.FC<InputComponentProps> = ({
   customStyle,
 }) => {
   const getInputStyle = (): StyleProp<TextStyle> => {
-    if (errorOrSucess) return [styles.inputWrapper, styles.inputWrapperError]
+    if (errorOrSucess || errorInput)
+      return [styles.inputWrapper, styles.inputWrapperError]
     if (isValid) return [styles.inputWrapper, styles.inputWrapperSuccess]
     if (strength && value && value.trim().length > 0)
       return [styles.inputWrapper, customStyle]
@@ -64,8 +67,9 @@ const InputComponent: React.FC<InputComponentProps> = ({
           cursorColor={theme.colors.Gray[500]}
           value={value}
           onChangeText={onChangeText}
+          style={styles.input}
         />
-        {errorOrSucess ? (
+        {errorOrSucess || errorInput ? (
           <WarningCircle />
         ) : isValid ? (
           <CheckCircle />

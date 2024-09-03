@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { router } from 'expo-router'
+import { router, SplashScreen } from 'expo-router'
 import { useAsyncStorage } from '@react-native-async-storage/async-storage'
 import { View, Dimensions } from 'react-native'
 import { ButtonCustomizer } from '../components/ButtonCustomizer'
@@ -17,6 +17,7 @@ export default function Index() {
   const [isFirstTimeChecked, setIsFirstTimeChecked] = useState<boolean>(false)
 
   useEffect(() => {
+    SplashScreen.preventAutoHideAsync()
     async function checkFirstTime() {
       const isFirstTime = await getItem()
       try {
@@ -31,6 +32,10 @@ export default function Index() {
         console.error('Erro ao checar o Primeiro Acesso', error)
       }
     }
+    setTimeout(async () => {
+      await SplashScreen.hideAsync()
+    }, 1000)
+
     checkFirstTime()
   }, [])
 
@@ -68,7 +73,7 @@ export default function Index() {
                     customStyles={styles.secondaryButtonText}
                   ></ButtonCustomizer.Title>
                 </ButtonCustomizer.Root>
-                <ButtonCustomizer.Root
+                {/* <ButtonCustomizer.Root
                   type="tertiary"
                   onPress={() => router.push('/')}
                 >
@@ -76,7 +81,7 @@ export default function Index() {
                     title="Calculadora"
                     customStyles={styles.tertiaryButtonText}
                   ></ButtonCustomizer.Title>
-                </ButtonCustomizer.Root>
+                </ButtonCustomizer.Root> */}
               </View>
             </View>
           )}
