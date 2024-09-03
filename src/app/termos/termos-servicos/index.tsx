@@ -45,7 +45,7 @@ export default function TermosServicos() {
             <Text style={[styles.text, { fontFamily: theme.fontFamily.bold }]}>
               {`${item.id}.`}
             </Text>
-            <Text style={styles.text}>
+            <Text style={[styles.text, { flex: 1 }]}>
               <Text
                 style={{ fontFamily: theme.fontFamily.bold }}
               >{`${item.subtitle} `}</Text>
