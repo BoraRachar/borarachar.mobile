@@ -27,7 +27,7 @@ const schema = yup.object().shape({
 
 export default function ForgotPassword() {
   const [isValidEmail, setIsValidEmail] = useState(false)
-  const [isEmailRegistered, setIsEmailRegistered] = useState(true)
+  const [isEmailRegistered, setIsEmailRegistered] = useState<Boolean | null>(null)
   const {
     control,
     handleSubmit,
@@ -48,7 +48,7 @@ export default function ForgotPassword() {
     }
 
     if (email.trim().length === 0) {
-      setIsEmailRegistered(true)
+      setIsEmailRegistered(null)
     }
 
   }, [email])
@@ -113,7 +113,7 @@ export default function ForgotPassword() {
               <Text style={globalStyles.errorText}>{errors.email.message}</Text>
             )}
             {email && isEmailRegistered === false && (
-              <Text style={globalStyles.errorText}>Email não registrado</Text>
+              <Text style={globalStyles.errorText}>Houve um erro no seu Email</Text>
             )}
           </View>
         </View>
