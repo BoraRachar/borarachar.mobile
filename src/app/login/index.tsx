@@ -95,7 +95,7 @@ export default function Login() {
               name="email"
               render={({ field: { onChange, value } }) => (
                 <InputComponent
-                  label="E-mail ou usuário"
+                  label="E-mail"
                   value={value}
                   onChangeText={onChange}
                   placeholder="joão@mail.com"
