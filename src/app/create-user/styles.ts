@@ -12,5 +12,6 @@ export const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 24,
   },
 })

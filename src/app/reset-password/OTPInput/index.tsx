@@ -128,7 +128,7 @@ export default function OTPInput({ increaseStep }: OTPInputProps) {
       </View>
 
       {!isKeyboardVisible && (
-        <View>
+        <View style={{ marginBottom: 24 }}>
           <ButtonCustomizer.Root
             type={'primary'}
             onPress={onSubmit}
