@@ -8,6 +8,7 @@ export default function Layout() {
         name="home/index"
         options={{
           title: 'Home',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <Ionicons name="home-outline" size={24} color={color} />
           ),
