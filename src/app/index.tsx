@@ -73,15 +73,16 @@ export default function Index() {
                     customStyles={styles.secondaryButtonText}
                   ></ButtonCustomizer.Title>
                 </ButtonCustomizer.Root>
-                {/* <ButtonCustomizer.Root
+
+                <ButtonCustomizer.Root
                   type="tertiary"
-                  onPress={() => router.push('/')}
+                  onPress={() => router.push('/home')}
                 >
                   <ButtonCustomizer.Title
-                    title="Calculadora"
+                    title="Home"
                     customStyles={styles.tertiaryButtonText}
                   ></ButtonCustomizer.Title>
-                </ButtonCustomizer.Root> */}
+                </ButtonCustomizer.Root>
               </View>
             </View>
           )}
