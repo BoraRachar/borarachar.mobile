@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
-import { Text, View, Dimensions } from 'react-native'
+import { Text, View } from 'react-native'
 
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 
@@ -11,15 +11,9 @@ import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
 
 export default function Home() {
-  const { height } = Dimensions.get('window')
-  const dinamicVerticalPadding = height * 0.03
-  const dinamicgap = height * 0.02
-
   return (
     <View style={styles.container}>
-      <View
-        style={[styles.header, { paddingVertical: dinamicVerticalPadding }]}
-      >
+      <View style={styles.header}>
         <Text style={styles.title}>Ola, Bora.</Text>
 
         <View style={styles.headerIcon}>
@@ -44,9 +38,7 @@ export default function Home() {
       </View>
       {/* Slider */}
 
-      <View
-        style={[styles.buttonsContainer, { marginTop: dinamicVerticalPadding }]}
-      >
+      <View style={[styles.buttonsContainer, { marginTop: 30 }]}>
         <ButtonCustomizer.Root
           type="tertiaryHalfWidth"
           onPress={() => console.log('Meu QR')}
@@ -79,7 +71,7 @@ export default function Home() {
       </View>
 
       {/* List */}
-      <View style={{ gap: dinamicgap, marginTop: dinamicVerticalPadding }}>
+      <View style={{ gap: 16, marginTop: 27 }}>
         <View style={{ height: 24, backgroundColor: 'gray' }}></View>
         <View style={{ height: 94, backgroundColor: 'gray' }}></View>
         <View style={{ height: 94, backgroundColor: 'gray' }}></View>
