@@ -13,6 +13,7 @@ import { styles } from './styles'
 export default function Home() {
   const { height } = Dimensions.get('window')
   const dinamicVerticalPadding = height * 0.03
+  const dinamicgap = height * 0.02
 
   return (
     <View style={styles.container}>
@@ -36,14 +37,16 @@ export default function Home() {
       </View>
 
       {/* Silder */}
-      <View style={{ gap: 12, paddingVertical: 10 }}>
+      <View style={{ gap: 12, paddingTop: 10 }}>
         <View style={{ height: 24, backgroundColor: 'gray' }}></View>
-        <View style={{ height: 130, backgroundColor: 'gray' }}></View>
+        <View style={{ height: 132, backgroundColor: 'gray' }}></View>
         <View style={{ height: 8, backgroundColor: 'gray' }}></View>
       </View>
       {/* Slider */}
 
-      <View style={styles.buttonsContainer}>
+      <View
+        style={[styles.buttonsContainer, { marginTop: dinamicVerticalPadding }]}
+      >
         <ButtonCustomizer.Root
           type="tertiaryHalfWidth"
           onPress={() => console.log('Meu QR')}
@@ -76,6 +79,12 @@ export default function Home() {
       </View>
 
       {/* List */}
+      <View style={{ gap: dinamicgap, marginTop: dinamicVerticalPadding }}>
+        <View style={{ height: 24, backgroundColor: 'gray' }}></View>
+        <View style={{ height: 94, backgroundColor: 'gray' }}></View>
+        <View style={{ height: 94, backgroundColor: 'gray' }}></View>
+        <View style={{ height: 94, backgroundColor: 'gray' }}></View>
+      </View>
       {/* List */}
     </View>
   )
