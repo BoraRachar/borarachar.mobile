@@ -1,5 +1,6 @@
-import Ionicons from '@expo/vector-icons/Ionicons'
 import { Text, View } from 'react-native'
+import { useAuthStore } from '@/src/store/useAuthStore'
+import Ionicons from '@expo/vector-icons/Ionicons'
 
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 
@@ -11,10 +12,12 @@ import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
 
 export default function Home() {
+  const { user } = useAuthStore()
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Ola, Bora.</Text>
+        <Text style={styles.title}>{user && `Ola, ${user}`}</Text>
 
         <View style={styles.headerIcon}>
           <Ionicons
