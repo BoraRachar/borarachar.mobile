@@ -10,7 +10,6 @@ interface AuthState {
   isAuthenticated: boolean
   login: (token: string, userData: User) => Promise<void>
   logout: () => Promise<void>
-  checkAuth: () => Promise<void>
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -24,13 +23,6 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout: async () => {
     await SecureStore.deleteItemAsync('acessToken')
-  },
-
-  checkAuth: async () => {
-    const accessToken = await SecureStore.getItemAsync('accessToken')
-
-    if (accessToken) {
-      console.log('verificar a validade do token')
-    }
+    set({ user: null, isAuthenticated: false })
   },
 }))
