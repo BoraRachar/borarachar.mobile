@@ -11,6 +11,10 @@ import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
 import { Link } from 'expo-router'
 
+import ChevronRight from '../../../assets/images/chevron-right.svg'
+import HandCoins from '../../../assets/images/HandCoins.svg'
+import Money from '../../../assets/images/MoneyWavy.svg'
+
 export default function Home() {
   return (
     <View style={styles.container}>
@@ -103,11 +107,7 @@ export default function Home() {
               >
                 Ver mais
               </Link>
-              <Ionicons
-                name="chevron-forward-outline"
-                size={20}
-                color={theme.colors.Gray[400]}
-              />
+              <ChevronRight />
             </View>
           </View>
         </View>
@@ -137,11 +137,7 @@ export default function Home() {
                   borderRadius: 50,
                 }}
               >
-                <Ionicons
-                  name="beer-outline"
-                  size={26}
-                  color={theme.colors.Gray[700]}
-                />
+                <Money />
               </View>
             </View>
             <View style={{ width: '60%', gap: 2 }}>
@@ -216,11 +212,7 @@ export default function Home() {
                   borderRadius: 50,
                 }}
               >
-                <Ionicons
-                  name="cash-outline"
-                  size={26}
-                  color={theme.colors.Gray[700]}
-                />
+                <HandCoins />
               </View>
             </View>
             <View style={{ width: '60%', gap: 2 }}>
@@ -295,11 +287,7 @@ export default function Home() {
                   borderRadius: 50,
                 }}
               >
-                <Ionicons
-                  name="beer-outline"
-                  size={26}
-                  color={theme.colors.Gray[700]}
-                />
+                <Money />
               </View>
             </View>
             <View style={{ width: '60%', gap: 2 }}>
