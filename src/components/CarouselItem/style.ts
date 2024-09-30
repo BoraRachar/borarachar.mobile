@@ -1,13 +1,9 @@
-
 import { StyleSheet, Dimensions } from 'react-native'
 
 import { theme } from '@/src/theme'
-const {width, height} =  Dimensions.get('screen')
-
-
+const { width } = Dimensions.get('screen')
 
 export const styles = StyleSheet.create({
-
   container: {
     display: 'flex',
     justifyContent: 'center',
@@ -15,29 +11,33 @@ export const styles = StyleSheet.create({
     width: 333,
     height: 131,
     borderRadius: 16,
-    backgroundColor: `${theme.colors.third}`,
+    backgroundColor: theme.colors.third,
     gap: 10,
     paddingVertical: 34,
     paddingHorizontal: 15,
-    marginHorizontal: 16
+    marginHorizontal: 16,
   },
   content: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 14,
-    fontWeight: 400,
-    color: `${theme.colors.Gray[500]}`
+    fontFamily: theme.fontFamily.regular,
+    fontSize: theme.sizes.fontSize14,
+    color: theme.colors.Gray[500],
   },
   value: {
-    width: width * 0.5,
-    fontWeight: 700,
+    fontFamily: theme.fontFamily.bold,
     fontSize: 32,
-    color: `${theme.colors.Gray[500]}`
-  }
-
+    width: width * 0.5,
+    color: theme.colors.Gray[500],
+  },
+  button: {
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })
