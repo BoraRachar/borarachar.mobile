@@ -1,7 +1,10 @@
 import React from 'react'
-import { View, FlatList } from 'react-native'
+import { View, FlatList, Text, TouchableOpacity } from 'react-native'
 import { CarouselItem } from '../CarouselItem'
 import { PaginationCarousel } from '../PaginationCarousel/index'
+
+import ChevronArrowRight from '@/src/assets/images/chevron-arrow-right.svg'
+
 import { styles } from './style'
 
 const carouselJSON = [
@@ -20,6 +23,13 @@ const carouselJSON = [
 export const Carousel: React.FC = () => {
   return (
     <View style={styles.flatListContainer}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Meus Saldos</Text>
+        <TouchableOpacity>
+          <ChevronArrowRight width={24} height={24} />
+        </TouchableOpacity>
+      </View>
+
       <FlatList
         data={carouselJSON}
         renderItem={({ item }) => <CarouselItem item={item} />}
@@ -27,8 +37,11 @@ export const Carousel: React.FC = () => {
         pagingEnabled
         snapToAlignment="center"
         showsHorizontalScrollIndicator={false}
-      ></FlatList>
-      {/* <PaginationCarousel data={carouselJSON} /> */}
+      />
+
+      <View style={styles.paginationContainer}>
+        <PaginationCarousel data={carouselJSON} />
+      </View>
     </View>
   )
 }
