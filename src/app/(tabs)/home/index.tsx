@@ -2,13 +2,17 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 import { Text, View } from 'react-native'
 
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
-
+import { Carousel } from '@/src/components/CardReceberPagar/'
+ 
 import qrcodeImage from '@/src/assets/images/qrcode.svg'
 import calculatorImage from '@/src/assets/images/calculator.svg'
 
 import { theme } from '@/src/theme'
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
+
+
+
 
 export default function Home() {
   return (
@@ -30,11 +34,14 @@ export default function Home() {
         </View>
       </View>
 
-      {/* Silder */}
+       
       <View style={{ gap: 12, paddingTop: 10 }}>
+        {/* Silder
         <View style={{ height: 24, backgroundColor: 'gray' }}></View>
         <View style={{ height: 132, backgroundColor: 'gray' }}></View>
         <View style={{ height: 8, backgroundColor: 'gray' }}></View>
+        */}
+        <Carousel/>
       </View>
       {/* Slider */}
 
