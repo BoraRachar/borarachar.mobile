@@ -74,7 +74,7 @@ export default function Index() {
                   ></ButtonCustomizer.Title>
                 </ButtonCustomizer.Root>
 
-                <ButtonCustomizer.Root
+                {/* <ButtonCustomizer.Root
                   type="tertiary"
                   onPress={() => router.push('/home')}
                 >
@@ -82,7 +82,7 @@ export default function Index() {
                     title="Home"
                     customStyles={styles.tertiaryButtonText}
                   ></ButtonCustomizer.Title>
-                </ButtonCustomizer.Root>
+                </ButtonCustomizer.Root> */}
               </View>
             </View>
           )}
