@@ -18,7 +18,7 @@ export const CarouselItem: React.FC<{ item: Item }> = ({ item }) => {
       <Text style={styles.title}>{item.title}</Text>
       <View style={styles.content}>
         <Text style={styles.value}>
-          {`R$ ${visible ? '********' : item.value}`}
+          {`R$ ${visible ? '****' : item.value}`}
         </Text>
         <TouchableOpacity
           style={styles.button}

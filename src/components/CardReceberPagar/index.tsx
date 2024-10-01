@@ -1,5 +1,6 @@
-import React from 'react'
-import { View, FlatList, Text, TouchableOpacity } from 'react-native'
+import React, { useRef, useState } from 'react'
+import { View, FlatList, Text } from 'react-native'
+import { Link } from 'expo-router'
 import { CarouselItem } from '../CarouselItem'
 import { PaginationCarousel } from '../PaginationCarousel/index'
 
@@ -21,26 +22,41 @@ const carouselJSON = [
 ]
 
 export const Carousel: React.FC = () => {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const flatListRef = useRef<FlatList>(null)
+
+  const onViewableItemsChanged = useRef(({ viewableItems }) => {
+    if (viewableItems.length > 0) {
+      setActiveIndex(viewableItems[0].index)
+    }
+  }).current
+
   return (
     <View style={styles.flatListContainer}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Meus Saldos</Text>
-        <TouchableOpacity>
-          <ChevronArrowRight width={24} height={24} />
-        </TouchableOpacity>
+        <Link href="/home">
+          <ChevronArrowRight width={12} height={12} />
+        </Link>
       </View>
 
       <FlatList
         data={carouselJSON}
+        ref={flatListRef}
         renderItem={({ item }) => <CarouselItem item={item} />}
         horizontal
         pagingEnabled
         snapToAlignment="center"
         showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={{
+          viewAreaCoveragePercentThreshold: 50,
+        }}
       />
 
       <View style={styles.paginationContainer}>
-        <PaginationCarousel data={carouselJSON} />
+        <PaginationCarousel data={carouselJSON} activeIndex={activeIndex} />
       </View>
     </View>
   )

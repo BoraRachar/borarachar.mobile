@@ -11,13 +11,25 @@ interface CarouselItem {
 // Defina as props que o componente filho vai receber
 interface ChildComponentProps {
   data: CarouselItem[] // O array com os dados
+  activeIndex: number
 }
 
-export const PaginationCarousel: React.FC<ChildComponentProps> = ({ data }) => {
+export const PaginationCarousel: React.FC<ChildComponentProps> = ({
+  data,
+  activeIndex,
+}) => {
   return (
     <>
-      {data.map((data) => {
-        return <View key={data.id} style={styles.dot} />
+      {data.map((data, index) => {
+        return (
+          <View
+            key={data.id}
+            style={[
+              styles.dot,
+              activeIndex === index ? styles.dotActive : styles.dotInactive,
+            ]}
+          />
+        )
       })}
     </>
   )
@@ -28,7 +40,12 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: theme.colors.primaryColor,
     marginHorizontal: 3,
+  },
+  dotActive: {
+    backgroundColor: theme.colors.primaryColor,
+  },
+  dotInactive: {
+    backgroundColor: theme.colors.fourth,
   },
 })
