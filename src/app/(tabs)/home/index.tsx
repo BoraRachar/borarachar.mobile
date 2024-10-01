@@ -1,5 +1,6 @@
-import Ionicons from '@expo/vector-icons/Ionicons'
 import { Text, View } from 'react-native'
+import { useAuthStore } from '@/src/store/useAuthStore'
+import Ionicons from '@expo/vector-icons/Ionicons'
 
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import { Carousel } from '@/src/components/CardReceberPagar/'
@@ -17,11 +18,13 @@ import HandCoins from '../../../assets/images/HandCoins.svg'
 import Money from '../../../assets/images/MoneyWavy.svg'
 
 export default function Home() {
+  const { user } = useAuthStore()
+
   return (
     <View style={styles.container}>
       {/* header */}
       <View style={styles.header}>
-        <Text style={styles.title}>Ola, Bora.</Text>
+        <Text style={styles.title}>{user && `Ola, ${user}`}</Text>
 
         <View style={styles.headerIcon}>
           <Ionicons
