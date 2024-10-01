@@ -2,6 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 import { Text, View } from 'react-native'
 
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
+import { Carousel } from '@/src/components/CardReceberPagar/'
 
 import qrcodeImage from '@/src/assets/images/qrcode.svg'
 import calculatorImage from '@/src/assets/images/calculator.svg'
@@ -18,6 +19,7 @@ import Money from '../../../assets/images/MoneyWavy.svg'
 export default function Home() {
   return (
     <View style={styles.container}>
+      {/* header */}
       <View style={styles.header}>
         <Text style={styles.title}>Ola, Bora.</Text>
 
@@ -35,14 +37,12 @@ export default function Home() {
         </View>
       </View>
 
-      {/* Silder */}
-      <View style={{ gap: 12, paddingTop: 10 }}>
-        <View style={{ height: 24, backgroundColor: 'gray' }}></View>
-        <View style={{ height: 132, backgroundColor: 'gray' }}></View>
-        <View style={{ height: 8, backgroundColor: 'gray' }}></View>
-      </View>
       {/* Slider */}
+      <View style={{ gap: 12, paddingTop: 10 }}>
+        <Carousel />
+      </View>
 
+      {/* Button */}
       <View style={[styles.buttonsContainer, { marginTop: 30 }]}>
         <ButtonCustomizer.Root
           type="tertiaryHalfWidth"
@@ -76,7 +76,7 @@ export default function Home() {
       </View>
 
       {/* List */}
-      <View style={{ gap: 16, marginTop: 27 }}>
+      <View style={{ gap: 16, marginTop: 27, padding: 24 }}>
         <View
           style={{
             justifyContent: 'space-between',
@@ -100,7 +100,7 @@ export default function Home() {
             </Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Link
-                href="/"
+                href="/activity"
                 style={{
                   color: theme.colors.Gray[400],
                 }}
@@ -337,7 +337,6 @@ export default function Home() {
           </View>
         </View>
       </View>
-      {/* List */}
     </View>
   )
 }
