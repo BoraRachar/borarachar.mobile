@@ -3,6 +3,7 @@ import { Link, router } from 'expo-router'
 import { Controller, FieldValues, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useAuthStore } from '@/src/store/useAuthStore'
 
 import Header from '@/src/components/HeaderComponent'
 import InputComponent from '@/src/components/InputComponent'
@@ -40,6 +41,7 @@ export default function Login() {
   const [requestErrorMessage, setRequestErrorMessage] = useState<string | null>(
     null,
   )
+  const { login } = useAuthStore()
 
   const eyesIcon = showPassword ? opeEye : closeEye
 
@@ -53,7 +55,9 @@ export default function Login() {
         password: data.password,
       })
       if (response) {
-        alert('Login efetuado com sucesso')
+        const { accessToken, nome } = response.data.data
+        await login(accessToken, nome)
+        router.push('/home')
       }
     } catch (err) {
       const error = err as AxiosError
