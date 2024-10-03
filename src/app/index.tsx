@@ -73,6 +73,17 @@ export default function Index() {
                     customStyles={styles.secondaryButtonText}
                   ></ButtonCustomizer.Title>
                 </ButtonCustomizer.Root>
+                <ButtonCustomizer.Root
+                  type={'primary'}
+                  onPress={() =>
+                    router.push('/onboarding-screens/onboardingOne/')
+                  }
+                >
+                  <ButtonCustomizer.Title
+                    title="Como funciona?"
+                    customStyles={styles.primaryButtonText}
+                  />
+                </ButtonCustomizer.Root>
 
                 {/* <ButtonCustomizer.Root
                   type="tertiary"
