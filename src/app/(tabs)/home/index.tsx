@@ -1,21 +1,19 @@
-import { Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
+import { Link } from 'expo-router'
 import { useAuthStore } from '@/src/store/useAuthStore'
-import Ionicons from '@expo/vector-icons/Ionicons'
 
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import { Carousel } from '@/src/components/CardReceberPagar/'
 
+import Ionicons from '@expo/vector-icons/Ionicons'
 import qrcodeImage from '@/src/assets/images/qrcode.svg'
 import calculatorImage from '@/src/assets/images/calculator.svg'
-
-import { theme } from '@/src/theme'
-import { styles as globalStyles } from '@/src/app/styles'
-import { styles } from './styles'
-import { Link } from 'expo-router'
-
 import ChevronRight from '../../../assets/images/chevron-right.svg'
 import HandCoins from '../../../assets/images/HandCoins.svg'
 import Money from '../../../assets/images/MoneyWavy.svg'
+
+import { theme } from '@/src/theme'
+import { styles as globalStyles } from '@/src/app/styles'
 
 export default function Home() {
   const { user } = useAuthStore()
@@ -343,3 +341,33 @@ export default function Home() {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.white,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 22,
+  },
+  headerIcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  title: {
+    fontFamily: theme.fontFamily.bold,
+    fontSize: theme.sizes.fontSize24,
+    lineHeight: 30,
+    color: theme.colors.primaryColor,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+  },
+})
