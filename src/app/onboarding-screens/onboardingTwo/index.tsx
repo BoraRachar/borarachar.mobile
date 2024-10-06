@@ -24,7 +24,7 @@ export default function OnboardingScreenTwo() {
         ]}
       >
         <View style={{ marginBottom: 20 }}>
-          <View style={{ alignItems: 'center' }}>
+          <View style={{ alignItems: 'center', marginBottom: 24 }}>
             <OnboardingScreenTwoImage />
           </View>
           <Text style={styles.Title}>Calcule quanto cada um deverá pagar.</Text>

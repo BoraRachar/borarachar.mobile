@@ -30,7 +30,7 @@ export default function OnboardingScreenThree() {
         ]}
       >
         <View style={{ marginBottom: 15 }}>
-          <View style={{ alignItems: 'center' }}>
+          <View style={{ alignItems: 'center', marginBottom: 24 }}>
             <OnboardingScreenThreeImage />
           </View>
           <Text style={styles.Title}>
