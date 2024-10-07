@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native'
 import { useAuthStore } from '@/src/store/useAuthStore'
-import Ionicons from '@expo/vector-icons/Ionicons'
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5'
 
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import { Carousel } from '@/src/components/CardReceberPagar/'
@@ -27,14 +27,14 @@ export default function Home() {
         <Text style={styles.title}>{user && `Ola, ${user}`}</Text>
 
         <View style={styles.headerIcon}>
-          <Ionicons
-            name="notifications-outline"
-            size={24}
+          <FontAwesome5
+            name="bell"
+            size={theme.sizes.fontSize24}
             color={theme.colors.primaryColor}
           />
-          <Ionicons
-            name="help-circle-outline"
-            size={24}
+          <FontAwesome5
+            name="user-circle"
+            size={theme.sizes.fontSize24}
             color={theme.colors.primaryColor}
           />
         </View>
