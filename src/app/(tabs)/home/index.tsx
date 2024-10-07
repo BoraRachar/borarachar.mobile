@@ -1,18 +1,18 @@
 import { Text, View } from 'react-native'
 import { useAuthStore } from '@/src/store/useAuthStore'
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5'
+import { Link } from 'expo-router'
 
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import { Carousel } from '@/src/components/CardReceberPagar/'
 
-import qrcodeImage from '@/src/assets/images/qrcode.svg'
-import calculatorImage from '@/src/assets/images/calculator.svg'
-
 import { theme } from '@/src/theme'
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
-import { Link } from 'expo-router'
 
+import Bells from '@/src/assets/images/bell-icon.svg'
+import CircleUser from '@/src/assets/images/user-circle-icon.svg'
+import qrcodeImage from '@/src/assets/images/qrcode.svg'
+import calculatorImage from '@/src/assets/images/calculator.svg'
 import ChevronRight from '../../../assets/images/chevron-right.svg'
 import HandCoins from '../../../assets/images/HandCoins.svg'
 import Money from '../../../assets/images/MoneyWavy.svg'
@@ -27,16 +27,8 @@ export default function Home() {
         <Text style={styles.title}>{user && `Ola, ${user}`}</Text>
 
         <View style={styles.headerIcon}>
-          <FontAwesome5
-            name="bell"
-            size={theme.sizes.fontSize24}
-            color={theme.colors.primaryColor}
-          />
-          <FontAwesome5
-            name="user-circle"
-            size={theme.sizes.fontSize24}
-            color={theme.colors.primaryColor}
-          />
+          <Bells />
+          <CircleUser />
         </View>
       </View>
 
