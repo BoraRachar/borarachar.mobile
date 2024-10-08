@@ -5,15 +5,17 @@ import { useAuthStore } from '@/src/store/useAuthStore'
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import { Carousel } from '@/src/components/CardReceberPagar/'
 
-import Ionicons from '@expo/vector-icons/Ionicons'
+import { theme } from '@/src/theme'
+import { styles as globalStyles } from '@/src/app/styles'
+import { styles } from './styles'
+
+import Bells from '@/src/assets/images/bell-icon.svg'
+import CircleUser from '@/src/assets/images/user-circle-icon.svg'
 import qrcodeImage from '@/src/assets/images/qrcode.svg'
 import calculatorImage from '@/src/assets/images/calculator.svg'
 import ChevronRight from '../../../assets/images/chevron-right.svg'
 import HandCoins from '../../../assets/images/HandCoins.svg'
 import Money from '../../../assets/images/MoneyWavy.svg'
-
-import { theme } from '@/src/theme'
-import { styles as globalStyles } from '@/src/app/styles'
 
 export default function Home() {
   const { user } = useAuthStore()
@@ -25,16 +27,8 @@ export default function Home() {
         <Text style={styles.title}>{user && `Ola, ${user}`}</Text>
 
         <View style={styles.headerIcon}>
-          <Ionicons
-            name="notifications-outline"
-            size={24}
-            color={theme.colors.primaryColor}
-          />
-          <Ionicons
-            name="help-circle-outline"
-            size={24}
-            color={theme.colors.primaryColor}
-          />
+          <Bells />
+          <CircleUser />
         </View>
       </View>
 
