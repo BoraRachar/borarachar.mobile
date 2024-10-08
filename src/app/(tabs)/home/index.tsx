@@ -1,6 +1,6 @@
-import { Text, View } from 'react-native'
-import { useAuthStore } from '@/src/store/useAuthStore'
+import { StyleSheet, Text, View } from 'react-native'
 import { Link } from 'expo-router'
+import { useAuthStore } from '@/src/store/useAuthStore'
 
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import { Carousel } from '@/src/components/CardReceberPagar/'
@@ -335,3 +335,33 @@ export default function Home() {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.white,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 22,
+  },
+  headerIcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  title: {
+    fontFamily: theme.fontFamily.bold,
+    fontSize: theme.sizes.fontSize24,
+    lineHeight: 30,
+    color: theme.colors.primaryColor,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+  },
+})
