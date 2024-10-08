@@ -7,7 +7,6 @@ import { Carousel } from '@/src/components/CardReceberPagar/'
 
 import { theme } from '@/src/theme'
 import { styles as globalStyles } from '@/src/app/styles'
-import { styles } from './styles'
 
 import Bells from '@/src/assets/images/bell-icon.svg'
 import CircleUser from '@/src/assets/images/user-circle-icon.svg'
