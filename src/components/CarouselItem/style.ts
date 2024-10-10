@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
   value: {
     fontFamily: theme.fontFamily.bold,
     fontSize: 32,
-    width: width * 0.5,
+    width: width * 0.7,
     color: theme.colors.Gray[500],
   },
   button: {
