@@ -13,9 +13,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(24),
     paddingVertical: verticalScale(24),
   },
-  resumeContent: {
-    gap: verticalScale(20),
-  },
   text: {
     fontSize: rem(16),
     lineHeight: verticalScale(24),
@@ -28,19 +25,5 @@ export const styles = StyleSheet.create({
   containerText: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  containerButton: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: verticalScale(12),
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.Gray[300],
-    marginTop: verticalScale(22),
-  },
-  addButton: {
-    backgroundColor: theme.colors.third,
-    borderRadius: 50,
-    padding: 14,
   },
 })
