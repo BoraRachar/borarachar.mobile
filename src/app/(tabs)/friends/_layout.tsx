@@ -22,6 +22,23 @@ export default function FriendsLayout() {
           headerRight: () => <Question />,
         }}
       />
+
+      <Stack.Screen
+        name="invitations"
+        options={{
+          title: 'Convites',
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <LeftIcon
+              onPress={() => {
+                router.back()
+              }}
+            />
+          ),
+          headerRight: () => <Question />,
+        }}
+      />
     </Stack>
   )
 }
