@@ -43,9 +43,10 @@ export default function Layout() {
       />
 
       <Tabs.Screen
-        name="friends/index"
+        name="friends"
         options={{
           title: 'Amigos',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <Ionicons name="person-outline" size={24} color={color} />
           ),
