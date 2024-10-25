@@ -1,6 +1,7 @@
 import { Link } from 'expo-router'
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import { friends } from '@/src/mock/friends'
+import { useAuthStore } from '@/src/store/useAuthStore'
 
 import { styles } from './styles'
 
@@ -16,10 +17,11 @@ type Friend = {
 }
 
 export default function Amigos() {
+  const { user } = useAuthStore()
   return (
     <View style={styles.container}>
       <View style={styles.resumeContent}>
-        <Text style={styles.text}>Cibely, você tem:</Text>
+        <Text style={styles.text}>{`${user}, você tem:`}</Text>
         <Text style={styles.text}>10 amigos</Text>
         <View style={styles.containerText}>
           <Text style={styles.text}>4 convites enviados</Text>
