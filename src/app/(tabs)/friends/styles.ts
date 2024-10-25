@@ -16,11 +16,20 @@ export const styles = StyleSheet.create({
   resumeContent: {
     gap: verticalScale(20),
   },
+  title: {
+    fontFamily: theme.fontFamily.bold,
+    fontSize: rem(24),
+    lineHeight: verticalScale(30),
+    color: theme.colors.primaryColor,
+  },
   text: {
     fontSize: rem(16),
     lineHeight: verticalScale(24),
     fontFamily: theme.fontFamily.regular,
     color: theme.colors.primaryColor,
+  },
+  textBold: {
+    fontFamily: theme.fontFamily.bold,
   },
   textButton: {
     fontFamily: theme.fontFamily.semiBold,
@@ -42,5 +51,21 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.third,
     borderRadius: 50,
     padding: 14,
+  },
+  contentFriend: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: horizontalScale(16),
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.third,
+    paddingVertical: verticalScale(12),
+  },
+  avatarContainer: {
+    backgroundColor: theme.colors.third,
+    borderRadius: 50,
+    padding: 14,
+  },
+  nameContainer: {
+    flex: 1,
   },
 })

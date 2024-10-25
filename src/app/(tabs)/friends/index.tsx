@@ -4,6 +4,8 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import { styles } from './styles'
 
 import Plus from '@/src/assets/images/plus.svg'
+import User from '@/src/assets/images/user.svg'
+import ChevronRight from '@/src/assets/images/chevron-arrow-right.svg'
 
 export default function Amigos() {
   return (
@@ -40,6 +42,24 @@ export default function Amigos() {
             <Plus />
           </View>
         </TouchableOpacity>
+      </View>
+
+      <View>
+        <Text style={styles.title}>Amigos</Text>
+        <View>
+          <View style={styles.contentFriend}>
+            <View style={styles.avatarContainer}>
+              <User width={24} height={24} />
+            </View>
+            <View style={styles.nameContainer}>
+              <Text style={[styles.text, styles.textBold]}>Junior Alves</Text>
+              <Text style={styles.text}>2 grupos em comum</Text>
+            </View>
+            <View>
+              <ChevronRight />
+            </View>
+          </View>
+        </View>
       </View>
     </View>
   )
