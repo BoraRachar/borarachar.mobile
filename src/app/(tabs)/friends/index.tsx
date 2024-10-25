@@ -1,11 +1,19 @@
 import { Link } from 'expo-router'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
+import { friends } from '@/src/mock/friends'
 
 import { styles } from './styles'
 
 import Plus from '@/src/assets/images/plus.svg'
 import User from '@/src/assets/images/user.svg'
 import ChevronRight from '@/src/assets/images/chevron-arrow-right.svg'
+
+type Friend = {
+  id: number
+  name: string
+  avatar: string
+  groups: number
+}
 
 export default function Amigos() {
   return (
@@ -44,22 +52,44 @@ export default function Amigos() {
         </TouchableOpacity>
       </View>
 
-      <View>
+      <View style={{ flex: 1 }}>
         <Text style={styles.title}>Amigos</Text>
-        <View>
-          <View style={styles.contentFriend}>
-            <View style={styles.avatarContainer}>
-              <User width={24} height={24} />
-            </View>
-            <View style={styles.nameContainer}>
-              <Text style={[styles.text, styles.textBold]}>Junior Alves</Text>
-              <Text style={styles.text}>2 grupos em comum</Text>
-            </View>
-            <View>
-              <ChevronRight />
-            </View>
+
+        <FlatList
+          data={friends}
+          renderItem={({ item }) => <FriendItem friend={item} />}
+          keyExtractor={(item) => item.id.toString()}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+    </View>
+  )
+}
+
+const FriendItem = ({ friend }: { friend: Friend }) => {
+  return (
+    <View style={styles.contentFriend}>
+      <View>
+        {friend?.avatar ? (
+          <Image
+            source={{ uri: friend.avatar }}
+            alt="avatar do usuario"
+            style={styles.avatarImage}
+          />
+        ) : (
+          <View style={styles.avatarContainer}>
+            <User width={24} height={24} />
           </View>
-        </View>
+        )}
+      </View>
+
+      <View style={{ flex: 1 }}>
+        <Text style={[styles.text, styles.textBold]}>{friend.name}</Text>
+        <Text style={styles.text}>{`${friend.groups} grupos em comum`}</Text>
+      </View>
+
+      <View>
+        <ChevronRight />
       </View>
     </View>
   )

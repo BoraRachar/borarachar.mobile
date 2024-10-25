@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
     fontSize: rem(24),
     lineHeight: verticalScale(30),
     color: theme.colors.primaryColor,
+    marginTop: verticalScale(16),
   },
   text: {
     fontSize: rem(16),
@@ -65,7 +66,9 @@ export const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 14,
   },
-  nameContainer: {
-    flex: 1,
+  avatarImage: {
+    width: horizontalScale(48),
+    height: verticalScale(48),
+    borderRadius: 50,
   },
 })
