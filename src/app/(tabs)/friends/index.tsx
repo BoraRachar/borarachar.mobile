@@ -1,14 +1,15 @@
 import { Link } from 'expo-router'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Text, View } from 'react-native'
 
 import { styles } from './styles'
+import { verticalScale } from '@/src/utils/responsiveUtils'
 
-import Plus from '@/src/assets/images/plus.svg'
+import AddFriendButton from '@/src/components/AddFriendButton'
 
 export default function Amigos() {
   return (
     <View style={styles.container}>
-      <View style={styles.resumeContent}>
+      <View style={{ gap: verticalScale(20) }}>
         <Text style={styles.text}>Cibely, você tem:</Text>
         <Text style={styles.text}>10 amigos</Text>
         <View style={styles.containerText}>
@@ -31,15 +32,8 @@ export default function Amigos() {
         </View>
       </View>
 
-      <View style={styles.containerButton}>
-        <Text style={[styles.text, styles.textButton]}>
-          Adicionar novo amigo
-        </Text>
-        <TouchableOpacity>
-          <View style={styles.addButton}>
-            <Plus />
-          </View>
-        </TouchableOpacity>
+      <View style={{ marginTop: verticalScale(24) }}>
+        <AddFriendButton />
       </View>
     </View>
   )
