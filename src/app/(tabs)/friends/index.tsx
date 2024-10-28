@@ -15,7 +15,7 @@ export default function Amigos() {
         <View style={styles.containerText}>
           <Text style={styles.text}>4 convites enviados</Text>
           <Link
-            href="/friends/invitations"
+            href="/friends/invitations?initialIndex=0"
             style={[styles.text, { textDecorationLine: 'underline' }]}
           >
             Ver
@@ -24,7 +24,7 @@ export default function Amigos() {
         <View style={styles.containerText}>
           <Text style={styles.text}>3 solicitações de amizade pendentes</Text>
           <Link
-            href="/friends/invitations"
+            href="/friends/invitations?initialIndex=1"
             style={[styles.text, { textDecorationLine: 'underline' }]}
           >
             Ver
