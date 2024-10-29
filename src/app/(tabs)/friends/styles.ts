@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   tabLabelActive: {
-    fontSize: rem(18),
+    fontSize: rem(16),
     fontFamily: theme.fontFamily.semiBold,
   },
   containerButton: {
