@@ -45,19 +45,6 @@ const renderScene = SceneMap({
   pendentes: PendingRequestSection,
 })
 
-const RenderTabBar = (props: TabBarProps<Route>) => (
-  <TabBar
-    {...props}
-    indicatorStyle={{ backgroundColor: theme.colors.primaryColor }}
-    style={{ backgroundColor: theme.colors.white }}
-    renderLabel={({ route, focused }: { route: Route; focused: boolean }) => (
-      <Text style={[styles.text, focused && styles.tabLabelActive]}>
-        {route.title}
-      </Text>
-    )}
-  />
-)
-
 export default function Invitations() {
   const { initialIndex } = useLocalSearchParams()
   const [index, setIndex] = useState<number>(Number(initialIndex) || 0)
@@ -68,6 +55,19 @@ export default function Invitations() {
   ])
 
   const layout = useWindowDimensions()
+
+  const RenderTabBar = (props: TabBarProps<Route>) => (
+    <TabBar
+      {...props}
+      indicatorStyle={{ backgroundColor: theme.colors.primaryColor }}
+      style={{ backgroundColor: theme.colors.white }}
+      renderLabel={({ route, focused }: { route: Route; focused: boolean }) => (
+        <Text style={[styles.text, focused && styles.tabLabelActive]}>
+          {route.title}
+        </Text>
+      )}
+    />
+  )
 
   return (
     <View style={styles.container}>
