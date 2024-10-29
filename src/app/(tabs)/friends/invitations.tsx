@@ -5,6 +5,7 @@ import { TabView, SceneMap, TabBar, TabBarProps } from 'react-native-tab-view'
 
 import AddFriendButton from '@/src/components/AddFriendButton'
 import SentInvitationComponent from '@/src/components/SentInvitationComponent'
+import PendingInvitationsComponent from '@/src/components/PendingInvitationsComponent'
 
 import { styles } from './styles'
 import { theme } from '@/src/theme'
@@ -29,8 +30,13 @@ const SentRequestSection = () => (
 )
 
 const PendingRequestSection = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Pendentes</Text>
+  <View>
+    <FlatList
+      data={friends}
+      renderItem={({ item }) => <PendingInvitationsComponent friend={item} />}
+      keyExtractor={(item) => item.id.toString()}
+      showsVerticalScrollIndicator={false}
+    />
   </View>
 )
 
