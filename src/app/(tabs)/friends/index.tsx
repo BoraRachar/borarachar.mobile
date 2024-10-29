@@ -4,6 +4,7 @@ import { friends } from '@/src/mock/friends'
 import { useAuthStore } from '@/src/store/useAuthStore'
 
 import { styles } from './styles'
+import { verticalScale } from '@/src/utils/responsiveUtils'
 
 import Plus from '@/src/assets/images/plus.svg'
 import User from '@/src/assets/images/user.svg'
@@ -43,15 +44,8 @@ export default function Amigos() {
         </View>
       </View>
 
-      <View style={styles.containerButton}>
-        <Text style={[styles.text, styles.textButton]}>
-          Adicionar novo amigo
-        </Text>
-        <TouchableOpacity>
-          <View style={styles.addButton}>
-            <Plus />
-          </View>
-        </TouchableOpacity>
+      <View style={{ marginTop: verticalScale(24) }}>
+        <AddFriendButton />
       </View>
 
       <View style={{ flex: 1 }}>
