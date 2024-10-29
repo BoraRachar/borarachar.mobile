@@ -39,6 +39,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  tabLabelActive: {
+    fontSize: rem(18),
+    fontFamily: theme.fontFamily.semiBold,
+  },
   containerButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
