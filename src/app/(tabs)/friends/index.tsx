@@ -1,12 +1,13 @@
 import { Link } from 'expo-router'
-import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, Text, View } from 'react-native'
 import { friends } from '@/src/mock/friends'
 import { useAuthStore } from '@/src/store/useAuthStore'
+
+import AddFriendButton from '@/src/components/AddFriendButton'
 
 import { styles } from './styles'
 import { verticalScale } from '@/src/utils/responsiveUtils'
 
-import Plus from '@/src/assets/images/plus.svg'
 import User from '@/src/assets/images/user.svg'
 import ChevronRight from '@/src/assets/images/chevron-arrow-right.svg'
 
