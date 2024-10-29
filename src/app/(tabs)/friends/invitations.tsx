@@ -11,15 +11,35 @@ import { styles } from './styles'
 import { theme } from '@/src/theme'
 import { verticalScale } from '@/src/utils/responsiveUtils'
 
-import { friends } from '@/src/mock/friends'
+// import { friends } from '@/src/mock/friends'
+const friends = []
 
 type Route = {
   key: string
   title: string
 }
 
-const SentRequestSection = () => (
+const SentRequestSection = ({ list = [] }) => (
   <View>
+    {list.length === 0 && (
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 16,
+          gap: 8,
+        }}
+      >
+        <Text style={[styles.text, styles.textBold, { textAlign: 'center' }]}>
+          Não existem solicitações enviadas
+        </Text>
+        <Text style={[styles.text, { textAlign: 'center' }]}>
+          Clique em <Text style={styles.textBold}>Adicionar novo amigo</Text>{' '}
+          para enviar convite para alguém que você conhece
+        </Text>
+      </View>
+    )}
+
     <FlatList
       data={friends}
       renderItem={({ item }) => <SentInvitationComponent friend={item} />}
@@ -29,10 +49,24 @@ const SentRequestSection = () => (
   </View>
 )
 
-const PendingRequestSection = () => (
+const PendingRequestSection = ({ list = [] }) => (
   <View>
+    {list.length === 0 && (
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 16,
+        }}
+      >
+        <Text style={[styles.text, styles.textBold, { textAlign: 'center' }]}>
+          Não existem solicitações de amizade pendentes
+        </Text>
+      </View>
+    )}
+
     <FlatList
-      data={friends}
+      data={list}
       renderItem={({ item }) => <PendingInvitationsComponent friend={item} />}
       keyExtractor={(item) => item.id.toString()}
       showsVerticalScrollIndicator={false}
@@ -41,8 +75,8 @@ const PendingRequestSection = () => (
 )
 
 const renderScene = SceneMap({
-  enviados: SentRequestSection,
-  pendentes: PendingRequestSection,
+  enviados: () => <SentRequestSection list={friends} />,
+  pendentes: () => <PendingRequestSection list={friends} />,
 })
 
 export default function Invitations() {
