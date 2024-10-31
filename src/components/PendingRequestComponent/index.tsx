@@ -3,10 +3,23 @@ import PendingInvitationsCard from './PendingInvitationsCard'
 
 import { styles } from './styles'
 
-export default function PendingRequestComponent({ list = [] }) {
+type Props = {
+  friends: {
+    id: number
+    name: string
+    avatar: string
+    device: string
+  }[]
+  setModalVisible: (value: boolean) => void
+}
+
+export default function PendingRequestComponent({
+  friends = [],
+  setModalVisible,
+}: Props) {
   return (
     <View>
-      {list.length === 0 && (
+      {friends.length === 0 && (
         <View
           style={{
             justifyContent: 'center',
@@ -21,8 +34,13 @@ export default function PendingRequestComponent({ list = [] }) {
       )}
 
       <FlatList
-        data={list}
-        renderItem={({ item }) => <PendingInvitationsCard friend={item} />}
+        data={friends}
+        renderItem={({ item }) => (
+          <PendingInvitationsCard
+            friend={item}
+            setModalVisible={setModalVisible}
+          />
+        )}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
       />

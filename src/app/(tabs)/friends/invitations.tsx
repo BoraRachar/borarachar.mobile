@@ -6,13 +6,13 @@ import { TabView, SceneMap, TabBar, TabBarProps } from 'react-native-tab-view'
 import AddFriendButton from '@/src/components/AddFriendButton'
 import SentInvitationComponent from '@/src/components/SentRequestComponent'
 import PedingRequestComponent from '@/src/components/PendingRequestComponent'
+import ModalComponent from '@/src/components/ModalComponent'
 
 import { styles } from './styles'
 import { theme } from '@/src/theme'
 import { verticalScale } from '@/src/utils/responsiveUtils'
 
 import { friends } from '@/src/mock/friends'
-import ModalComponent from '@/src/components/ModalComponent'
 // const friends = []
 
 type Route = {
@@ -35,11 +35,16 @@ export default function Invitations() {
   const renderScene = SceneMap({
     enviados: () => (
       <SentInvitationComponent
-        list={friends}
-        modal={[modalVisible, setModalVisible]}
+        friends={friends}
+        setModalVisible={setModalVisible}
       />
     ),
-    pendentes: () => <PedingRequestComponent list={friends} />,
+    pendentes: () => (
+      <PedingRequestComponent
+        friends={friends}
+        setModalVisible={setModalVisible}
+      />
+    ),
   })
 
   const RenderTabBar = (props: TabBarProps<Route>) => (

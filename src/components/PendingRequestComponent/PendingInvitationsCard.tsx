@@ -6,7 +6,19 @@ import CloseRed from '@/src/assets/images/close-red.svg'
 
 import { styles } from './styles'
 
-export default function PendingInvitationsCard({ friend }) {
+type Props = {
+  friend: {
+    avatar: string
+    name: string
+    device: string
+  }
+  setModalVisible: (value: boolean) => void
+}
+
+export default function PendingInvitationsCard({
+  friend,
+  setModalVisible,
+}: Props) {
   return (
     <View style={styles.container}>
       <AvatarImageComponent image={friend.avatar} />
@@ -16,8 +28,16 @@ export default function PendingInvitationsCard({ friend }) {
       </View>
 
       <View style={styles.containerIcons}>
-        <CheckGreen width={24} height={24} />
-        <CloseRed width={24} height={24} />
+        <CheckGreen
+          width={24}
+          height={24}
+          onPress={() => setModalVisible(true)}
+        />
+        <CloseRed
+          width={24}
+          height={24}
+          onPress={() => setModalVisible(true)}
+        />
       </View>
     </View>
   )

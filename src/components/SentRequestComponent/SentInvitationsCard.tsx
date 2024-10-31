@@ -6,9 +6,19 @@ import Trash from '@/src/assets/images/trash.svg'
 
 import { styles } from './styles'
 
-export default function SentInvitationCard({ friend, modal }) {
-  const [modalVisible, setModalVisible] = modal
+type SentInvitationCardProps = {
+  friend: {
+    avatar: string
+    name: string
+    device: string
+  }
+  setModalVisible: (visible: boolean) => void
+}
 
+export default function SentInvitationCard({
+  friend,
+  setModalVisible,
+}: SentInvitationCardProps) {
   return (
     <View style={styles.container}>
       <AvatarImageComponent image={friend.avatar} />
@@ -20,7 +30,7 @@ export default function SentInvitationCard({ friend, modal }) {
 
       <View style={styles.containerIcons}>
         <Email width={24} height={24} onPress={() => setModalVisible(true)} />
-        <Trash width={24} height={24} />
+        <Trash width={24} height={24} onPress={() => setModalVisible(true)} />
       </View>
     </View>
   )

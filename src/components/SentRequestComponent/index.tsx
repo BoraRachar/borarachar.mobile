@@ -4,14 +4,22 @@ import SentInvitationCard from './SentInvitationsCard'
 import { styles } from './styles'
 
 type Props = {
-  list?: []
-  modal?: []
+  friends: {
+    id: number
+    name: string
+    avatar: string
+    device: string
+  }[]
+  setModalVisible: (value: boolean) => void
 }
 
-export default function SentInvitationComponent({ list = [], modal }: Props) {
+export default function SentInvitationComponent({
+  friends = [],
+  setModalVisible,
+}: Props) {
   return (
     <View>
-      {list.length === 0 && (
+      {friends.length === 0 && (
         <View
           style={{
             justifyContent: 'center',
@@ -31,9 +39,9 @@ export default function SentInvitationComponent({ list = [], modal }: Props) {
       )}
 
       <FlatList
-        data={list}
+        data={friends}
         renderItem={({ item }) => (
-          <SentInvitationCard friend={item} modal={modal} />
+          <SentInvitationCard friend={item} setModalVisible={setModalVisible} />
         )}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}

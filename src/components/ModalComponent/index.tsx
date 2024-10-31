@@ -2,11 +2,18 @@ import { Modal, Text, TouchableOpacity, View } from 'react-native'
 
 import { styles } from './styles'
 import { theme } from '@/src/theme'
-export default function ModalComponent({ showModal }) {
+
+type ModalComponentProps = [boolean, (visible: boolean) => void]
+
+export default function ModalComponent({
+  showModal,
+}: {
+  showModal: ModalComponentProps
+}) {
   const [modalVisible, setModalVisible] = showModal
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => {
@@ -16,10 +23,10 @@ export default function ModalComponent({ showModal }) {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Reenviar convite para NOME?</Text>
+            <Text style={styles.modalTitle}>Reenviar convite para [NOME]?</Text>
 
             <Text style={styles.modalText}>
-              Enviaremos um e-mail para NOME com o link do convite.
+              Enviaremos um e-mail para [NOME] com o link do convite.
             </Text>
           </View>
 
