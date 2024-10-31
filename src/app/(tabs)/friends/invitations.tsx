@@ -5,14 +5,14 @@ import { TabView, SceneMap, TabBar, TabBarProps } from 'react-native-tab-view'
 
 import AddFriendButton from '@/src/components/AddFriendButton'
 import SentInvitationComponent from '@/src/components/SentInvitationComponent'
-import PendingInvitationsComponent from '@/src/components/PendingInvitationsComponent'
+import PedingRequestContainer from '@/src/components/PendingRequestContainer'
 
 import { styles } from './styles'
 import { theme } from '@/src/theme'
 import { verticalScale } from '@/src/utils/responsiveUtils'
 
-// import { friends } from '@/src/mock/friends'
-const friends = []
+import { friends } from '@/src/mock/friends'
+// const friends = []
 
 type Route = {
   key: string
@@ -49,34 +49,9 @@ const SentRequestSection = ({ list = [] }) => (
   </View>
 )
 
-const PendingRequestSection = ({ list = [] }) => (
-  <View>
-    {list.length === 0 && (
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: 16,
-        }}
-      >
-        <Text style={[styles.text, styles.textBold, { textAlign: 'center' }]}>
-          Não existem solicitações de amizade pendentes
-        </Text>
-      </View>
-    )}
-
-    <FlatList
-      data={list}
-      renderItem={({ item }) => <PendingInvitationsComponent friend={item} />}
-      keyExtractor={(item) => item.id.toString()}
-      showsVerticalScrollIndicator={false}
-    />
-  </View>
-)
-
 const renderScene = SceneMap({
   enviados: () => <SentRequestSection list={friends} />,
-  pendentes: () => <PendingRequestSection list={friends} />,
+  pendentes: () => <PedingRequestContainer list={friends} />,
 })
 
 export default function Invitations() {

@@ -25,6 +25,9 @@ export const styles = StyleSheet.create({
     color: theme.colors.primaryColor,
     fontFamily: theme.fontFamily.bold,
   },
+  textBold: {
+    fontFamily: theme.fontFamily.bold,
+  },
   containerIcons: {
     flexDirection: 'row',
     alignItems: 'center',
