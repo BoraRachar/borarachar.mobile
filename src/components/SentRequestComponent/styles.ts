@@ -25,6 +25,9 @@ export const styles = StyleSheet.create({
     color: theme.colors.primaryColor,
     fontFamily: theme.fontFamily.regular,
   },
+  textBold: {
+    fontFamily: theme.fontFamily.bold,
+  },
   textName: {
     fontFamily: theme.fontFamily.bold,
   },

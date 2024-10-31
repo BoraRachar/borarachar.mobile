@@ -1,12 +1,12 @@
 import { Text, View } from 'react-native'
-import AvatarImageComponent from '../AvatarImageComponent'
+import AvatarImageComponent from '@/src/components/AvatarImageComponent'
 
 import Email from '@/src/assets/images/e-mail.svg'
 import Trash from '@/src/assets/images/trash.svg'
 
 import { styles } from './styles'
 
-export default function SentInvitationComponent({ friend }) {
+export default function SentInvitationCard({ friend }) {
   return (
     <View style={styles.container}>
       <AvatarImageComponent image={friend.avatar} />

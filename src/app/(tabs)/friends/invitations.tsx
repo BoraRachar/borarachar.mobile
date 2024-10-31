@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { FlatList, Text, useWindowDimensions, View } from 'react-native'
+import { Text, useWindowDimensions, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { TabView, SceneMap, TabBar, TabBarProps } from 'react-native-tab-view'
 
 import AddFriendButton from '@/src/components/AddFriendButton'
-import SentInvitationComponent from '@/src/components/SentInvitationComponent'
-import PedingRequestContainer from '@/src/components/PendingRequestContainer'
+import SentInvitationComponent from '@/src/components/SentRequestComponent'
+import PedingRequestComponent from '@/src/components/PendingRequestComponent'
 
 import { styles } from './styles'
 import { theme } from '@/src/theme'
@@ -19,39 +19,9 @@ type Route = {
   title: string
 }
 
-const SentRequestSection = ({ list = [] }) => (
-  <View>
-    {list.length === 0 && (
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: 16,
-          gap: 8,
-        }}
-      >
-        <Text style={[styles.text, styles.textBold, { textAlign: 'center' }]}>
-          Não existem solicitações enviadas
-        </Text>
-        <Text style={[styles.text, { textAlign: 'center' }]}>
-          Clique em <Text style={styles.textBold}>Adicionar novo amigo</Text>{' '}
-          para enviar convite para alguém que você conhece
-        </Text>
-      </View>
-    )}
-
-    <FlatList
-      data={friends}
-      renderItem={({ item }) => <SentInvitationComponent friend={item} />}
-      keyExtractor={(item) => item.id.toString()}
-      showsVerticalScrollIndicator={false}
-    />
-  </View>
-)
-
 const renderScene = SceneMap({
-  enviados: () => <SentRequestSection list={friends} />,
-  pendentes: () => <PedingRequestContainer list={friends} />,
+  enviados: () => <SentInvitationComponent list={friends} />,
+  pendentes: () => <PedingRequestComponent list={friends} />,
 })
 
 export default function Invitations() {

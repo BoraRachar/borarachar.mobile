@@ -3,7 +3,7 @@ import PendingInvitationsCard from './PendingInvitationsCard'
 
 import { styles } from './styles'
 
-export default function PendingRequestContainer({ list = [] }) {
+export default function PendingRequestComponent({ list = [] }) {
   return (
     <View>
       {list.length === 0 && (
