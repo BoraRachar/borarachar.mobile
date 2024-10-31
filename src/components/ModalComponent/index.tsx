@@ -1,26 +1,54 @@
-import { Modal, Pressable, Text, View } from 'react-native'
+import { Modal, Text, TouchableOpacity, View } from 'react-native'
 
 import { styles } from './styles'
-
-export default function ModalComponent() {
+import { theme } from '@/src/theme'
+export default function ModalComponent({ showModal }) {
+  const [modalVisible, setModalVisible] = showModal
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={true}
+      visible={modalVisible}
       onRequestClose={() => {
-        console.log('Fechou')
+        setModalVisible(!modalVisible)
       }}
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text style={styles.modalText}>Hello World!</Text>
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={() => console.log('foi')}
-          >
-            <Text style={styles.textStyle}>Hide Modal</Text>
-          </Pressable>
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>Reenviar convite para NOME?</Text>
+
+            <Text style={styles.modalText}>
+              Enviaremos um e-mail para NOME com o link do convite.
+            </Text>
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: theme.colors.third }]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text
+                style={[
+                  styles.buttonText,
+                  { color: theme.colors.primaryColor },
+                ]}
+              >
+                Não Enviar
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                { backgroundColor: theme.colors.primaryColor },
+              ]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={[styles.buttonText, { color: theme.colors.white }]}>
+                Enviar
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>

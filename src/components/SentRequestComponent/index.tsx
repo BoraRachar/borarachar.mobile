@@ -3,7 +3,12 @@ import SentInvitationCard from './SentInvitationsCard'
 
 import { styles } from './styles'
 
-export default function SentInvitationComponent({ list = [] }) {
+type Props = {
+  list?: []
+  modal?: []
+}
+
+export default function SentInvitationComponent({ list = [], modal }: Props) {
   return (
     <View>
       {list.length === 0 && (
@@ -27,7 +32,9 @@ export default function SentInvitationComponent({ list = [] }) {
 
       <FlatList
         data={list}
-        renderItem={({ item }) => <SentInvitationCard friend={item} />}
+        renderItem={({ item }) => (
+          <SentInvitationCard friend={item} modal={modal} />
+        )}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
       />

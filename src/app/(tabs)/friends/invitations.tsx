@@ -12,6 +12,7 @@ import { theme } from '@/src/theme'
 import { verticalScale } from '@/src/utils/responsiveUtils'
 
 import { friends } from '@/src/mock/friends'
+import ModalComponent from '@/src/components/ModalComponent'
 // const friends = []
 
 type Route = {
@@ -19,21 +20,27 @@ type Route = {
   title: string
 }
 
-const renderScene = SceneMap({
-  enviados: () => <SentInvitationComponent list={friends} />,
-  pendentes: () => <PedingRequestComponent list={friends} />,
-})
-
 export default function Invitations() {
+  const [modalVisible, setModalVisible] = useState(false)
   const { initialIndex } = useLocalSearchParams()
   const [index, setIndex] = useState<number>(Number(initialIndex) || 0)
+
+  const layout = useWindowDimensions()
 
   const [routes] = useState<Route[]>([
     { key: 'enviados', title: 'Enviados' },
     { key: 'pendentes', title: 'Pendentes' },
   ])
 
-  const layout = useWindowDimensions()
+  const renderScene = SceneMap({
+    enviados: () => (
+      <SentInvitationComponent
+        list={friends}
+        modal={[modalVisible, setModalVisible]}
+      />
+    ),
+    pendentes: () => <PedingRequestComponent list={friends} />,
+  })
 
   const RenderTabBar = (props: TabBarProps<Route>) => (
     <TabBar
@@ -60,6 +67,8 @@ export default function Invitations() {
         renderTabBar={RenderTabBar}
         style={{ marginTop: verticalScale(24) }}
       />
+
+      <ModalComponent showModal={[modalVisible, setModalVisible]} />
     </View>
   )
 }
