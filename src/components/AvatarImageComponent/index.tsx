@@ -3,7 +3,15 @@ import { Image, StyleSheet, View } from 'react-native'
 
 import User from '@/src/assets/images/user.svg'
 
-export default function AvatarImageComponent({ image }: { image: string }) {
+type AvatarImageComponentProps = {
+  image: string
+  size?: number
+}
+
+export default function AvatarImageComponent({
+  image,
+  size = 48,
+}: AvatarImageComponentProps) {
   return (
     <View>
       {image ? (
@@ -11,6 +19,8 @@ export default function AvatarImageComponent({ image }: { image: string }) {
           source={{ uri: image }}
           alt="avatar do usuario"
           style={styles.avatarImage}
+          width={size}
+          height={size}
         />
       ) : (
         <View style={styles.avatarContainer}>
@@ -23,9 +33,6 @@ export default function AvatarImageComponent({ image }: { image: string }) {
 
 const styles = StyleSheet.create({
   avatarImage: {
-    flex: 1,
-    width: 48,
-    height: 48,
     borderRadius: 50,
     resizeMode: 'cover',
   },

@@ -71,9 +71,6 @@ export const styles = StyleSheet.create({
     padding: 14,
   },
   avatarImage: {
-    flex: 1,
-    width: 48,
-    height: 48,
     borderRadius: 50,
     resizeMode: 'cover',
   },

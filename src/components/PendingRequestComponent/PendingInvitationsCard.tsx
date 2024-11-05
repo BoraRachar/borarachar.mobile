@@ -21,7 +21,7 @@ export default function PendingInvitationsCard({
 }: Props) {
   return (
     <View style={styles.container}>
-      <AvatarImageComponent image={friend.avatar} />
+      <AvatarImageComponent image={friend.avatar} size={48} />
 
       <View style={styles.containerText}>
         <Text style={styles.text}>{friend.name}</Text>
