@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   tabLabelActive: {
-    fontSize: rem(18),
+    fontSize: rem(16),
     fontFamily: theme.fontFamily.semiBold,
   },
   containerButton: {
@@ -71,9 +71,6 @@ export const styles = StyleSheet.create({
     padding: 14,
   },
   avatarImage: {
-    flex: 1,
-    width: 48,
-    height: 48,
     borderRadius: 50,
     resizeMode: 'cover',
   },

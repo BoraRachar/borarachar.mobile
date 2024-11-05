@@ -10,6 +10,7 @@ import { verticalScale } from '@/src/utils/responsiveUtils'
 
 import User from '@/src/assets/images/user.svg'
 import ChevronRight from '@/src/assets/images/chevron-arrow-right.svg'
+import AvatarImageComponent from '@/src/components/AvatarImageComponent'
 
 type Friend = {
   id: number
@@ -68,11 +69,7 @@ const FriendItem = ({ friend }: { friend: Friend }) => {
     <View style={styles.contentFriend}>
       <View>
         {friend?.avatar ? (
-          <Image
-            source={{ uri: friend.avatar }}
-            alt="avatar do usuario"
-            style={styles.avatarImage}
-          />
+          <AvatarImageComponent image={friend.avatar} size={48} />
         ) : (
           <View style={styles.avatarContainer}>
             <User width={24} height={24} />

@@ -4,56 +4,61 @@ import { useLocalSearchParams } from 'expo-router'
 import { TabView, SceneMap, TabBar, TabBarProps } from 'react-native-tab-view'
 
 import AddFriendButton from '@/src/components/AddFriendButton'
+import SentInvitationComponent from '@/src/components/SentRequestComponent'
+import PedingRequestComponent from '@/src/components/PendingRequestComponent'
+import ModalComponent from '@/src/components/ModalComponent'
 
 import { styles } from './styles'
 import { theme } from '@/src/theme'
 import { verticalScale } from '@/src/utils/responsiveUtils'
+
+import { friends } from '@/src/mock/friends'
+// const friends = []
 
 type Route = {
   key: string
   title: string
 }
 
-const SentRequestSection = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Enviados</Text>
-  </View>
-)
-
-const PendingRequestSection = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Pendentes</Text>
-  </View>
-)
-
-const renderScene = SceneMap({
-  enviados: SentRequestSection,
-  pendentes: PendingRequestSection,
-})
-
-const RenderTabBar = (props: TabBarProps<Route>) => (
-  <TabBar
-    {...props}
-    indicatorStyle={{ backgroundColor: theme.colors.primaryColor }}
-    style={{ backgroundColor: theme.colors.white }}
-    renderLabel={({ route, focused }: { route: Route; focused: boolean }) => (
-      <Text style={[styles.text, focused && styles.tabLabelActive]}>
-        {route.title}
-      </Text>
-    )}
-  />
-)
-
 export default function Invitations() {
+  const [modalVisible, setModalVisible] = useState(false)
   const { initialIndex } = useLocalSearchParams()
   const [index, setIndex] = useState<number>(Number(initialIndex) || 0)
+
+  const layout = useWindowDimensions()
 
   const [routes] = useState<Route[]>([
     { key: 'enviados', title: 'Enviados' },
     { key: 'pendentes', title: 'Pendentes' },
   ])
 
-  const layout = useWindowDimensions()
+  const renderScene = SceneMap({
+    enviados: () => (
+      <SentInvitationComponent
+        friends={friends}
+        setModalVisible={setModalVisible}
+      />
+    ),
+    pendentes: () => (
+      <PedingRequestComponent
+        friends={friends}
+        setModalVisible={setModalVisible}
+      />
+    ),
+  })
+
+  const RenderTabBar = (props: TabBarProps<Route>) => (
+    <TabBar
+      {...props}
+      indicatorStyle={{ backgroundColor: theme.colors.primaryColor }}
+      style={{ backgroundColor: theme.colors.white }}
+      renderLabel={({ route, focused }: { route: Route; focused: boolean }) => (
+        <Text style={[styles.text, focused && styles.tabLabelActive]}>
+          {route.title}
+        </Text>
+      )}
+    />
+  )
 
   return (
     <View style={styles.container}>
@@ -67,6 +72,8 @@ export default function Invitations() {
         renderTabBar={RenderTabBar}
         style={{ marginTop: verticalScale(24) }}
       />
+
+      <ModalComponent showModal={[modalVisible, setModalVisible]} />
     </View>
   )
 }
