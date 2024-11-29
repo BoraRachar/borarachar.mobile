@@ -1,9 +1,10 @@
-import { Link } from 'expo-router'
-import { FlatList, Image, Text, View } from 'react-native'
-import { friends } from '@/src/mock/friends'
+import { FlatList, Text, View } from 'react-native'
+
 import { useAuthStore } from '@/src/store/useAuthStore'
 
-import AddFriendButton from '@/src/components/AddFriendButton'
+import SeeMoreLink from './components/SeeMoreLink.tsx'
+import LinkToAddNewFriendsPage from './components/LinkToAddNewFriendsPage'
+import EmptyListMessage from './components/EmptyListMessage'
 
 import { styles } from './styles'
 import { verticalScale } from '@/src/utils/responsiveUtils'
@@ -11,6 +12,8 @@ import { verticalScale } from '@/src/utils/responsiveUtils'
 import User from '@/src/assets/images/user.svg'
 import ChevronRight from '@/src/assets/images/chevron-arrow-right.svg'
 import AvatarImageComponent from '@/src/components/AvatarImageComponent'
+// import { friends } from '@/src/mock/friends'
+const friends = []
 
 type Friend = {
   id: number
@@ -19,63 +22,18 @@ type Friend = {
   groups: number
 }
 
-export default function Amigos() {
-  const { user } = useAuthStore()
-  return (
-    <View style={styles.container}>
-      <View style={styles.resumeContent}>
-        <Text style={styles.text}>{`${user}, você tem:`}</Text>
-        <Text style={styles.text}>10 amigos</Text>
-        <View style={styles.containerText}>
-          <Text style={styles.text}>4 convites enviados</Text>
-          <Link
-            href="/friends/invitations?initialIndex=0"
-            style={[styles.text, { textDecorationLine: 'underline' }]}
-          >
-            Ver
-          </Link>
-        </View>
-        <View style={styles.containerText}>
-          <Text style={styles.text}>3 solicitações de amizade pendentes</Text>
-          <Link
-            href="/friends/invitations?initialIndex=1"
-            style={[styles.text, { textDecorationLine: 'underline' }]}
-          >
-            Ver
-          </Link>
-        </View>
-      </View>
-
-      <View style={{ marginTop: verticalScale(24) }}>
-        <AddFriendButton />
-      </View>
-
-      <View style={{ flex: 1 }}>
-        <Text style={styles.title}>Amigos</Text>
-
-        <FlatList
-          data={friends}
-          renderItem={({ item }) => <FriendItem friend={item} />}
-          keyExtractor={(item) => item.id.toString()}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
+const FriendItem = ({ friend }: { friend: Friend }) => {
+  const Avatar = friend.avatar ? (
+    <AvatarImageComponent image={friend.avatar} size={48} />
+  ) : (
+    <View style={styles.avatarContainer}>
+      <User width={24} height={24} />
     </View>
   )
-}
 
-const FriendItem = ({ friend }: { friend: Friend }) => {
   return (
     <View style={styles.contentFriend}>
-      <View>
-        {friend?.avatar ? (
-          <AvatarImageComponent image={friend.avatar} size={48} />
-        ) : (
-          <View style={styles.avatarContainer}>
-            <User width={24} height={24} />
-          </View>
-        )}
-      </View>
+      <View>{Avatar}</View>
 
       <View style={{ flex: 1 }}>
         <Text style={[styles.text, styles.textBold]}>{friend.name}</Text>
@@ -84,6 +42,54 @@ const FriendItem = ({ friend }: { friend: Friend }) => {
 
       <View>
         <ChevronRight />
+      </View>
+    </View>
+  )
+}
+
+export default function FriendPage() {
+  const { user } = useAuthStore()
+
+  return (
+    <View style={styles.container}>
+      {/* Resumo do usuário */}
+      <View style={styles.resumeContent}>
+        <Text style={styles.text}>{`${user}, você tem:`}</Text>
+        <Text style={styles.text}>10 amigos</Text>
+
+        <View style={styles.containerText}>
+          <Text style={styles.text}>4 convites enviados</Text>
+          <SeeMoreLink text="Ver" initialTab="0" />
+        </View>
+
+        <View style={styles.containerText}>
+          <Text style={styles.text}>3 solicitações de amizade pendentes</Text>
+          <SeeMoreLink text="Ver" initialTab="1" />
+        </View>
+      </View>
+
+      {/* Link para pagina Adicionar Amigos */}
+      <View style={{ marginTop: verticalScale(24) }}>
+        <LinkToAddNewFriendsPage />
+      </View>
+
+      {/* Lista de amigos */}
+
+      <View style={{ flex: 1 }}>
+        {friends.length === 0 ? (
+          <EmptyListMessage title="Você ainda não tem amigos" />
+        ) : (
+          <View>
+            <Text style={styles.title}>Amigos</Text>
+
+            <FlatList
+              data={friends}
+              renderItem={({ item }) => <FriendItem friend={item} />}
+              keyExtractor={(item) => item.id.toString()}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
+        )}
       </View>
     </View>
   )
