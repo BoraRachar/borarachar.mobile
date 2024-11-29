@@ -13,6 +13,7 @@ import { theme } from '@/src/theme'
 import { verticalScale } from '@/src/utils/responsiveUtils'
 
 import { friends } from '@/src/mock/friends'
+import LinkToAddNewFriendsPage from './components/LinkToAddNewFriendsPage'
 // const friends = []
 
 type Route = {
@@ -62,7 +63,7 @@ export default function Invitations() {
 
   return (
     <View style={styles.container}>
-      <AddFriendButton />
+      <LinkToAddNewFriendsPage />
 
       <TabView
         navigationState={{ index, routes }}

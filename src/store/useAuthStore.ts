@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import * as SecureStore from 'expo-secure-store'
+import { SecureStoreUtils } from '@/src/utils/secureStoreUtils'
 
 interface AuthState {
   userName: string | null
@@ -19,12 +19,24 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
 
   login: async (accessToken, userName, userCod) => {
-    await SecureStore.setItemAsync('accessToken', accessToken)
+    if (!accessToken || !userName || !userCod) {
+      console.error('Login falhou: dados de autenticação inválidos')
+      return
+    }
+
+    await SecureStoreUtils.setItem('acessToken', accessToken)
     set({ userName, userCod, isAuthenticated: true })
   },
 
   logout: async () => {
-    await SecureStore.deleteItemAsync('acessToken')
+    await SecureStoreUtils.deleteItem('acessToken')
     set({ userName: null, userCod: null, isAuthenticated: false })
+  },
+
+  initializeAuthState: async () => {
+    const accessToken = await SecureStoreUtils.getItem('acessToken')
+    if (accessToken) {
+      set({ isAuthenticated: true })
+    }
   },
 }))
