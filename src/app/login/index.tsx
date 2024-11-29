@@ -55,8 +55,8 @@ export default function Login() {
         password: data.password,
       })
       if (response) {
-        const { accessToken, nome } = response.data.data
-        await login(accessToken, nome)
+        const { accessToken, nome, cod } = response.data.data
+        await login(accessToken, nome, cod)
         router.push('/home')
       }
     } catch (err) {
