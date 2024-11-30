@@ -3,6 +3,7 @@ import {
   horizontalScale,
   verticalScale,
   rem,
+  moderateScale,
 } from '@/src/utils/responsiveUtils'
 import { StyleSheet } from 'react-native'
 
@@ -28,6 +29,9 @@ export const styles = StyleSheet.create({
     lineHeight: verticalScale(24),
     fontFamily: theme.fontFamily.regular,
     color: theme.colors.primaryColor,
+  },
+  textSemiBold: {
+    fontFamily: theme.fontFamily.semiBold,
   },
   textBold: {
     fontFamily: theme.fontFamily.bold,
@@ -73,5 +77,46 @@ export const styles = StyleSheet.create({
   avatarImage: {
     borderRadius: 50,
     resizeMode: 'cover',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: horizontalScale(8),
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: theme.colors.Gray[300],
+    paddingHorizontal: horizontalScale(16),
+    paddingVertical: verticalScale(12),
+  },
+  input: {
+    width: '100%',
+    height: verticalScale(24),
+    fontFamily: theme.fontFamily.regular,
+    fontSize: rem(16),
+    lineHeight: verticalScale(24),
+    color: theme.colors.Gray[900],
+  },
+  error: {
+    color: theme.colors.Error[500],
+    fontSize: rem(12),
+    lineHeight: verticalScale(16),
+    marginTop: verticalScale(8),
+  },
+  subTitle: {
+    fontFamily: theme.fontFamily.semiBold,
+    fontSize: rem(20),
+    lineHeight: verticalScale(24),
+    color: theme.colors.primaryColor,
+  },
+  inviteButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: horizontalScale(16),
+  },
+  iconContainer: {
+    borderWidth: 2,
+    borderColor: theme.colors.Gray[500],
+    borderRadius: 100,
+    padding: moderateScale(12),
   },
 })
