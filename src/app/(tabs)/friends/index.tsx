@@ -48,13 +48,13 @@ const FriendItem = ({ friend }: { friend: Friend }) => {
 }
 
 export default function FriendPage() {
-  const { user } = useAuthStore()
+  const { userName } = useAuthStore()
 
   return (
     <View style={styles.container}>
       {/* Resumo do usuário */}
       <View style={styles.resumeContent}>
-        <Text style={styles.text}>{`${user}, você tem:`}</Text>
+        <Text style={styles.text}>{`${userName}, você tem:`}</Text>
         <Text style={styles.text}>10 amigos</Text>
 
         <View style={styles.containerText}>

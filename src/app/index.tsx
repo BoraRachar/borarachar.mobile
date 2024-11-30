@@ -40,17 +40,18 @@ export default function Index() {
     checkFirstTime()
   }, [])
 
-  useEffect(() => {
-    const checkIfUserIsAuthenticated = async () => {
-      await useAuthStore.getState().initializeAuthState()
-      const isAuthenticated = useAuthStore.getState().isAuthenticated
+  // Verificar se já está authenticado
+  // useEffect(() => {
+  //   const checkIfUserIsAuthenticated = async () => {
+  //     await useAuthStore.getState().initializeAuthState()
+  //     const isAuthenticated = useAuthStore.getState().isAuthenticated
 
-      if (isAuthenticated) {
-        router.push('/home')
-      }
-    }
-    checkIfUserIsAuthenticated()
-  }, [])
+  //     if (isAuthenticated) {
+  //       router.push('/home')
+  //     }
+  //   }
+  //   checkIfUserIsAuthenticated()
+  // }, [])
 
   return (
     <View>
