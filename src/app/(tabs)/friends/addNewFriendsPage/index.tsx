@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Text, View, TextInput, Pressable, ScrollView } from 'react-native'
 import { router } from 'expo-router'
-import { Controller, FieldValues, useForm } from 'react-hook-form'
+import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
+import { searchUser } from './actions'
 import { useAuthStore } from '@/src/store/useAuthStore'
-import { axiosPrivateClient } from '@/src/utils/axios'
 import useKeyboardStatus from '@/src/utils/keyboardUtils'
 
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
@@ -18,6 +18,7 @@ import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from '../styles'
 import { verticalScale } from '@/src/utils/responsiveUtils'
 
+// validação yup
 const yupSchema = yup.object().shape({
   inputSearch: yup.string().required('O campo deve ser preenchido'),
 })
@@ -34,26 +35,30 @@ export default function AddNewFriendsPage() {
   const { userCod } = useAuthStore()
   const isKeyboardVisible = useKeyboardStatus()
 
-  const searchUserInApi = async (data: FieldValues) => {
-    const response = await axiosPrivateClient.get('user/list-usuarios', {
-      params: { email: data.inputSearch, userCod },
-    })
-    return response
-  }
+  const searchQuery = useWatch({
+    control,
+    name: 'inputSearch',
+    defaultValue: '',
+  })
+
+  const isSearchEnable = searchQuery.trim().length > 0
 
   const onSubmit = async (data: FieldValues) => {
     try {
-      const users = await searchUserInApi(data)
+      const response = await searchUser(data.inputSearch, userCod)
 
-      if (users.data.statusCode === 200) {
-        const userList = JSON.stringify(users.data.data)
+      if (response.statusCode === 200) {
+        const userList = JSON.stringify(response.data)
         router.push({
-          pathname: '/friends/addNewFriendsPage/searchResults',
+          pathname: '/friends/addNewFriendsPage/friendSearchResults',
           params: { userList },
         })
+      } else {
+        setUserNotFound(true)
+        console.error()
       }
     } catch (error) {
-      console.log(error)
+      setUserNotFound(true)
     }
   }
 
@@ -66,7 +71,7 @@ export default function AddNewFriendsPage() {
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+        <View>
           <Text style={styles.title}>Encontre amigos que já usam o app!</Text>
 
           <View style={{ marginTop: verticalScale(16) }}>
@@ -104,7 +109,12 @@ export default function AddNewFriendsPage() {
           <ButtonCustomizer.Root
             type="primary"
             onPress={handleSubmit(onSubmit)}
-            customStyles={globalStyles.primaryButton}
+            customStyles={
+              isSearchEnable
+                ? globalStyles.primaryButton
+                : globalStyles.primaryButtonDisabled
+            }
+            disabled={!isSearchEnable}
           >
             <ButtonCustomizer.Title
               title="Buscar"
@@ -126,7 +136,9 @@ const InvitePrompt = () => {
       <View style={{ marginTop: verticalScale(12) }}>
         <Pressable
           style={styles.inviteButton}
-          onPress={() => router.push('/home')}
+          onPress={() =>
+            router.push('/friends/addNewFriendsPage/inviteByEmail')
+          }
         >
           <View style={styles.iconContainer}>
             <EmailIcon width={24} height={24} />

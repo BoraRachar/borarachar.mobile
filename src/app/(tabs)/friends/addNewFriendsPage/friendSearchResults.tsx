@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 
-export default function SearchResults() {
+export default function friendSearchResults() {
   const { userList } = useLocalSearchParams()
   console.log('Veio da qui', userList)
   return (

@@ -36,26 +36,3 @@ axiosPrivateClient.interceptors.request.use(
     Promise.reject(error)
   },
 )
-
-axiosPrivateClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    console.error(
-      'Erro na resposta da requisição:',
-      error.response || error.message,
-    )
-
-    if (error.response.status === 401) {
-      try {
-        console.warn(
-          'token inválido ou expirado. Redirecionando para login ...',
-        )
-        await SecureStoreUtils.deleteItem('accessToken')
-        router.push('/login')
-      } catch (error) {
-        console.error('Erro ao limpar o token:', error)
-      }
-    }
-    return Promise.reject(error)
-  },
-)

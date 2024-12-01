@@ -57,9 +57,25 @@ export default function FriendsLayout() {
       />
 
       <Stack.Screen
-        name="addNewFriendsPage/searchResults"
+        name="addNewFriendsPage/friendSearchResults"
         options={{
           title: 'Adicionar Amigos',
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <LeftIcon
+              onPress={() => {
+                router.back()
+              }}
+            />
+          ),
+        }}
+      />
+
+      <Stack.Screen
+        name="addNewFriendsPage/inviteByEmail"
+        options={{
+          title: 'Convidar por E-mail',
           headerShown: true,
           headerTitleAlign: 'center',
           headerLeft: () => (
