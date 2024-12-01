@@ -51,7 +51,7 @@ export default function AddNewFriendsPage() {
         const userList = JSON.stringify(response.data)
         router.push({
           pathname: '/friends/addNewFriendsPage/friendSearchResults',
-          params: { userList },
+          params: { userList, userCod },
         })
       } else {
         setUserNotFound(true)

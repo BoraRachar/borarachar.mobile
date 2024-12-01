@@ -119,4 +119,12 @@ export const styles = StyleSheet.create({
     borderRadius: 100,
     padding: moderateScale(12),
   },
+  renderItemContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: horizontalScale(16),
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.third,
+    paddingVertical: verticalScale(12),
+  },
 })

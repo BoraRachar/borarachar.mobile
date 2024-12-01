@@ -1,7 +1,7 @@
 import { theme } from '@/src/theme'
 import { Image, StyleSheet, View } from 'react-native'
 
-import User from '@/src/assets/images/user.svg'
+import UserIcon from '@/src/assets/images/user.svg'
 
 type AvatarImageComponentProps = {
   image: string
@@ -24,7 +24,7 @@ export default function AvatarImageComponent({
         />
       ) : (
         <View style={styles.avatarContainer}>
-          <User width={24} height={24} />
+          <UserIcon width={24} height={24} />
         </View>
       )}
     </View>
