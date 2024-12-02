@@ -127,4 +127,18 @@ export const styles = StyleSheet.create({
     borderBottomColor: theme.colors.third,
     paddingVertical: verticalScale(12),
   },
+  inputTextAreaContainer: {
+    borderWidth: 1,
+    borderColor: theme.colors.Gray[300],
+    borderRadius: 8,
+    width: '100%',
+    height: verticalScale(174),
+    padding: moderateScale(12),
+  },
+  InputTextArea: {
+    fontFamily: theme.fontFamily.regular,
+    fontSize: rem(14),
+    lineHeight: verticalScale(24),
+    textAlignVertical: 'top',
+  },
 })

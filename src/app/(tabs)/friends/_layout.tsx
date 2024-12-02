@@ -73,7 +73,7 @@ export default function FriendsLayout() {
       />
 
       <Stack.Screen
-        name="addNewFriendsPage/inviteByEmail"
+        name="emailInvitationPage/index"
         options={{
           title: 'Convidar por E-mail',
           headerShown: true,

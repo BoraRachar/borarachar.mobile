@@ -16,9 +16,7 @@ export default function LinkToInviteByEmailPage({
       <View style={{ marginTop: verticalScale(12) }}>
         <Pressable
           style={styles.inviteButton}
-          onPress={() =>
-            router.push('/friends/addNewFriendsPage/inviteByEmail')
-          }
+          onPress={() => router.push('/friends/emailInvitationPage')}
         >
           <View style={styles.iconContainer}>
             <EmailIcon width={24} height={24} />
