@@ -35,19 +35,20 @@ export default function FriendSearchResults() {
 
   const handleAddNewFriend = useCallback(
     async (amigoId: string) => {
-      try {
-        const response = await addNewFriend(userCod, amigoId)
+      const response = await addNewFriend(userCod, amigoId)
 
-        if (response.statusCode === 201) {
-          setisFriendAdded(true)
-        } else {
-          throw new Error(`Unexpected status code: ${response.statusCode}`)
-        }
-      } catch (error) {
-        setisFriendAdded(false)
-        console.error('Error adding friend:', error)
-        Alert.alert('Erro ao adicionar amigo, tente novamente')
+      if (response.statusCode === 201) {
+        setisFriendAdded(true)
+        return
       }
+
+      if (response.statusCode === 400) {
+        setisFriendAdded(false)
+        Alert.alert(response.userMessage)
+        return
+      }
+
+      Alert.alert('Erro ao adicionar amigo, tente novamente!')
     },
     [userCod],
   )
@@ -64,7 +65,6 @@ export default function FriendSearchResults() {
               {`@${item.userName}`}
             </Text>
             <Text style={styles.text}>{item.email}</Text>
-            <Text style={styles.text}>{item.amigoId}</Text>
           </View>
 
           <View>

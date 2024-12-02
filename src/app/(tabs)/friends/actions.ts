@@ -1,4 +1,5 @@
 import { axiosPrivateClient } from '@/src/utils/axios'
+import { Alert } from 'react-native'
 
 export const searchUser = async (email: string, userCod: string | null) => {
   const response = await axiosPrivateClient.get('user/list-usuarios', {
@@ -11,9 +12,19 @@ export const addNewFriend = async (
   userCod: string | string[],
   amigoId: string,
 ) => {
-  const response = await axiosPrivateClient.post('amizade/add-amigo', {
-    userCod,
-    amigoId,
-  })
-  return response.data
+  try {
+    const response = await axiosPrivateClient.post('amizade/add-amigo', {
+      userCod,
+      amigoId,
+    })
+
+    return response.data
+  } catch (error) {
+    const userMessage = JSON.stringify(
+      error.response.data.errors[0].userMessage,
+    )
+    const statusCode = error.response.data.statusCode
+
+    return { statusCode, userMessage }
+  }
 }
