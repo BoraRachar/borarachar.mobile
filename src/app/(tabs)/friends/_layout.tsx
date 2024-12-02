@@ -2,6 +2,7 @@ import { Stack, router } from 'expo-router'
 
 import LeftIcon from '@/src/assets/images/arrowBack.svg'
 import Question from '@/src/assets/images/question.svg'
+import CloseIcon from '@/src/assets/images/close-roudend.svg'
 
 export default function FriendsLayout() {
   return (
@@ -82,6 +83,23 @@ export default function FriendsLayout() {
             <LeftIcon
               onPress={() => {
                 router.back()
+              }}
+            />
+          ),
+        }}
+      />
+
+      <Stack.Screen
+        name="emailInvitationPage/sucessInvitationEmailPage"
+        options={{
+          title: 'Sucesso',
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerLeft: () => false,
+          headerRight: () => (
+            <CloseIcon
+              onPress={() => {
+                router.push('/friends/')
               }}
             />
           ),

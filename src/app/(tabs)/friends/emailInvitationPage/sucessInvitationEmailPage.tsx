@@ -1,16 +1,15 @@
 import { Text, View } from 'react-native'
+import { router, useLocalSearchParams } from 'expo-router'
 
 import CelebrationFriendsIcon from '@/src/assets/images/celebration-amico.svg'
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
-import { router, useLocalSearchParams } from 'expo-router'
+import { horizontalScale, verticalScale } from '@/src/utils/responsiveUtils'
 
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from '../styles'
-import { horizontalScale, verticalScale } from '@/src/utils/responsiveUtils'
 
-export default function Success() {
+export default function SucessInvitationEmailPage() {
   const { name } = useLocalSearchParams()
-  console.log(name)
 
   return (
     <View
