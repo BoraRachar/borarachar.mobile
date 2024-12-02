@@ -1,56 +1,90 @@
-import { FlatList, Text, TouchableOpacity, View } from 'react-native'
+import { useCallback, useState } from 'react'
+import {
+  Alert,
+  FlatList,
+  ListRenderItem,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 
 import AvatarImageComponent from '@/src/components/AvatarImageComponent'
+import LinkToInviteByEmailPage from '../components/LinkToInviteByEmailPage'
+
 import PlusCircleIcon from '@/src/assets/images/plus-circle.svg'
+import CheckIcon from '@/src/assets/images/check.svg'
 
 import { styles } from '../styles'
-import { axiosPrivateClient } from '@/src/utils/axios'
+import { addNewFriend } from '../actions'
+
+type User = {
+  amigoId: string
+  userName: string
+  email: string
+  avatar: string
+}
 
 export default function FriendSearchResults() {
-  const { userList, userCod } = useLocalSearchParams()
-  const users = JSON.parse(userList as string)
+  const [isFriendAdded, setisFriendAdded] = useState(false)
+  const { userList, userCod } = useLocalSearchParams<{
+    userList: string
+    userCod: string
+  }>()
+  const friendsList = JSON.parse(userList as string)
 
-  const handleAddNewFriend = async (amigoId: string) => {
-    try {
-      const response = await axiosPrivateClient.post('/amizade/add-amigo', {
-        userCod,
-        amigoId,
-      })
+  const handleAddNewFriend = useCallback(
+    async (amigoId: string) => {
+      try {
+        const response = await addNewFriend(userCod, amigoId)
 
-      if (response.data.statusCode === 200) {
-        console.log('Deu certo, Mudar o icone')
+        if (response.statusCode === 201) {
+          setisFriendAdded(true)
+        } else {
+          throw new Error(`Unexpected status code: ${response.statusCode}`)
+        }
+      } catch (error) {
+        setisFriendAdded(false)
+        console.error('Error adding friend:', error)
+        Alert.alert('Erro ao adicionar amigo, tente novamente')
       }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  const RenderItem = ({ item }) => {
-    return (
-      <View style={styles.renderItemContent}>
-        <View>
-          <AvatarImageComponent image={item.avatar} size={48} />
-        </View>
+    },
+    [userCod],
+  )
+  const RenderFriendItem = useCallback<ListRenderItem<User>>(
+    ({ item }) => {
+      return (
+        <View style={styles.renderItemContent}>
+          <View>
+            <AvatarImageComponent image={item.avatar} size={48} />
+          </View>
 
-        <View style={{ flex: 1 }}>
-          <Text style={[styles.text, styles.textBold]}>
-            {`@${item.userName}`}
-          </Text>
-          <Text style={styles.text}>{item.email}</Text>
-        </View>
+          <View style={{ flex: 1 }}>
+            <Text style={[styles.text, styles.textBold]}>
+              {`@${item.userName}`}
+            </Text>
+            <Text style={styles.text}>{item.email}</Text>
+            <Text style={styles.text}>{item.amigoId}</Text>
+          </View>
 
-        <View>
-          <TouchableOpacity
-            onPress={() => handleAddNewFriend(item.amigoId)}
-            accessibilityLabel="Adicionar amigo"
-            accessibilityRole="button"
-          >
-            <PlusCircleIcon width={20} height={20} />
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity
+              onPress={() => handleAddNewFriend(item.amigoId)}
+              accessibilityLabel="Adicionar amigo"
+              accessibilityRole="button"
+            >
+              {isFriendAdded ? (
+                <CheckIcon width={20} height={20} />
+              ) : (
+                <PlusCircleIcon width={20} height={20} />
+              )}
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    )
-  }
+      )
+    },
+    [handleAddNewFriend, isFriendAdded],
+  )
 
   return (
     <View style={styles.container}>
@@ -58,11 +92,14 @@ export default function FriendSearchResults() {
         Encontramos alguns usuários com esse nome
       </Text>
 
-      <FlatList
-        data={users}
-        keyExtractor={(item) => item.amigoId.toString()}
-        renderItem={RenderItem}
-      />
+      <View>
+        <FlatList
+          data={friendsList}
+          keyExtractor={(item) => item.amigoId}
+          renderItem={RenderFriendItem}
+          ListFooterComponent={<LinkToInviteByEmailPage withTitle />}
+        />
+      </View>
     </View>
   )
 }

@@ -6,3 +6,14 @@ export const searchUser = async (email: string, userCod: string | null) => {
   })
   return response.data
 }
+
+export const addNewFriend = async (
+  userCod: string | string[],
+  amigoId: string,
+) => {
+  const response = await axiosPrivateClient.post('amizade/add-amigo', {
+    userCod,
+    amigoId,
+  })
+  return response.data
+}

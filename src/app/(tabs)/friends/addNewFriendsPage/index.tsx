@@ -5,18 +5,18 @@ import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { searchUser } from './actions'
+import { searchUser } from '../actions'
 import { useAuthStore } from '@/src/store/useAuthStore'
 import useKeyboardStatus from '@/src/utils/keyboardUtils'
 
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 
 import SearchIcon from '@/src/assets/images/search.svg'
-import EmailIcon from '@/src/assets/images/email.svg'
 
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from '../styles'
 import { verticalScale } from '@/src/utils/responsiveUtils'
+import LinkToInviteByEmailPage from '../components/LinkToInviteByEmailPage'
 
 // validação yup
 const yupSchema = yup.object().shape({
@@ -100,7 +100,14 @@ export default function AddNewFriendsPage() {
               <Text style={styles.error}>{errors.inputSearch.message}</Text>
             )}
           </View>
-          {userNotFound && <InvitePrompt />}
+          {userNotFound && (
+            <View style={{ marginTop: verticalScale(48) }}>
+              <Text style={styles.subTitle}>
+                Ops! Parece que essa pessoa ainda não está no Bora Rachar!
+              </Text>
+              <LinkToInviteByEmailPage />
+            </View>
+          )}
         </View>
       </ScrollView>
 
@@ -123,29 +130,6 @@ export default function AddNewFriendsPage() {
           </ButtonCustomizer.Root>
         </View>
       )}
-    </View>
-  )
-}
-
-const InvitePrompt = () => {
-  return (
-    <View style={{ marginTop: verticalScale(48) }}>
-      <Text style={styles.subTitle}>
-        Ops! Parece que essa pessoa ainda não está no Bora Rachar!
-      </Text>
-      <View style={{ marginTop: verticalScale(12) }}>
-        <Pressable
-          style={styles.inviteButton}
-          onPress={() =>
-            router.push('/friends/addNewFriendsPage/inviteByEmail')
-          }
-        >
-          <View style={styles.iconContainer}>
-            <EmailIcon width={24} height={24} />
-          </View>
-          <Text style={styles.text}>Enviar convite por e-mail</Text>
-        </Pressable>
-      </View>
     </View>
   )
 }
