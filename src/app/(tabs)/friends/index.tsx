@@ -52,8 +52,9 @@ const FriendItem = ({ friend }: { friend: Friend }) => {
 }
 
 export default function FriendPage() {
-  const [pendingFriendRequestsCount, setpendingFriendRequestsCount] =
+  const [pendingFriendRequestsCount, setPendingFriendRequestsCount] =
     useState(0)
+  const [pendingFriendRequests, setPendingFriendRequests] = useState<string>('')
   const [sentInvitationsCount, setSentInvitationsCount] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -64,13 +65,21 @@ export default function FriendPage() {
       const fetchData = async () => {
         setIsLoading(true)
         try {
-          const [totalPendingFriendRequests, totalSentInvitations] =
+          const [pendingFriendRequests, sentEmailInvitations] =
             await Promise.all([
               getPendingFriendRequests(userCod),
               getInvitationsSent(userCod),
             ])
-          setpendingFriendRequestsCount(totalPendingFriendRequests)
-          setSentInvitationsCount(totalSentInvitations)
+          setPendingFriendRequestsCount(
+            pendingFriendRequests.metaData.totalRecords,
+          )
+          setSentInvitationsCount(sentEmailInvitations.data.length)
+          setPendingFriendRequests(
+            JSON.stringify({
+              pendingFriendRequests: pendingFriendRequests.data,
+              sentEmailInvitations: sentEmailInvitations.data,
+            }),
+          )
         } catch (error) {
           console.error('failed to fetch friend data:', error)
         } finally {
@@ -112,7 +121,7 @@ export default function FriendPage() {
           <Text style={styles.text}>
             {`${pendingFriendRequestsCount} solicitações de amizade pendentes`}
           </Text>
-          <SeeMoreLink text="Ver" initialTab="1" />
+          <SeeMoreLink text="Ver" initialTab="1" data={pendingFriendRequests} />
         </View>
       </View>
 
@@ -127,16 +136,13 @@ export default function FriendPage() {
         {friends.length === 0 ? (
           <EmptyListMessage title="Você ainda não tem amigos" />
         ) : (
-          <View>
-            <Text style={styles.title}>Amigos</Text>
-
-            <FlatList
-              data={friends}
-              renderItem={({ item }) => <FriendItem friend={item} />}
-              keyExtractor={(item) => item.id.toString()}
-              showsVerticalScrollIndicator={false}
-            />
-          </View>
+          <FlatList
+            data={friends}
+            renderItem={({ item }) => <FriendItem friend={item} />}
+            keyExtractor={(item) => item.id.toString()}
+            showsVerticalScrollIndicator={false}
+            ListHeaderComponent={<Text style={styles.title}>Amigos</Text>}
+          />
         )}
       </View>
     </View>

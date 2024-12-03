@@ -42,7 +42,7 @@ export const getPendingFriendRequests = async (userCod: string | null) => {
     )
 
     if (response.data.statusCode === 200) {
-      return response.data.metaData.totalRecords
+      return response.data
     }
   } catch (error) {
     console.error('Failed to fetch pending friend requests:', error)
@@ -58,7 +58,7 @@ export const getInvitationsSent = async (userCod: string | null) => {
     })
 
     if (response.data.statusCode === 200) {
-      return response.data.data.length
+      return response.data
     }
   } catch (error) {
     console.error('Failed to fetch pending friend requests:', error)

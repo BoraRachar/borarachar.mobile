@@ -4,13 +4,12 @@ import AvatarImageComponent from '@/src/components/AvatarImageComponent'
 import CheckGreen from '@/src/assets/images/check-green.svg'
 import CloseRed from '@/src/assets/images/close-red.svg'
 
-import { styles } from './styles'
+import { styles } from '../../styles'
 
 type Props = {
   friend: {
-    avatar: string
-    name: string
-    device: string
+    imgUser: string
+    nome: string
   }
   setModalVisible: (value: boolean) => void
 }
@@ -20,14 +19,14 @@ export default function PendingInvitationsCard({
   setModalVisible,
 }: Props) {
   return (
-    <View style={styles.container}>
-      <AvatarImageComponent image={friend.avatar} size={48} />
+    <View style={styles.invitationsCardcontainer}>
+      <AvatarImageComponent image={friend.imgUser} size={48} />
 
-      <View style={styles.containerText}>
-        <Text style={styles.text}>{friend.name}</Text>
+      <View style={{ flex: 1, marginLeft: 16 }}>
+        <Text style={styles.text}>{friend.nome}</Text>
       </View>
 
-      <View style={styles.containerIcons}>
+      <View style={styles.invitationsCardContainerIcons}>
         <CheckGreen
           width={24}
           height={24}

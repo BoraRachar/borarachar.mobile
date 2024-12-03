@@ -141,4 +141,18 @@ export const styles = StyleSheet.create({
     lineHeight: verticalScale(24),
     textAlignVertical: 'top',
   },
+  invitationsCardcontainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.Gray[300],
+    paddingVertical: verticalScale(16),
+  },
+  invitationsCardContainerIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: horizontalScale(16),
+  },
 })
