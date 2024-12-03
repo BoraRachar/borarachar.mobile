@@ -1,23 +1,68 @@
 import { Text, View } from 'react-native'
 import AvatarImageComponent from '@/src/components/AvatarImageComponent'
+import SimpleModal from '../SimpleModal'
+import CompleteModal from '../CompleteModal'
 
 import CheckGreen from '@/src/assets/images/check-green.svg'
 import CloseRed from '@/src/assets/images/close-red.svg'
 
 import { styles } from '../../styles'
+import { useState } from 'react'
+import { useAuthStore } from '@/src/store/useAuthStore'
+import { useFriendStore } from '@/src/store/useFriendStore'
+import { axiosPrivateClient } from '@/src/utils/axios'
 
 type Props = {
   friend: {
     imgUser: string
     nome: string
+    amigoId: string
   }
-  setModalVisible: (value: boolean) => void
 }
 
-export default function PendingInvitationsCard({
-  friend,
-  setModalVisible,
-}: Props) {
+export default function PendingInvitationsCard({ friend }: Props) {
+  const [simpleModalVisible, setSimpleModalVisible] = useState(false)
+  const [completeModalVisible, setCompleteModalVisible] = useState(false)
+
+  const { userCod } = useAuthStore()
+  const { pendingInvitations, addPendingInvitations } = useFriendStore()
+
+  const handleAcceptFriend = async (amigoId: string) => {
+    console.log('acceptFriends')
+    // try {
+    //   const response = await axiosPrivateClient.post(
+    //     '/amizade/aceite-amizade',
+    //     {
+    //       userCod,
+    //       amigoId,
+    //     },
+    //   )
+    //   setSimpleModalVisible(true)
+    //   console.log(response.data)
+    // } catch (error) {
+    //   console.error(error)
+    // }
+  }
+
+  const handleRefusedFriend = async (amigoId: string) => {
+    try {
+      console.log('consolelog', amigoId)
+      console.log('consolelog', userCod)
+      const response = await axiosPrivateClient.delete(
+        'amizade/recusar-amizade',
+        {
+          data: { userCod, amigoId },
+        },
+      )
+      console.log(response)
+    } catch (error) {
+      console.log(error.response.config)
+    }
+
+    // const filter = pendingInvitations.filter((item) => item.amigoId !== amigoId)
+    // addPendingInvitations(filter)
+  }
+
   return (
     <View style={styles.invitationsCardcontainer}>
       <AvatarImageComponent image={friend.imgUser} size={48} />
@@ -30,14 +75,24 @@ export default function PendingInvitationsCard({
         <CheckGreen
           width={24}
           height={24}
-          onPress={() => setModalVisible(true)}
+          onPress={() => handleAcceptFriend(friend.amigoId)}
         />
         <CloseRed
           width={24}
           height={24}
-          onPress={() => setModalVisible(true)}
+          onPress={() => setCompleteModalVisible(true)}
         />
       </View>
+      <SimpleModal
+        showModal={[simpleModalVisible, setSimpleModalVisible]}
+        friendName={friend.nome}
+      />
+      <CompleteModal
+        showModal={[completeModalVisible, setCompleteModalVisible]}
+        friendName={friend.nome}
+        amigoId={friend.amigoId}
+        handleRefusedFriend={handleRefusedFriend}
+      />
     </View>
   )
 }

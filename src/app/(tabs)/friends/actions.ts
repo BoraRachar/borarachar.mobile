@@ -28,9 +28,9 @@ export const addNewFriend = async (
   }
 }
 
-export const getPendingFriendRequests = async (userCod: string | null) => {
+export const getPendingRequests = async (userCod: string | null) => {
   try {
-    const response = await axiosPrivateClient.get(
+    const { data } = await axiosPrivateClient.get(
       '/amizade/lista-pendencias-amizades',
       {
         params: {
@@ -41,26 +41,17 @@ export const getPendingFriendRequests = async (userCod: string | null) => {
       },
     )
 
-    if (response.data.statusCode === 200) {
-      return response.data
-    }
+    return data
   } catch (error) {
-    console.error('Failed to fetch pending friend requests:', error)
+    console.log(error)
   }
 }
 
-export const getInvitationsSent = async (userCod: string | null) => {
-  try {
-    const response = await axiosPrivateClient.get('/convite/lista-convites', {
-      params: {
-        userCod,
-      },
-    })
-
-    if (response.data.statusCode === 200) {
-      return response.data
-    }
-  } catch (error) {
-    console.error('Failed to fetch pending friend requests:', error)
-  }
+export const getEmailInvitations = async (userCod: string | null) => {
+  const { data } = await axiosPrivateClient.get('/convite/lista-convites', {
+    params: {
+      userCod,
+    },
+  })
+  return data
 }

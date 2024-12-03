@@ -1,9 +1,7 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { FlatList, Text, useWindowDimensions, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { TabView, SceneMap, TabBar, TabBarProps } from 'react-native-tab-view'
-
-import ModalComponent from '@/src/components/ModalComponent'
 
 import { styles } from './styles'
 import { theme } from '@/src/theme'
@@ -13,18 +11,19 @@ import LinkToAddNewFriendsPage from './components/LinkToAddNewFriendsPage'
 import PendingInvitationsCard from './components/PedingInvitationsCards'
 import SentInvitationCard from './components/SentEmailInvitationCard'
 
+import { useFriendStore } from '@/src/store/useFriendStore'
+
 type Route = {
   key: string
   title: string
 }
 
 export default function Invitations() {
-  const [modalVisible, setModalVisible] = useState(false)
-  const { initialIndex, data } = useLocalSearchParams()
+  const { initialIndex } = useLocalSearchParams()
   const [index, setIndex] = useState<number>(Number(initialIndex) || 0)
 
+  const { pendingInvitations, emailInvitations } = useFriendStore()
   const layout = useWindowDimensions()
-  const { pendingFriendRequests, sentEmailInvitations } = JSON.parse(data)
 
   const [routes] = useState<Route[]>([
     { key: 'enviados', title: 'Enviados' },
@@ -34,11 +33,10 @@ export default function Invitations() {
   const renderScene = SceneMap({
     enviados: () => (
       <FlatList
-        data={sentEmailInvitations}
-        renderItem={({ item }) => (
-          <SentInvitationCard friend={item} setModalVisible={setModalVisible} />
-        )}
+        data={emailInvitations}
+        renderItem={({ item }) => <SentInvitationCard friend={item} />}
         keyExtractor={(item) => item.idConvite}
+        extraData={emailInvitations}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View
@@ -65,14 +63,10 @@ export default function Invitations() {
     ),
     pendentes: () => (
       <FlatList
-        data={pendingFriendRequests}
-        renderItem={({ item }) => (
-          <PendingInvitationsCard
-            friend={item}
-            setModalVisible={setModalVisible}
-          />
-        )}
+        data={pendingInvitations}
+        renderItem={({ item }) => <PendingInvitationsCard friend={item} />}
         keyExtractor={(item) => item.amigoId}
+        extraData={pendingInvitations}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View
@@ -118,8 +112,6 @@ export default function Invitations() {
         renderTabBar={RenderTabBar}
         style={{ marginTop: verticalScale(24) }}
       />
-
-      <ModalComponent showModal={[modalVisible, setModalVisible]} />
     </View>
   )
 }

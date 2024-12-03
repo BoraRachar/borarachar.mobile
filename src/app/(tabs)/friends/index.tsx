@@ -14,7 +14,8 @@ import { verticalScale } from '@/src/utils/responsiveUtils'
 import User from '@/src/assets/images/user.svg'
 import ChevronRight from '@/src/assets/images/chevron-arrow-right.svg'
 import AvatarImageComponent from '@/src/components/AvatarImageComponent'
-import { getPendingFriendRequests, getInvitationsSent } from './actions'
+import { getPendingRequests, getEmailInvitations } from './actions'
+import { useFriendStore } from '@/src/store/useFriendStore'
 
 // import { friends } from '@/src/mock/friends'
 const friends = []
@@ -52,41 +53,42 @@ const FriendItem = ({ friend }: { friend: Friend }) => {
 }
 
 export default function FriendPage() {
-  const [pendingFriendRequestsCount, setPendingFriendRequestsCount] =
-    useState(0)
-  const [pendingFriendRequests, setPendingFriendRequests] = useState<string>('')
-  const [sentInvitationsCount, setSentInvitationsCount] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
+  const [pendingRequestsCount, setPendingRequestsCount] = useState(0)
+  const [sentEmailInvitationsCount, setEmailInvitationsCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
 
   const { userName, userCod } = useAuthStore()
+  const { addPendingInvitations, addEmailInvitations } = useFriendStore()
 
   useFocusEffect(
     useCallback(() => {
-      const fetchData = async () => {
-        setIsLoading(true)
+      setIsLoading(true)
+      const fetchPendingRequests = async () => {
         try {
-          const [pendingFriendRequests, sentEmailInvitations] =
-            await Promise.all([
-              getPendingFriendRequests(userCod),
-              getInvitationsSent(userCod),
-            ])
-          setPendingFriendRequestsCount(
-            pendingFriendRequests.metaData.totalRecords,
-          )
-          setSentInvitationsCount(sentEmailInvitations.data.length)
-          setPendingFriendRequests(
-            JSON.stringify({
-              pendingFriendRequests: pendingFriendRequests.data,
-              sentEmailInvitations: sentEmailInvitations.data,
-            }),
-          )
+          const pendingRequests = await getPendingRequests(userCod)
+          if (pendingRequests && pendingRequests.statusCode === 200) {
+            setPendingRequestsCount(pendingRequests.metaData.totalRecords)
+            addPendingInvitations(pendingRequests.data)
+          }
         } catch (error) {
-          console.error('failed to fetch friend data:', error)
-        } finally {
-          setIsLoading(false)
+          console.log(error)
         }
       }
-      fetchData()
+
+      const fetchEmailInvitations = async () => {
+        try {
+          const emailInvitations = await getEmailInvitations(userCod)
+          if (emailInvitations && emailInvitations.statusCode === 200) {
+            setEmailInvitationsCount(emailInvitations.data.length)
+            addEmailInvitations(emailInvitations.data)
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      fetchPendingRequests()
+      fetchEmailInvitations()
+      setIsLoading(false)
     }, [userCod]),
   )
 
@@ -113,15 +115,15 @@ export default function FriendPage() {
         <View style={styles.containerText}>
           <Text
             style={styles.text}
-          >{`${sentInvitationsCount} convites enviados`}</Text>
+          >{`${sentEmailInvitationsCount} convites enviados`}</Text>
           <SeeMoreLink text="Ver" initialTab="0" />
         </View>
 
         <View style={styles.containerText}>
           <Text style={styles.text}>
-            {`${pendingFriendRequestsCount} solicitações de amizade pendentes`}
+            {`${pendingRequestsCount} solicitações de amizade pendentes`}
           </Text>
-          <SeeMoreLink text="Ver" initialTab="1" data={pendingFriendRequests} />
+          <SeeMoreLink text="Ver" initialTab="1" />
         </View>
       </View>
 

@@ -6,16 +6,14 @@ import { styles } from '../../styles'
 export default function SeeMoreLink({
   text,
   initialTab,
-  data,
 }: {
   text: string
   initialTab: string
-  data: string
 }) {
   return (
     <View>
       <Link
-        href={`/friends/invitations?initialIndex=${initialTab}&data=${data}`}
+        href={`/friends/invitations?initialIndex=${initialTab}`}
         style={[styles.text, { textDecorationLine: 'underline' }]}
       >
         {text}
