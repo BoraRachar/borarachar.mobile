@@ -16,7 +16,7 @@ import PlusCircleIcon from '@/src/assets/images/plus-circle.svg'
 import CheckIcon from '@/src/assets/images/check.svg'
 
 import { styles } from '../styles'
-import { addNewFriend } from '../actions'
+import { axiosPrivateClient } from '@/src/utils/axios'
 
 type User = {
   amigoId: string
@@ -35,23 +35,24 @@ export default function FriendSearchResults() {
 
   const handleAddNewFriend = useCallback(
     async (amigoId: string) => {
-      const response = await addNewFriend(userCod, amigoId)
+      try {
+        const { data } = await axiosPrivateClient.post('amizade/add-amigo', {
+          userCod,
+          amigoId,
+        })
 
-      if (response.statusCode === 201) {
-        setisFriendAdded(true)
-        return
+        if (data.statusCode === 201) {
+          setisFriendAdded(true)
+        }
+      } catch (error) {
+        if (error.response.data.errors[0].userMessage) {
+          Alert.alert(error.response.data.errors[0].userMessage)
+        }
       }
-
-      if (response.statusCode === 400) {
-        setisFriendAdded(false)
-        Alert.alert(response.userMessage)
-        return
-      }
-
-      Alert.alert('Erro ao adicionar amigo, tente novamente!')
     },
     [userCod],
   )
+
   const RenderFriendItem = useCallback<ListRenderItem<User>>(
     ({ item }) => {
       return (

@@ -14,8 +14,8 @@ import { verticalScale } from '@/src/utils/responsiveUtils'
 import User from '@/src/assets/images/user.svg'
 import ChevronRight from '@/src/assets/images/chevron-arrow-right.svg'
 import AvatarImageComponent from '@/src/components/AvatarImageComponent'
-import { getPendingRequests, getEmailInvitations } from './actions'
 import { useFriendStore } from '@/src/store/useFriendStore'
+import { axiosPrivateClient } from '@/src/utils/axios'
 
 // import { friends } from '@/src/mock/friends'
 const friends = []
@@ -63,26 +63,42 @@ export default function FriendPage() {
   useFocusEffect(
     useCallback(() => {
       const fetchPendingRequests = async () => {
+        setIsLoading(true)
         try {
-          const pendingRequests = await getPendingRequests(userCod)
-          if (pendingRequests && pendingRequests.statusCode === 200) {
-            setPendingRequestsCount(pendingRequests.metaData.totalRecords)
-            addPendingInvitations(pendingRequests.data)
+          const { data } = await axiosPrivateClient.get(
+            'amizade/lista-pendencias-amizades',
+            {
+              params: {
+                userCod,
+                'metaData.pageNumber': 1,
+                'metaData.pageSize': 10,
+              },
+            },
+          )
+          if (data && data.statusCode === 200) {
+            setPendingRequestsCount(data.metaData.totalRecords)
+            addPendingInvitations(data.data)
           }
         } catch (error) {
-          console.log(error)
+          console.log('nada encontrado')
         }
       }
 
       const fetchEmailInvitations = async () => {
         try {
-          const emailInvitations = await getEmailInvitations(userCod)
-          if (emailInvitations && emailInvitations.statusCode === 200) {
-            setEmailInvitationsCount(emailInvitations.data.length)
-            addEmailInvitations(emailInvitations.data)
+          const { data } = await axiosPrivateClient.get(
+            'convite/lista-convites',
+            {
+              params: { userCod },
+            },
+          )
+          if (data && data.statusCode === 200) {
+            setEmailInvitationsCount(data.data.length)
+            addEmailInvitations(data.data)
           }
+          setIsLoading(false)
         } catch (error) {
-          console.log(error)
+          setIsLoading(false)
         }
       }
       fetchPendingRequests()

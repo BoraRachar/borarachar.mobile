@@ -57,8 +57,6 @@ const sendEmailInvitation = async (
       corpoEmail: emailBody,
     })
 
-    console.log('response', response)
-
     if (response.status === 200) {
       onSuccess(inputName)
     }
