@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ScrollView, View, Text, TextInput } from 'react-native'
+import { ScrollView, View, Text, TextInput, Alert } from 'react-native'
 import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -57,11 +57,15 @@ const sendEmailInvitation = async (
       corpoEmail: emailBody,
     })
 
+    console.log('response', response)
+
     if (response.status === 200) {
       onSuccess(inputName)
     }
   } catch (error) {
-    console.error('Erro ao enviar convite:', error)
+    if (error.response.data.statusCode === 400) {
+      Alert.alert(error.response.data.errors[0].userMessage)
+    }
   }
 }
 

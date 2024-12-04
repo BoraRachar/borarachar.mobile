@@ -62,7 +62,6 @@ export default function FriendPage() {
 
   useFocusEffect(
     useCallback(() => {
-      setIsLoading(true)
       const fetchPendingRequests = async () => {
         try {
           const pendingRequests = await getPendingRequests(userCod)
@@ -88,8 +87,7 @@ export default function FriendPage() {
       }
       fetchPendingRequests()
       fetchEmailInvitations()
-      setIsLoading(false)
-    }, [userCod]),
+    }, [userCod, addPendingInvitations, addEmailInvitations]),
   )
 
   if (isLoading) {

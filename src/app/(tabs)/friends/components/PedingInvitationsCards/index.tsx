@@ -1,6 +1,5 @@
 import { Text, View } from 'react-native'
 import AvatarImageComponent from '@/src/components/AvatarImageComponent'
-import SimpleModal from '../SimpleModal'
 import CompleteModal from '../CompleteModal'
 
 import CheckGreen from '@/src/assets/images/check-green.svg'
@@ -11,6 +10,7 @@ import { useState } from 'react'
 import { useAuthStore } from '@/src/store/useAuthStore'
 import { useFriendStore } from '@/src/store/useFriendStore'
 import { axiosPrivateClient } from '@/src/utils/axios'
+import AcceptModal from '../Modais/acceptModal'
 
 type Props = {
   friend: {
@@ -21,7 +21,7 @@ type Props = {
 }
 
 export default function PendingInvitationsCard({ friend }: Props) {
-  const [simpleModalVisible, setSimpleModalVisible] = useState(false)
+  const [acceptModalVisible, setAcceptModalVisible] = useState(false)
   const [completeModalVisible, setCompleteModalVisible] = useState(false)
 
   const { userCod } = useAuthStore()
@@ -29,6 +29,7 @@ export default function PendingInvitationsCard({ friend }: Props) {
 
   const handleAcceptFriend = async (amigoId: string) => {
     console.log('acceptFriends')
+    setAcceptModalVisible(true)
     // try {
     //   const response = await axiosPrivateClient.post(
     //     '/amizade/aceite-amizade',
@@ -37,7 +38,7 @@ export default function PendingInvitationsCard({ friend }: Props) {
     //       amigoId,
     //     },
     //   )
-    //   setSimpleModalVisible(true)
+    //   setAcceptModalVisible(true)
     //   console.log(response.data)
     // } catch (error) {
     //   console.error(error)
@@ -54,13 +55,15 @@ export default function PendingInvitationsCard({ friend }: Props) {
           data: { userCod, amigoId },
         },
       )
-      console.log(response)
+      console.log(response.data.statusCode)
+      const filter = pendingInvitations.filter(
+        (item) => item.amigoId !== amigoId,
+      )
+      addPendingInvitations(filter)
+      setCompleteModalVisible(false)
     } catch (error) {
-      console.log(error.response.config)
+      console.log('Erro ao recusar convite', error)
     }
-
-    // const filter = pendingInvitations.filter((item) => item.amigoId !== amigoId)
-    // addPendingInvitations(filter)
   }
 
   return (
@@ -83,15 +86,15 @@ export default function PendingInvitationsCard({ friend }: Props) {
           onPress={() => setCompleteModalVisible(true)}
         />
       </View>
-      <SimpleModal
-        showModal={[simpleModalVisible, setSimpleModalVisible]}
+      <AcceptModal
+        showModal={[acceptModalVisible, setAcceptModalVisible]}
         friendName={friend.nome}
       />
       <CompleteModal
         showModal={[completeModalVisible, setCompleteModalVisible]}
         friendName={friend.nome}
-        amigoId={friend.amigoId}
-        handleRefusedFriend={handleRefusedFriend}
+        id={friend.amigoId}
+        onPress={handleRefusedFriend}
       />
     </View>
   )

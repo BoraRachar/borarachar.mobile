@@ -13,7 +13,7 @@ type ModalComponentProps = {
   onPress: (id: string) => void
 }
 
-export default function CompleteModal({
+export default function RefusedModal({
   showModal,
   friendName,
   id,
