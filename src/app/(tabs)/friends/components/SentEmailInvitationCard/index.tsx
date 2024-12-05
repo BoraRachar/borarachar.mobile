@@ -7,10 +7,11 @@ import Trash from '@/src/assets/images/trash.svg'
 import { styles } from '../../styles'
 import RemoveEmailModal from '../Modais/removeEmailModal'
 import { useState } from 'react'
-import { axiosPrivateClient } from '@/src/utils/axios'
+import { axiosClient, axiosPrivateClient } from '@/src/utils/axios'
 import { useFriendStore } from '@/src/store/useFriendStore'
 import ResendEmailModal from '../Modais/ResendEmailModal'
 import { set } from 'react-hook-form'
+import { SecureStoreUtils } from '@/src/utils/secureStoreUtils'
 
 type SentInvitationCardProps = {
   friend: {
@@ -47,14 +48,28 @@ export default function SentInvitationCard({
 
   const handleResendEmail = async (idConvite: string) => {
     try {
-      const response = await axiosPrivateClient.post('convite/reenviar', {
-        data: { idConvite },
+      const { data } = await axiosPrivateClient.post('convite/reenviar', {
+        params: { idConvite },
       })
-      if (response.data.statusCode === 204) {
+      if (data.statusCode === 204) {
+        console.log('Email enviado com sucesso')
         setResendEmailModalVisible(false)
       }
+
+      // const response = await fetch(
+      //   'https://borarachar.microerp.solutions/v1/convite/reenviar',
+      //   {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       authorization: `Bearer ${SecureStoreUtils.getItem('accessToken')}`,
+      //     },
+      //     body: JSON.stringify({ idConvite }),
+      //   },
+      // )
     } catch (error) {
-      console.log('erro ao reenviar email', error)
+      setResendEmailModalVisible(false)
+      console.log('erro ao reenviar email', error.response.data)
     }
   }
 

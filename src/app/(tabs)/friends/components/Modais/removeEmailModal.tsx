@@ -53,7 +53,7 @@ export default function RemoveEmailModal({
                   { color: theme.colors.primaryColor },
                 ]}
               >
-                Cancelar
+                Não excluir
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -64,7 +64,7 @@ export default function RemoveEmailModal({
               onPress={() => onPress(idConvite)}
             >
               <Text style={[styles.buttonText, { color: theme.colors.white }]}>
-                Recusar
+                excluir
               </Text>
             </TouchableOpacity>
           </View>

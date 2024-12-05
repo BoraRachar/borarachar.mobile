@@ -53,12 +53,15 @@ const FriendItem = ({ friend }: { friend: Friend }) => {
 }
 
 export default function FriendPage() {
-  const [pendingRequestsCount, setPendingRequestsCount] = useState(0)
-  const [sentEmailInvitationsCount, setEmailInvitationsCount] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
 
   const { userName, userCod } = useAuthStore()
-  const { addPendingInvitations, addEmailInvitations } = useFriendStore()
+  const {
+    pendingInvitations,
+    addPendingInvitations,
+    emailInvitations,
+    addEmailInvitations,
+  } = useFriendStore()
 
   useFocusEffect(
     useCallback(() => {
@@ -76,11 +79,10 @@ export default function FriendPage() {
             },
           )
           if (data && data.statusCode === 200) {
-            setPendingRequestsCount(data.metaData.totalRecords)
             addPendingInvitations(data.data)
           }
         } catch (error) {
-          console.log('nada encontrado')
+          console.log('Convite pendentes não encontrado')
         }
       }
 
@@ -93,11 +95,11 @@ export default function FriendPage() {
             },
           )
           if (data && data.statusCode === 200) {
-            setEmailInvitationsCount(data.data.length)
             addEmailInvitations(data.data)
           }
           setIsLoading(false)
         } catch (error) {
+          console.log('E-mails pendentes não encontrado')
           setIsLoading(false)
         }
       }
@@ -129,13 +131,13 @@ export default function FriendPage() {
         <View style={styles.containerText}>
           <Text
             style={styles.text}
-          >{`${sentEmailInvitationsCount} convites enviados`}</Text>
+          >{`${emailInvitations.length} convites enviados`}</Text>
           <SeeMoreLink text="Ver" initialTab="0" />
         </View>
 
         <View style={styles.containerText}>
           <Text style={styles.text}>
-            {`${pendingRequestsCount} solicitações de amizade pendentes`}
+            {`${pendingInvitations.length} solicitações de amizade pendentes`}
           </Text>
           <SeeMoreLink text="Ver" initialTab="1" />
         </View>
