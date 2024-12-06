@@ -14,6 +14,7 @@ export const axiosPrivateClient = axios.create({
   baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
   // Authorization: `Bearer ${SecureStore.getItem('accessToken')}`,
+  validateStatus: (status) => status >= 200 && status < 500,
 })
 
 axiosPrivateClient.interceptors.request.use(

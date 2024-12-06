@@ -27,3 +27,27 @@ export const addNewFriend = async (
     return { statusCode, userMessage }
   }
 }
+
+export const getFriendsList = async (userCod: string | null) => {
+  const { data } = await axiosPrivateClient.get('amizade/lista-amizades', {
+    params: { userCod, 'metaData.pageNumber': 1, 'metaData.pageSize': 10 },
+  })
+  return data
+}
+
+export const getPendingRequests = async (userCod: string | null) => {
+  const { data } = await axiosPrivateClient.get(
+    'amizade/lista-pendencias-amizades',
+    {
+      params: { userCod, 'metaData.pageNumber': 1, 'metaData.pageSize': 10 },
+    },
+  )
+  return data
+}
+
+export const getEmailInvitations = async (userCod: string | null) => {
+  const { data } = await axiosPrivateClient.get('convite/lista-convites', {
+    params: { userCod },
+  })
+  return data
+}

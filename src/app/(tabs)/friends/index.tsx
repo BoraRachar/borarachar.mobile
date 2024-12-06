@@ -1,52 +1,23 @@
-import { useFocusEffect } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { ActivityIndicator, FlatList, Text, View } from 'react-native'
+import { useFocusEffect } from 'expo-router'
 
 import { useAuthStore } from '@/src/store/useAuthStore'
+import { useFriendStore } from '@/src/store/useFriendStore'
+
+import {
+  getEmailInvitations,
+  getFriendsList,
+  getPendingRequests,
+} from './actions'
 
 import SeeMoreLink from './components/SeeMoreLink.tsx'
 import LinkToAddNewFriendsPage from './components/LinkToAddNewFriendsPage'
 import EmptyListMessage from './components/EmptyListMessage'
+import FriendItem from './components/FriendItem'
 
 import { styles } from './styles'
 import { verticalScale } from '@/src/utils/responsiveUtils'
-
-import User from '@/src/assets/images/user.svg'
-import ChevronRight from '@/src/assets/images/chevron-arrow-right.svg'
-import AvatarImageComponent from '@/src/components/AvatarImageComponent'
-import { useFriendStore } from '@/src/store/useFriendStore'
-import { axiosPrivateClient } from '@/src/utils/axios'
-
-type Friend = {
-  amigoId: string
-  nome: string
-  imgUser: string
-}
-
-const FriendItem = ({ friend }: { friend: Friend }) => {
-  const Avatar = friend.imgUser ? (
-    <AvatarImageComponent image={friend.imgUser} size={48} />
-  ) : (
-    <View style={styles.avatarContainer}>
-      <User width={24} height={24} />
-    </View>
-  )
-
-  return (
-    <View style={styles.contentFriend}>
-      <View>{Avatar}</View>
-
-      <View style={{ flex: 1 }}>
-        <Text style={[styles.text, styles.textBold]}>{friend.nome}</Text>
-        {/* <Text style={styles.text}>{`${friend.groups} grupos em comum`}</Text> */}
-      </View>
-
-      <View>
-        <ChevronRight />
-      </View>
-    </View>
-  )
-}
 
 export default function FriendPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -63,67 +34,42 @@ export default function FriendPage() {
 
   useFocusEffect(
     useCallback(() => {
-      const fetchFriendsList = async () => {
+      const fetchFriendList = async () => {
+        setIsLoading(true)
+
         try {
-          const { data } = await axiosPrivateClient.get(
-            'amizade/lista-amizades',
-            {
-              params: {
-                userCod,
-                'metaData.pageNumber': 1,
-                'metaData.pageSize': 10,
-              },
-            },
-          )
-          if (data.statusCode === 200) {
-            addFriendList(data.data)
+          const friendsResponse = await getFriendsList(userCod)
+          if (friendsResponse.statusCode === 200) {
+            addFriendList(friendsResponse.data || [])
+          } else {
+            console.log('Lista de amigos vazia')
+            addFriendList([])
+          }
+
+          const pendingResponse = await getPendingRequests(userCod)
+          if (pendingResponse.statusCode === 200 && pendingResponse.data) {
+            addPendingInvitations(pendingResponse.data)
+          } else {
+            console.log('Não há solicitações pendentes')
+            addPendingInvitations([])
+          }
+
+          const emailResponse = await getEmailInvitations(userCod)
+          if (emailResponse.statusCode === 200 && emailResponse.data) {
+            addEmailInvitations(emailResponse.data)
+          } else {
+            console.log('Não há convites por e-mail')
+            addEmailInvitations([])
           }
         } catch (error) {
-          console.log('Lista de amigos Vazio')
-        }
-      }
-
-      const fetchPendingRequests = async () => {
-        try {
-          const { data } = await axiosPrivateClient.get(
-            'amizade/lista-pendencias-amizades',
-            {
-              params: {
-                userCod,
-                'metaData.pageNumber': 1,
-                'metaData.pageSize': 10,
-              },
-            },
-          )
-          if (data && data.statusCode === 200) {
-            addPendingInvitations(data.data)
-          }
-        } catch (error) {
-          console.log('Convite pendentes não encontrado')
-        }
-      }
-
-      const fetchEmailInvitations = async () => {
-        try {
-          const { data } = await axiosPrivateClient.get(
-            'convite/lista-convites',
-            {
-              params: { userCod },
-            },
-          )
-          if (data && data.statusCode === 200) {
-            addEmailInvitations(data.data)
-          }
+          console.log('Erro ao carregar dados', error)
+          console.log()
+        } finally {
           setIsLoading(false)
-        } catch (error) {
-          console.log('E-mails pendentes não encontrado')
         }
       }
-      setIsLoading(true)
-      fetchFriendsList()
-      fetchPendingRequests()
-      fetchEmailInvitations()
-      setIsLoading(false)
+
+      fetchFriendList()
     }, [userCod, addFriendList, addPendingInvitations, addEmailInvitations]),
   )
 
