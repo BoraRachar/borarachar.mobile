@@ -28,21 +28,21 @@ export default function PendingInvitationsCard({ friend }: Props) {
   const { pendingInvitations, addPendingInvitations } = useFriendStore()
 
   const handleAcceptFriend = async (amigoId: string) => {
-    console.log('acceptFriends')
-    setAcceptModalVisible(true)
-    // try {
-    //   const response = await axiosPrivateClient.post(
-    //     '/amizade/aceite-amizade',
-    //     {
-    //       userCod,
-    //       amigoId,
-    //     },
-    //   )
-    //   setAcceptModalVisible(true)
-    //   console.log(response.data)
-    // } catch (error) {
-    //   console.error(error)
-    // }
+    try {
+      const { data } = await axiosPrivateClient.post(
+        '/amizade/aceite-amizade',
+        {
+          userCod,
+          amigoId,
+        },
+      )
+
+      if (data.statusCode === 204) {
+        setAcceptModalVisible(true)
+      }
+    } catch (error) {
+      console.log('Erro ao aceitar convite', error)
+    }
   }
 
   const handleRefusedFriend = async (amigoId: string) => {

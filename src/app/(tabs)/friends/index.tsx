@@ -17,19 +17,15 @@ import AvatarImageComponent from '@/src/components/AvatarImageComponent'
 import { useFriendStore } from '@/src/store/useFriendStore'
 import { axiosPrivateClient } from '@/src/utils/axios'
 
-// import { friends } from '@/src/mock/friends'
-const friends = []
-
 type Friend = {
-  id: number
-  name: string
-  avatar: string
-  groups: number
+  amigoId: string
+  nome: string
+  imgUser: string
 }
 
 const FriendItem = ({ friend }: { friend: Friend }) => {
-  const Avatar = friend.avatar ? (
-    <AvatarImageComponent image={friend.avatar} size={48} />
+  const Avatar = friend.imgUser ? (
+    <AvatarImageComponent image={friend.imgUser} size={48} />
   ) : (
     <View style={styles.avatarContainer}>
       <User width={24} height={24} />
@@ -41,8 +37,8 @@ const FriendItem = ({ friend }: { friend: Friend }) => {
       <View>{Avatar}</View>
 
       <View style={{ flex: 1 }}>
-        <Text style={[styles.text, styles.textBold]}>{friend.name}</Text>
-        <Text style={styles.text}>{`${friend.groups} grupos em comum`}</Text>
+        <Text style={[styles.text, styles.textBold]}>{friend.nome}</Text>
+        {/* <Text style={styles.text}>{`${friend.groups} grupos em comum`}</Text> */}
       </View>
 
       <View>
@@ -57,6 +53,8 @@ export default function FriendPage() {
 
   const { userName, userCod } = useAuthStore()
   const {
+    friendList,
+    addFriendList,
     pendingInvitations,
     addPendingInvitations,
     emailInvitations,
@@ -65,8 +63,27 @@ export default function FriendPage() {
 
   useFocusEffect(
     useCallback(() => {
+      const fetchFriendsList = async () => {
+        try {
+          const { data } = await axiosPrivateClient.get(
+            'amizade/lista-amizades',
+            {
+              params: {
+                userCod,
+                'metaData.pageNumber': 1,
+                'metaData.pageSize': 10,
+              },
+            },
+          )
+          if (data.statusCode === 200) {
+            addFriendList(data.data)
+          }
+        } catch (error) {
+          console.log('Lista de amigos Vazio')
+        }
+      }
+
       const fetchPendingRequests = async () => {
-        setIsLoading(true)
         try {
           const { data } = await axiosPrivateClient.get(
             'amizade/lista-pendencias-amizades',
@@ -100,12 +117,14 @@ export default function FriendPage() {
           setIsLoading(false)
         } catch (error) {
           console.log('E-mails pendentes não encontrado')
-          setIsLoading(false)
         }
       }
+      setIsLoading(true)
+      fetchFriendsList()
       fetchPendingRequests()
       fetchEmailInvitations()
-    }, [userCod, addPendingInvitations, addEmailInvitations]),
+      setIsLoading(false)
+    }, [userCod, addFriendList, addPendingInvitations, addEmailInvitations]),
   )
 
   if (isLoading) {
@@ -126,7 +145,7 @@ export default function FriendPage() {
       {/* Resumo do usuário */}
       <View style={styles.resumeContent}>
         <Text style={styles.text}>{`${userName}, você tem:`}</Text>
-        <Text style={styles.text}>10 amigos</Text>
+        <Text style={styles.text}>{`${friendList.length} amigos`}</Text>
 
         <View style={styles.containerText}>
           <Text
@@ -151,13 +170,14 @@ export default function FriendPage() {
       {/* Lista de amigos */}
 
       <View style={{ flex: 1 }}>
-        {friends.length === 0 ? (
+        {friendList.length === 0 ? (
           <EmptyListMessage title="Você ainda não tem amigos" />
         ) : (
           <FlatList
-            data={friends}
+            data={friendList}
             renderItem={({ item }) => <FriendItem friend={item} />}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.amigoId}
+            extraData={friendList}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={<Text style={styles.title}>Amigos</Text>}
           />
