@@ -1,89 +1,133 @@
-import { Link } from 'expo-router'
-import { FlatList, Image, Text, View } from 'react-native'
-import { friends } from '@/src/mock/friends'
-import { useAuthStore } from '@/src/store/useAuthStore'
+import { useCallback, useState } from 'react'
+import { ActivityIndicator, FlatList, Text, View } from 'react-native'
+import { useFocusEffect } from 'expo-router'
 
-import AddFriendButton from '@/src/components/AddFriendButton'
+import { useAuthStore } from '@/src/store/useAuthStore'
+import { useFriendStore } from '@/src/store/useFriendStore'
+
+import {
+  getEmailInvitations,
+  getFriendsList,
+  getPendingRequests,
+} from './actions'
+
+import SeeMoreLink from './components/SeeMoreLink.tsx'
+import LinkToAddNewFriendsPage from './components/LinkToAddNewFriendsPage'
+import EmptyListMessage from './components/EmptyListMessage'
+import FriendItem from './components/FriendItem'
 
 import { styles } from './styles'
 import { verticalScale } from '@/src/utils/responsiveUtils'
 
-import User from '@/src/assets/images/user.svg'
-import ChevronRight from '@/src/assets/images/chevron-arrow-right.svg'
-import AvatarImageComponent from '@/src/components/AvatarImageComponent'
+export default function FriendPage() {
+  const [isLoading, setIsLoading] = useState(false)
 
-type Friend = {
-  id: number
-  name: string
-  avatar: string
-  groups: number
-}
+  const { userName, userCod } = useAuthStore()
+  const {
+    friendList,
+    addFriendList,
+    pendingInvitations,
+    addPendingInvitations,
+    emailInvitations,
+    addEmailInvitations,
+  } = useFriendStore()
 
-export default function Amigos() {
-  const { user } = useAuthStore()
+  useFocusEffect(
+    useCallback(() => {
+      const fetchFriendList = async () => {
+        setIsLoading(true)
+
+        try {
+          const friendsResponse = await getFriendsList(userCod)
+          if (friendsResponse.statusCode === 200) {
+            addFriendList(friendsResponse.data || [])
+          } else {
+            console.log('Lista de amigos vazia')
+            addFriendList([])
+          }
+
+          const pendingResponse = await getPendingRequests(userCod)
+          if (pendingResponse.statusCode === 200 && pendingResponse.data) {
+            addPendingInvitations(pendingResponse.data)
+          } else {
+            console.log('Não há solicitações pendentes')
+            addPendingInvitations([])
+          }
+
+          const emailResponse = await getEmailInvitations(userCod)
+          if (emailResponse.statusCode === 200 && emailResponse.data) {
+            addEmailInvitations(emailResponse.data)
+          } else {
+            console.log('Não há convites por e-mail')
+            addEmailInvitations([])
+          }
+        } catch (error) {
+          console.log('Erro ao carregar dados', error)
+          console.log()
+        } finally {
+          setIsLoading(false)
+        }
+      }
+
+      fetchFriendList()
+    }, [userCod, addFriendList, addPendingInvitations, addEmailInvitations]),
+  )
+
+  if (isLoading) {
+    return (
+      <View
+        style={[
+          styles.container,
+          { flex: 1, justifyContent: 'center', alignItems: 'center' },
+        ]}
+      >
+        <ActivityIndicator size="large" color="#007AFF" />
+      </View>
+    )
+  }
+
   return (
     <View style={styles.container}>
+      {/* Resumo do usuário */}
       <View style={styles.resumeContent}>
-        <Text style={styles.text}>{`${user}, você tem:`}</Text>
-        <Text style={styles.text}>10 amigos</Text>
+        <Text style={styles.text}>{`${userName}, você tem:`}</Text>
+        <Text style={styles.text}>{`${friendList.length} amigos`}</Text>
+
         <View style={styles.containerText}>
-          <Text style={styles.text}>4 convites enviados</Text>
-          <Link
-            href="/friends/invitations?initialIndex=0"
-            style={[styles.text, { textDecorationLine: 'underline' }]}
-          >
-            Ver
-          </Link>
+          <Text
+            style={styles.text}
+          >{`${emailInvitations.length} convites enviados`}</Text>
+          <SeeMoreLink text="Ver" initialTab="0" />
         </View>
+
         <View style={styles.containerText}>
-          <Text style={styles.text}>3 solicitações de amizade pendentes</Text>
-          <Link
-            href="/friends/invitations?initialIndex=1"
-            style={[styles.text, { textDecorationLine: 'underline' }]}
-          >
-            Ver
-          </Link>
+          <Text style={styles.text}>
+            {`${pendingInvitations.length} solicitações de amizade pendentes`}
+          </Text>
+          <SeeMoreLink text="Ver" initialTab="1" />
         </View>
       </View>
 
+      {/* Link para pagina Adicionar Amigos */}
       <View style={{ marginTop: verticalScale(24) }}>
-        <AddFriendButton />
+        <LinkToAddNewFriendsPage />
       </View>
+
+      {/* Lista de amigos */}
 
       <View style={{ flex: 1 }}>
-        <Text style={styles.title}>Amigos</Text>
-
-        <FlatList
-          data={friends}
-          renderItem={({ item }) => <FriendItem friend={item} />}
-          keyExtractor={(item) => item.id.toString()}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
-    </View>
-  )
-}
-
-const FriendItem = ({ friend }: { friend: Friend }) => {
-  return (
-    <View style={styles.contentFriend}>
-      <View>
-        {friend?.avatar ? (
-          <AvatarImageComponent image={friend.avatar} size={48} />
+        {friendList.length === 0 ? (
+          <EmptyListMessage title="Você ainda não tem amigos" />
         ) : (
-          <View style={styles.avatarContainer}>
-            <User width={24} height={24} />
-          </View>
+          <FlatList
+            data={friendList}
+            renderItem={({ item }) => <FriendItem friend={item} />}
+            keyExtractor={(item) => item.amigoId}
+            extraData={friendList}
+            showsVerticalScrollIndicator={false}
+            ListHeaderComponent={<Text style={styles.title}>Amigos</Text>}
+          />
         )}
-      </View>
-
-      <View style={{ flex: 1 }}>
-        <Text style={[styles.text, styles.textBold]}>{friend.name}</Text>
-        <Text style={styles.text}>{`${friend.groups} grupos em comum`}</Text>
-      </View>
-
-      <View>
-        <ChevronRight />
       </View>
     </View>
   )

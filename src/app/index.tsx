@@ -7,6 +7,7 @@ import { styles } from './styles'
 import OnboardingScreenOne from './onboarding-screens/onboardingOne'
 import SeparatorComponent from '../components/SeparatorComponent'
 import Logo from '../assets/images/logo.svg'
+import { useAuthStore } from '@/src/store/useAuthStore'
 
 export default function Index() {
   const windowHeight = Dimensions.get('window').height
@@ -38,6 +39,19 @@ export default function Index() {
 
     checkFirstTime()
   }, [])
+
+  // Verificar se já está authenticado
+  // useEffect(() => {
+  //   const checkIfUserIsAuthenticated = async () => {
+  //     await useAuthStore.getState().initializeAuthState()
+  //     const isAuthenticated = useAuthStore.getState().isAuthenticated
+
+  //     if (isAuthenticated) {
+  //       router.push('/home')
+  //     }
+  //   }
+  //   checkIfUserIsAuthenticated()
+  // }, [])
 
   return (
     <View>

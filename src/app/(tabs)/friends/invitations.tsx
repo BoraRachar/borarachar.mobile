@@ -1,19 +1,17 @@
 import { useState } from 'react'
-import { Text, useWindowDimensions, View } from 'react-native'
+import { FlatList, Text, useWindowDimensions, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { TabView, SceneMap, TabBar, TabBarProps } from 'react-native-tab-view'
-
-import AddFriendButton from '@/src/components/AddFriendButton'
-import SentInvitationComponent from '@/src/components/SentRequestComponent'
-import PedingRequestComponent from '@/src/components/PendingRequestComponent'
-import ModalComponent from '@/src/components/ModalComponent'
 
 import { styles } from './styles'
 import { theme } from '@/src/theme'
 import { verticalScale } from '@/src/utils/responsiveUtils'
 
-import { friends } from '@/src/mock/friends'
-// const friends = []
+import LinkToAddNewFriendsPage from './components/LinkToAddNewFriendsPage'
+import PendingInvitationsCard from './components/PedingInvitationsCards'
+import SentInvitationCard from './components/SentEmailInvitationCard'
+
+import { useFriendStore } from '@/src/store/useFriendStore'
 
 type Route = {
   key: string
@@ -21,10 +19,10 @@ type Route = {
 }
 
 export default function Invitations() {
-  const [modalVisible, setModalVisible] = useState(false)
   const { initialIndex } = useLocalSearchParams()
   const [index, setIndex] = useState<number>(Number(initialIndex) || 0)
 
+  const { pendingInvitations, emailInvitations } = useFriendStore()
   const layout = useWindowDimensions()
 
   const [routes] = useState<Route[]>([
@@ -34,15 +32,57 @@ export default function Invitations() {
 
   const renderScene = SceneMap({
     enviados: () => (
-      <SentInvitationComponent
-        friends={friends}
-        setModalVisible={setModalVisible}
+      <FlatList
+        data={emailInvitations}
+        renderItem={({ item }) => <SentInvitationCard friend={item} />}
+        keyExtractor={(item) => item.idConvite}
+        extraData={emailInvitations}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 16,
+              gap: 8,
+            }}
+          >
+            <Text
+              style={[styles.text, styles.textBold, { textAlign: 'center' }]}
+            >
+              Não existem solicitações enviadas
+            </Text>
+            <Text style={[styles.text, { textAlign: 'center' }]}>
+              Clique em{' '}
+              <Text style={styles.textBold}>Adicionar novo amigo</Text> para
+              enviar convite para alguém que você conhece
+            </Text>
+          </View>
+        }
       />
     ),
     pendentes: () => (
-      <PedingRequestComponent
-        friends={friends}
-        setModalVisible={setModalVisible}
+      <FlatList
+        data={pendingInvitations}
+        renderItem={({ item }) => <PendingInvitationsCard friend={item} />}
+        keyExtractor={(item) => item.amigoId}
+        extraData={pendingInvitations}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 16,
+            }}
+          >
+            <Text
+              style={[styles.text, styles.textBold, { textAlign: 'center' }]}
+            >
+              Não existem solicitações de amizade pendentes
+            </Text>
+          </View>
+        }
       />
     ),
   })
@@ -62,7 +102,7 @@ export default function Invitations() {
 
   return (
     <View style={styles.container}>
-      <AddFriendButton />
+      <LinkToAddNewFriendsPage />
 
       <TabView
         navigationState={{ index, routes }}
@@ -72,8 +112,6 @@ export default function Invitations() {
         renderTabBar={RenderTabBar}
         style={{ marginTop: verticalScale(24) }}
       />
-
-      <ModalComponent showModal={[modalVisible, setModalVisible]} />
     </View>
   )
 }
