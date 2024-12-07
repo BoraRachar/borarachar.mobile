@@ -11,6 +11,7 @@ import { useAuthStore } from '@/src/store/useAuthStore'
 import { useFriendStore } from '@/src/store/useFriendStore'
 import { axiosPrivateClient } from '@/src/utils/axios'
 import AcceptModal from '../Modais/acceptModal'
+import { refusedPendingRequest } from '../../actions'
 
 type Props = {
   friend: {
@@ -47,20 +48,16 @@ export default function PendingInvitationsCard({ friend }: Props) {
 
   const handleRefusedFriend = async (amigoId: string) => {
     try {
-      console.log('consolelog', amigoId)
-      console.log('consolelog', userCod)
-      const response = await axiosPrivateClient.delete(
-        'amizade/recusar-amizade',
-        {
-          data: { userCod, amigoId },
-        },
-      )
-      console.log(response.data.statusCode)
-      const filter = pendingInvitations.filter(
-        (item) => item.amigoId !== amigoId,
-      )
-      addPendingInvitations(filter)
-      setCompleteModalVisible(false)
+      const response = await refusedPendingRequest(userCod, amigoId)
+
+      console.log(response)
+      if (response.statusCode === 204 || response.statusCode === 400) {
+        const filter = pendingInvitations.filter(
+          (item) => item.amigoId !== amigoId,
+        )
+        addPendingInvitations(filter)
+        setCompleteModalVisible(false)
+      }
     } catch (error) {
       console.log('Erro ao recusar convite', error)
     }

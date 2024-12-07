@@ -9,14 +9,15 @@ import {
 } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 
-import AvatarImageComponent from '@/src/components/AvatarImageComponent'
 import LinkToInviteByEmailPage from '../components/LinkToInviteByEmailPage'
+import AvatarImageComponent from '@/src/components/AvatarImageComponent'
+
+import { addNewFriend } from '../actions'
 
 import PlusCircleIcon from '@/src/assets/images/plus-circle.svg'
 import CheckIcon from '@/src/assets/images/check.svg'
 
 import { styles } from '../styles'
-import { axiosPrivateClient } from '@/src/utils/axios'
 
 type User = {
   amigoId: string
@@ -27,6 +28,7 @@ type User = {
 
 export default function FriendSearchResults() {
   const [isFriendAdded, setisFriendAdded] = useState(false)
+
   const { userList, userCod } = useLocalSearchParams<{
     userList: string
     userCod: string
@@ -36,18 +38,18 @@ export default function FriendSearchResults() {
   const handleAddNewFriend = useCallback(
     async (amigoId: string) => {
       try {
-        const { data } = await axiosPrivateClient.post('amizade/add-amigo', {
-          userCod,
-          amigoId,
-        })
+        const response = await addNewFriend(userCod, amigoId)
 
-        if (data.statusCode === 201) {
+        if (response.statusCode === 201) {
           setisFriendAdded(true)
+          return
+        }
+
+        if (response.statusCode === 400) {
+          Alert.alert('Usuario já adicionado')
         }
       } catch (error) {
-        if (error.response.data.errors[0].userMessage) {
-          Alert.alert(error.response.data.errors[0].userMessage)
-        }
+        console.log('Erro ao adicionar amigo', error)
       }
     },
     [userCod],

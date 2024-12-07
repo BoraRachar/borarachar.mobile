@@ -1,31 +1,22 @@
 import { axiosPrivateClient } from '@/src/utils/axios'
 
 export const searchUser = async (email: string, userCod: string | null) => {
-  const response = await axiosPrivateClient.get('user/list-usuarios', {
+  const { data } = await axiosPrivateClient.get('user/list-usuarios', {
     params: { email, userCod },
   })
-  return response.data
+  return data
 }
 
 export const addNewFriend = async (
   userCod: string | string[],
   amigoId: string,
 ) => {
-  try {
-    const response = await axiosPrivateClient.post('amizade/add-amigo', {
-      userCod,
-      amigoId,
-    })
+  const { data } = await axiosPrivateClient.post('amizade/add-amigo', {
+    userCod,
+    amigoId,
+  })
 
-    return response.data
-  } catch (error) {
-    const userMessage = JSON.stringify(
-      error.response.data.errors[0].userMessage,
-    )
-    const statusCode = error.response.data.statusCode
-
-    return { statusCode, userMessage }
-  }
+  return data
 }
 
 export const getFriendsList = async (userCod: string | null) => {
@@ -62,6 +53,17 @@ export const removeEmailInvitation = async (idConvite: string) => {
 export const resendEmailInvitations = async (idConvite: string) => {
   const { data } = await axiosPrivateClient.post('convite/reenviar', {
     params: { idConvite },
+  })
+
+  return data
+}
+
+export const refusedPendingRequest = async (
+  userCod: string | null,
+  amigoId: string,
+) => {
+  const { data } = await axiosPrivateClient.delete('amizade/recusar-amizade', {
+    data: { userCod, amigoId },
   })
 
   return data
