@@ -58,6 +58,18 @@ export const resendEmailInvitations = async (idConvite: string) => {
   return data
 }
 
+export const acceptPendingRequest = async (
+  userCod: string | null,
+  amigoId: string,
+) => {
+  const { data } = await axiosPrivateClient.post('amizade/aceite-amizade', {
+    userCod,
+    amigoId,
+  })
+
+  return data
+}
+
 export const refusedPendingRequest = async (
   userCod: string | null,
   amigoId: string,
