@@ -64,7 +64,7 @@ export default function RemoveEmailModal({
               onPress={() => onPress(idConvite)}
             >
               <Text style={[styles.buttonText, { color: theme.colors.white }]}>
-                excluir
+                Excluir
               </Text>
             </TouchableOpacity>
           </View>

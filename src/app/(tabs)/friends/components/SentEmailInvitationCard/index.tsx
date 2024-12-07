@@ -1,21 +1,21 @@
+import { useState } from 'react'
 import { Text, View } from 'react-native'
+
+import RemoveEmailModal from '../Modais/removeEmailModal'
+import ResendEmailModal from '../Modais/ResendEmailModal'
 import AvatarImageComponent from '@/src/components/AvatarImageComponent'
+
+import { useFriendStore } from '@/src/store/useFriendStore'
+import { removeEmailInvitation, resendEmailInvitations } from '../../actions'
 
 import Email from '@/src/assets/images/e-mail.svg'
 import Trash from '@/src/assets/images/trash.svg'
 
 import { styles } from '../../styles'
-import RemoveEmailModal from '../Modais/removeEmailModal'
-import { useState } from 'react'
-import { axiosClient, axiosPrivateClient } from '@/src/utils/axios'
-import { useFriendStore } from '@/src/store/useFriendStore'
-import ResendEmailModal from '../Modais/ResendEmailModal'
-import { set } from 'react-hook-form'
-import { SecureStoreUtils } from '@/src/utils/secureStoreUtils'
 
 type SentInvitationCardProps = {
   friend: {
-    imgUser: string
+    imgUser?: string
     nome: string
     idConvite: string
   }
@@ -30,11 +30,9 @@ export default function SentInvitationCard({
 
   const handleRemoveInvitation = async (idConvite: string) => {
     try {
-      const response = await axiosPrivateClient.delete('convite/deletar', {
-        params: { idConvite },
-      })
+      const deletedEmailInvitations = await removeEmailInvitation(idConvite)
 
-      if (response.data.statusCode === 204) {
+      if (deletedEmailInvitations.statusCode === 204) {
         const filter = emailInvitations.filter(
           (item) => item.idConvite !== idConvite,
         )
@@ -42,34 +40,25 @@ export default function SentInvitationCard({
         setRemoveModalVisible(false)
       }
     } catch (error) {
+      setRemoveModalVisible(false)
       console.log('Erro ao remover convite', error)
     }
   }
 
   const handleResendEmail = async (idConvite: string) => {
     try {
-      const { data } = await axiosPrivateClient.post('convite/reenviar', {
-        params: { idConvite },
-      })
-      if (data.statusCode === 204) {
+      const response = await resendEmailInvitations(idConvite)
+
+      if (response.statusCode === 204) {
         console.log('Email enviado com sucesso')
         setResendEmailModalVisible(false)
+        return
       }
 
-      // const response = await fetch(
-      //   'https://borarachar.microerp.solutions/v1/convite/reenviar',
-      //   {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       authorization: `Bearer ${SecureStoreUtils.getItem('accessToken')}`,
-      //     },
-      //     body: JSON.stringify({ idConvite }),
-      //   },
-      // )
+      console.log('Não foi possivel enviar o email', response)
     } catch (error) {
       setResendEmailModalVisible(false)
-      console.log('erro ao reenviar email', error.response.data)
+      console.log('erro ao reenviar email', error)
     }
   }
 

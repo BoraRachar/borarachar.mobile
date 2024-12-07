@@ -51,3 +51,18 @@ export const getEmailInvitations = async (userCod: string | null) => {
   })
   return data
 }
+export const removeEmailInvitation = async (idConvite: string) => {
+  const { data } = await axiosPrivateClient.delete('convite/deletar', {
+    params: { idConvite },
+  })
+
+  return data
+}
+
+export const resendEmailInvitations = async (idConvite: string) => {
+  const { data } = await axiosPrivateClient.post('convite/reenviar', {
+    params: { idConvite },
+  })
+
+  return data
+}

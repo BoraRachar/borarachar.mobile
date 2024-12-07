@@ -4,7 +4,7 @@ import { Image, StyleSheet, View } from 'react-native'
 import UserIcon from '@/src/assets/images/user.svg'
 
 type AvatarImageComponentProps = {
-  image: string
+  image?: string
   size?: number
 }
 

@@ -10,7 +10,7 @@ type ModalComponentProps = {
   ]
   friendName: string
   idConvite: string
-  onPress: (id: string) => void
+  onPress: (idConvite: string) => void
 }
 
 export default function ResendEmailModal({
@@ -19,15 +19,15 @@ export default function ResendEmailModal({
   idConvite,
   onPress,
 }: ModalComponentProps) {
-  const [completeModalVisible, setCompleteModalVisible] = showModal
+  const [resendEmailModalVisible, setResendEmailModalVisible] = showModal
 
   return (
     <Modal
       animationType="fade"
       transparent={true}
-      visible={completeModalVisible}
+      visible={resendEmailModalVisible}
       onRequestClose={() => {
-        setCompleteModalVisible(!completeModalVisible)
+        setResendEmailModalVisible(!resendEmailModalVisible)
       }}
     >
       <View style={styles.centeredView}>
@@ -45,7 +45,9 @@ export default function ResendEmailModal({
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[styles.button, { backgroundColor: theme.colors.third }]}
-              onPress={() => setCompleteModalVisible(!completeModalVisible)}
+              onPress={() =>
+                setResendEmailModalVisible(!resendEmailModalVisible)
+              }
             >
               <Text
                 style={[

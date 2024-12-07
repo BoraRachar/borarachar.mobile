@@ -55,7 +55,6 @@ export default function AddNewFriendsPage() {
         })
       } else {
         setUserNotFound(true)
-        console.error()
       }
     } catch (error) {
       setUserNotFound(true)
