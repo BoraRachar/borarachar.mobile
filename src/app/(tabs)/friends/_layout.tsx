@@ -99,7 +99,7 @@ export default function FriendsLayout() {
           headerRight: () => (
             <CloseIcon
               onPress={() => {
-                router.push('/friends/')
+                router.replace('/friends/')
               }}
             />
           ),

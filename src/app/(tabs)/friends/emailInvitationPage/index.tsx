@@ -135,7 +135,7 @@ export default function EmailInvitationPage() {
   // Submissão do formulário
   const handleFormSubmit = (data: FieldValues) =>
     sendEmailInvitation(data, userCod, (name) =>
-      router.push({
+      router.replace({
         pathname: './sucessInvitationEmailPage',
         params: { name },
       }),

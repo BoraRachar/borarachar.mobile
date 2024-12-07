@@ -40,7 +40,7 @@ export default function SucessInvitationEmailPage() {
         <ButtonCustomizer.Root
           type="tertiaryHalfWidth"
           customStyles={globalStyles.tertiaryButtonHalfWidth}
-          onPress={() => router.push('/friends/')}
+          onPress={() => router.replace('/friends/')}
         >
           <ButtonCustomizer.Title
             title="Voltar ao inicio"
@@ -51,7 +51,7 @@ export default function SucessInvitationEmailPage() {
         <ButtonCustomizer.Root
           type="primaryHalfWidth"
           customStyles={globalStyles.primaryButtonHalfWidth}
-          onPress={() => router.push('/friends/addNewFriendsPage')}
+          onPress={() => router.replace('/friends/addNewFriendsPage')}
         >
           <ButtonCustomizer.Title
             title="Adicionar Amigo"
