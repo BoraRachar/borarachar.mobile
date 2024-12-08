@@ -11,7 +11,7 @@ import { useAuthStore } from '@/src/store/useAuthStore'
 import { useFriendStore } from '@/src/store/useFriendStore'
 import { axiosPrivateClient } from '@/src/utils/axios'
 import AcceptModal from '../Modais/acceptModal'
-import { refusedPendingRequest } from '../../actions'
+import { acceptPendingRequest, refusedPendingRequest } from '../../actions'
 
 type Props = {
   friend: {
@@ -30,15 +30,10 @@ export default function PendingInvitationsCard({ friend }: Props) {
 
   const handleAcceptFriend = async (amigoId: string) => {
     try {
-      const { data } = await axiosPrivateClient.post(
-        '/amizade/aceite-amizade',
-        {
-          userCod,
-          amigoId,
-        },
-      )
+      const response = await acceptPendingRequest(userCod, amigoId)
+      console.log(response)
 
-      if (data.statusCode === 204) {
+      if (response.statusCode === 201) {
         setAcceptModalVisible(true)
       }
     } catch (error) {
@@ -50,15 +45,17 @@ export default function PendingInvitationsCard({ friend }: Props) {
     try {
       const response = await refusedPendingRequest(userCod, amigoId)
 
-      console.log(response)
-      if (response.statusCode === 204 || response.statusCode === 400) {
-        const filter = pendingInvitations.filter(
-          (item) => item.amigoId !== amigoId,
-        )
-        addPendingInvitations(filter)
-        setCompleteModalVisible(false)
+      if (response.statusCode === 204) {
+        console.log('204')
       }
+
+      const filter = pendingInvitations.filter(
+        (item) => item.amigoId !== amigoId,
+      )
+      addPendingInvitations(filter)
+      setCompleteModalVisible(false)
     } catch (error) {
+      setCompleteModalVisible(false)
       console.log('Erro ao recusar convite', error)
     }
   }
