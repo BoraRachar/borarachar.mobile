@@ -1,17 +1,16 @@
+import { useState } from 'react'
 import { Text, View } from 'react-native'
 import AvatarImageComponent from '@/src/components/AvatarImageComponent'
-import CompleteModal from '../CompleteModal'
+
+import { useAuthStore } from '@/src/store/useAuthStore'
+import { useFriendStore } from '@/src/store/useFriendStore'
+import { acceptPendingRequest, refusedPendingRequest } from '../../actions'
+import ModalComponent from '@/src/components/ModalComponent'
 
 import CheckGreen from '@/src/assets/images/check-green.svg'
 import CloseRed from '@/src/assets/images/close-red.svg'
 
 import { styles } from '../../styles'
-import { useState } from 'react'
-import { useAuthStore } from '@/src/store/useAuthStore'
-import { useFriendStore } from '@/src/store/useFriendStore'
-import { axiosPrivateClient } from '@/src/utils/axios'
-import AcceptModal from '../Modais/acceptModal'
-import { acceptPendingRequest, refusedPendingRequest } from '../../actions'
 
 type Props = {
   friend: {
@@ -22,37 +21,34 @@ type Props = {
 }
 
 export default function PendingInvitationsCard({ friend }: Props) {
-  const [acceptModalVisible, setAcceptModalVisible] = useState(false)
+  const [simpleModalVisible, setSimpleModalVisible] = useState(false)
   const [completeModalVisible, setCompleteModalVisible] = useState(false)
 
   const { userCod } = useAuthStore()
   const { pendingInvitations, addPendingInvitations } = useFriendStore()
 
+  const removePendingItemFromTheList = (amigoId: string) => {
+    const filter = pendingInvitations.filter((item) => item.amigoId !== amigoId)
+    return filter
+  }
+
   const handleAcceptFriend = async (amigoId: string) => {
     try {
-      const response = await acceptPendingRequest(userCod, amigoId)
-      console.log(response)
-
-      if (response.statusCode === 201) {
-        setAcceptModalVisible(true)
-      }
+      await acceptPendingRequest(userCod, amigoId)
+      const newList = removePendingItemFromTheList(amigoId)
+      addPendingInvitations(newList)
+      setSimpleModalVisible(false)
     } catch (error) {
+      setSimpleModalVisible(false)
       console.log('Erro ao aceitar convite', error)
     }
   }
 
   const handleRefusedFriend = async (amigoId: string) => {
     try {
-      const response = await refusedPendingRequest(userCod, amigoId)
-
-      if (response.statusCode === 204) {
-        console.log('204')
-      }
-
-      const filter = pendingInvitations.filter(
-        (item) => item.amigoId !== amigoId,
-      )
-      addPendingInvitations(filter)
+      await refusedPendingRequest(userCod, amigoId)
+      const newList = removePendingItemFromTheList(amigoId)
+      addPendingInvitations(newList)
       setCompleteModalVisible(false)
     } catch (error) {
       setCompleteModalVisible(false)
@@ -72,7 +68,7 @@ export default function PendingInvitationsCard({ friend }: Props) {
         <CheckGreen
           width={24}
           height={24}
-          onPress={() => handleAcceptFriend(friend.amigoId)}
+          onPress={() => setSimpleModalVisible(true)}
         />
         <CloseRed
           width={24}
@@ -80,15 +76,25 @@ export default function PendingInvitationsCard({ friend }: Props) {
           onPress={() => setCompleteModalVisible(true)}
         />
       </View>
-      <AcceptModal
-        showModal={[acceptModalVisible, setAcceptModalVisible]}
-        friendName={friend.nome}
+
+      <ModalComponent
+        type="simple"
+        title={`${friend.nome} agora faz parte da sua lista de amigos`}
+        textButton1="Fechar"
+        amigoId={friend.amigoId}
+        onPress={handleAcceptFriend}
+        showModal={[simpleModalVisible, setSimpleModalVisible]}
       />
-      <CompleteModal
-        showModal={[completeModalVisible, setCompleteModalVisible]}
-        friendName={friend.nome}
-        id={friend.amigoId}
+
+      <ModalComponent
+        type="complete"
+        title={`Recusar solicitação de amizade de ${friend.nome}`}
+        description={`${friend.nome} não fará parte da sua lista de amigos.`}
+        textButton1="Cancelar"
+        textButton2="Recusar"
         onPress={handleRefusedFriend}
+        amigoId={friend.amigoId}
+        showModal={[completeModalVisible, setCompleteModalVisible]}
       />
     </View>
   )

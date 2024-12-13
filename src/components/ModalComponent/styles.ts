@@ -8,13 +8,13 @@ import {
 import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
-  centeredView: {
+  container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  modalView: {
+  content: {
     margin: horizontalScale(20),
     paddingTop: verticalScale(36),
     paddingBottom: verticalScale(16),
@@ -29,17 +29,17 @@ export const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  modalHeader: {
+  header: {
     paddingHorizontal: horizontalScale(32),
     gap: verticalScale(8),
   },
-  modalTitle: {
+  title: {
     fontFamily: theme.fontFamily.bold,
     fontSize: rem(24),
     lineHeight: verticalScale(30),
     color: theme.colors.primaryColor,
   },
-  modalText: {
+  description: {
     fontFamily: theme.fontFamily.regular,
     fontSize: rem(16),
     lineHeight: verticalScale(22),

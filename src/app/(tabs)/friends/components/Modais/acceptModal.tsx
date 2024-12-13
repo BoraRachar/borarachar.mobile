@@ -16,15 +16,15 @@ export default function AcceptModal({
   showModal,
   friendName,
 }: ModalComponentProps) {
-  const [simpleModalVisible, setSimpleModalVisible] = showModal
+  const [acceptModalVisible, setAcceptModalVisible] = showModal
   return (
     <Modal
       animationType="fade"
       transparent={true}
-      visible={simpleModalVisible}
+      visible={acceptModalVisible}
       onRequestClose={() => {
         console.log('clickou no fechar')
-        setSimpleModalVisible(!simpleModalVisible)
+        setAcceptModalVisible(!acceptModalVisible)
       }}
     >
       <View style={styles.centeredView}>
@@ -40,7 +40,7 @@ export default function AcceptModal({
           >
             <TouchableOpacity
               style={[styles.button, { backgroundColor: theme.colors.third }]}
-              onPress={() => setSimpleModalVisible(!simpleModalVisible)}
+              onPress={() => setAcceptModalVisible(!acceptModalVisible)}
             >
               <Text
                 style={[
