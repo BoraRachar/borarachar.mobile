@@ -17,14 +17,14 @@ import HandCoins from '../../../assets/images/HandCoins.svg'
 import Money from '../../../assets/images/MoneyWavy.svg'
 
 export default function Home() {
-  const { user } = useAuthStore()
+  const { userName } = useAuthStore()
   const getHeightScreen = Dimensions.get('window').height
 
   return (
     <View style={styles.container}>
       {/* header */}
       <View style={styles.header}>
-        <Text style={styles.title}>{user && `Ola, ${user}`}</Text>
+        <Text style={styles.title}>{userName && `Ola, ${userName}`}</Text>
 
         <View style={styles.headerIcon}>
           <Bells />
@@ -255,7 +255,7 @@ export default function Home() {
                     lineHeight: 22,
                   }}
                 >
-                  +R$10,50
+                  +R$9,00
                 </Text>
               </View>
             </View>
