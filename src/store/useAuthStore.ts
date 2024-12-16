@@ -11,6 +11,7 @@ interface AuthState {
     userCod: string,
   ) => Promise<void>
   logout: () => Promise<void>
+  initializeAuthState: () => Promise<void>
 }
 
 export const useAuthStore = create<AuthState>((set) => ({

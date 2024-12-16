@@ -3,59 +3,85 @@ import { Modal, Text, TouchableOpacity, View } from 'react-native'
 import { styles } from './styles'
 import { theme } from '@/src/theme'
 
-type ModalComponentProps = [boolean, (visible: boolean) => void]
-
+type ModalComponentProps = {
+  type: 'simple' | 'complete'
+  title: string
+  description?: string
+  textButton1: string
+  textButton2?: string
+  onPress: () => void
+  showModal: [
+    modalVisible: boolean,
+    setModalVisible: (modalVisible: boolean) => void,
+  ]
+}
 export default function ModalComponent({
+  type = 'simple',
+  title,
+  description,
+  textButton1,
+  textButton2,
   showModal,
-}: {
-  showModal: ModalComponentProps
-}) {
+  onPress,
+}: ModalComponentProps) {
   const [modalVisible, setModalVisible] = showModal
-  return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => {
-        setModalVisible(!modalVisible)
-      }}
-    >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Reenviar convite para [NOME]?</Text>
 
-            <Text style={styles.modalText}>
-              Enviaremos um e-mail para [NOME] com o link do convite.
-            </Text>
+  return (
+    <Modal animationType="fade" transparent={true} visible={modalVisible}>
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.header}>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.description}>{description}</Text>
           </View>
 
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: theme.colors.third }]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text
+          {type === 'simple' ? (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={onPress}
+                style={[styles.button, { backgroundColor: theme.colors.third }]}
+              >
+                <Text
+                  style={[
+                    styles.buttonText,
+                    { color: theme.colors.primaryColor },
+                  ]}
+                >
+                  {textButton1}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={() => setModalVisible(!modalVisible)}
+                style={[styles.button, { backgroundColor: theme.colors.third }]}
+              >
+                <Text
+                  style={[
+                    styles.buttonText,
+                    { color: theme.colors.primaryColor },
+                  ]}
+                >
+                  {textButton1}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={onPress}
                 style={[
-                  styles.buttonText,
-                  { color: theme.colors.primaryColor },
+                  styles.button,
+                  { backgroundColor: theme.colors.primaryColor },
                 ]}
               >
-                Não Enviar
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.button,
-                { backgroundColor: theme.colors.primaryColor },
-              ]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={[styles.buttonText, { color: theme.colors.white }]}>
-                Enviar
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <Text
+                  style={[styles.buttonText, { color: theme.colors.white }]}
+                >
+                  {textButton2}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </View>
     </Modal>

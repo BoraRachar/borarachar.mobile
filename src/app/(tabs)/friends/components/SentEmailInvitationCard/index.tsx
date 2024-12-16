@@ -12,6 +12,7 @@ import Email from '@/src/assets/images/e-mail.svg'
 import Trash from '@/src/assets/images/trash.svg'
 
 import { styles } from '../../styles'
+import ModalComponent from '@/src/components/ModalComponent'
 
 type SentInvitationCardProps = {
   friend: {
@@ -28,14 +29,12 @@ export default function SentInvitationCard({
   const [resendEmailModalVisible, setResendEmailModalVisible] = useState(false)
   const { emailInvitations, addEmailInvitations } = useFriendStore()
 
-  const handleRemoveInvitation = async (idConvite: string) => {
+  const handleRemoveInvitation = async (id: string) => {
     try {
-      const deletedEmailInvitations = await removeEmailInvitation(idConvite)
+      const response = await removeEmailInvitation(id)
 
-      if (deletedEmailInvitations.statusCode === 204) {
-        const filter = emailInvitations.filter(
-          (item) => item.idConvite !== idConvite,
-        )
+      if (response.statusCode === 204) {
+        const filter = emailInvitations.filter((item) => item.idConvite !== id)
         addEmailInvitations(filter)
         setRemoveModalVisible(false)
       }
@@ -45,9 +44,9 @@ export default function SentInvitationCard({
     }
   }
 
-  const handleResendEmail = async (idConvite: string) => {
+  const handleResendEmail = async (id: string) => {
     try {
-      const response = await resendEmailInvitations(idConvite)
+      const response = await resendEmailInvitations(id)
 
       if (response.statusCode === 204) {
         console.log('Email enviado com sucesso')
@@ -84,7 +83,29 @@ export default function SentInvitationCard({
         />
       </View>
 
-      <RemoveEmailModal
+      {/* Resend Modal */}
+      <ModalComponent
+        type="complete"
+        title={`Reenviar convite para ${friend.nome}?`}
+        description={`Enviaremos um e-mail para ${friend.nome} com o link do convite`}
+        textButton1="Não Enviar"
+        textButton2="Enviar"
+        showModal={[resendEmailModalVisible, setResendEmailModalVisible]}
+        onPress={() => handleResendEmail(friend.idConvite)}
+      />
+
+      {/* Remove Modal */}
+      <ModalComponent
+        type="complete"
+        title={`Excluir convite de ${friend.nome}?`}
+        description={`${friend.nome} não poderá mais fazer parte da sua lista de amigos`}
+        textButton1="Não Excluir"
+        textButton2="Excluir"
+        showModal={[removeModalVisible, setRemoveModalVisible]}
+        onPress={() => handleRemoveInvitation(friend.idConvite)}
+      />
+
+      {/* <RemoveEmailModal
         showModal={[removeModalVisible, setRemoveModalVisible]}
         friendName={friend.nome}
         idConvite={friend.idConvite}
@@ -96,7 +117,7 @@ export default function SentInvitationCard({
         friendName={friend.nome}
         idConvite={friend.idConvite}
         onPress={handleResendEmail}
-      />
+      /> */}
     </View>
   )
 }
