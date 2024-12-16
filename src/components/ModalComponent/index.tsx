@@ -9,12 +9,11 @@ type ModalComponentProps = {
   description?: string
   textButton1: string
   textButton2?: string
-  amigoId: string
+  onPress: () => void
   showModal: [
     modalVisible: boolean,
     setModalVisible: (modalVisible: boolean) => void,
   ]
-  onPress: (amigoId: string) => void
 }
 export default function ModalComponent({
   type = 'simple',
@@ -22,7 +21,6 @@ export default function ModalComponent({
   description,
   textButton1,
   textButton2,
-  amigoId,
   showModal,
   onPress,
 }: ModalComponentProps) {
@@ -40,7 +38,7 @@ export default function ModalComponent({
           {type === 'simple' ? (
             <View style={styles.buttonContainer}>
               <TouchableOpacity
-                onPress={() => onPress(amigoId)}
+                onPress={onPress}
                 style={[styles.button, { backgroundColor: theme.colors.third }]}
               >
                 <Text
@@ -70,7 +68,7 @@ export default function ModalComponent({
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => onPress(amigoId)}
+                onPress={onPress}
                 style={[
                   styles.button,
                   { backgroundColor: theme.colors.primaryColor },

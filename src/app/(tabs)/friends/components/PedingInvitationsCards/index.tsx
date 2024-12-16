@@ -81,8 +81,7 @@ export default function PendingInvitationsCard({ friend }: Props) {
         type="simple"
         title={`${friend.nome} agora faz parte da sua lista de amigos`}
         textButton1="Fechar"
-        amigoId={friend.amigoId}
-        onPress={handleAcceptFriend}
+        onPress={() => handleAcceptFriend(friend.amigoId)}
         showModal={[simpleModalVisible, setSimpleModalVisible]}
       />
 
@@ -92,8 +91,7 @@ export default function PendingInvitationsCard({ friend }: Props) {
         description={`${friend.nome} não fará parte da sua lista de amigos.`}
         textButton1="Cancelar"
         textButton2="Recusar"
-        onPress={handleRefusedFriend}
-        amigoId={friend.amigoId}
+        onPress={() => handleRefusedFriend(friend.amigoId)}
         showModal={[completeModalVisible, setCompleteModalVisible]}
       />
     </View>
