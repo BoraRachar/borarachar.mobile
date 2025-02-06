@@ -54,9 +54,10 @@ export default function Layout() {
       />
 
       <Tabs.Screen
-        name="groups/index"
+        name="groups"
         options={{
           title: 'Grupos',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <Ionicons name="people-outline" size={24} color={color} />
           ),
