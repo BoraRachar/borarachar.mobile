@@ -1,4 +1,4 @@
-import { Pressable, TextInput, View } from 'react-native'
+import { Pressable, Text, TextInput, View } from 'react-native'
 
 import Photograph from '@/src/assets/images/photograph.svg'
 import Pencil from '@/src/assets/images/pencil.svg'
@@ -19,7 +19,14 @@ export default function NewGroups() {
             <Pencil width={12} height={12} />
           </Pressable>
         </View>
-        <TextInput placeholder="Ex: Amigos do Bora" />
+        <View style={{ flex: 1, gap: 8 }}>
+          <Text style={styles.label}>Nome</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ex: Amigos do Bora"
+            placeholderTextColor={'#9BA5B7'}
+          />
+        </View>
       </View>
     </View>
   )
