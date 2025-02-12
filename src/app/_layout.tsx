@@ -1,4 +1,5 @@
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'react-native'
 import { Slot } from 'expo-router'
 
 import {
@@ -20,10 +21,13 @@ export default function Layout() {
   if (!fontsLoaded) return
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1 }}>
-        <Slot />
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <>
+      <StatusBar translucent backgroundColor="transparent" />
+      <SafeAreaProvider>
+        <SafeAreaView style={{ flex: 1 }}>
+          <Slot />
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </>
   )
 }
