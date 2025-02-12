@@ -18,8 +18,11 @@ export const styles = StyleSheet.create({
     gap: horizontalScale(18),
   },
   imageContainer: {
-    padding: 24,
+    width: 80,
+    height: 80,
     borderWidth: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderColor: theme.colors.primaryColor,
     backgroundColor: theme.colors.third,
     position: 'relative',
