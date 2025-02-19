@@ -7,6 +7,9 @@ import Pencil from '@/src/assets/images/pencil.svg'
 import { styles } from './styles'
 import { useState } from 'react'
 import { theme } from '@/src/theme'
+import ActionLinkButton from '@/src/components/ActionLinkButton'
+import LinkIcon from '@/src/assets/images/linkIcon.svg'
+import AddFriendIcon from '@/src/assets/images/addFriendIcon.svg'
 
 export default function NewGroup() {
   const [image, setImage] = useState<string | null>(null)
@@ -49,6 +52,20 @@ export default function NewGroup() {
             placeholderTextColor={theme.colors.fourth}
           />
         </View>
+      </View>
+      <View>
+        <ActionLinkButton
+          text="Convidar com link"
+          icon={<LinkIcon />}
+          link="/friends/addNewFriendsPage"
+        />
+      </View>
+      <View>
+        <ActionLinkButton
+          text="Adicionar amigo"
+          icon={<AddFriendIcon />}
+          link="/friends/addNewFriendsPage"
+        />
       </View>
     </View>
   )
