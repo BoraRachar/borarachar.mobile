@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "BoraRachar",
-    "slug": "borarachar-mobile",
+    "slug": "borarachar",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "borarachar",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.borarachar.borarachar"
     },
     "web": {
       "bundler": "metro",
@@ -42,6 +43,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1c702e4c-01e9-4e71-a4ba-214ce2019b30"
+      }
+    },
+    "owner": "rachaconta"
   }
 }

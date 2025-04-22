@@ -1,10 +1,9 @@
 import axios from 'axios'
-import { router } from 'expo-router'
 import { SecureStoreUtils } from '@/src/utils/secureStoreUtils'
 
 const API_BASE_URL =
   process.env.EXPO_PUBLIC_API_BASE_URL ||
-  'https://borarachar.microerp.solutions/v1/'
+  'https://borarachar.microbr.online/v1/'
 
 export const axiosClient = axios.create({
   baseURL: API_BASE_URL,
