@@ -46,7 +46,8 @@
     "zustand": "^4.5.2",
     "react-native-pager-view": "6.3.0",
     "expo-image-picker": "~15.1.0",
-    "expo-image": "~1.13.0"
+    "expo-image": "~1.13.0",
+    "expo-dev-client": "~4.0.29"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
