@@ -2,6 +2,8 @@ import { router, Stack } from 'expo-router'
 
 import LeftIcon from '@/src/assets/images/arrowBack.svg'
 import Question from '@/src/assets/images/question.svg'
+import Close from '@/src/assets/images/close-roudend.svg'
+import { View } from 'react-native'
 
 export default function GroupsLayout() {
   return (
@@ -15,7 +17,7 @@ export default function GroupsLayout() {
           headerLeft: () => (
             <LeftIcon
               onPress={() => {
-                router.back()
+                router.push('/home')
               }}
             />
           ),
@@ -37,6 +39,68 @@ export default function GroupsLayout() {
             />
           ),
           headerRight: () => <Question />,
+        }}
+      />
+
+      <Stack.Screen
+        name="newGroup/addParticipants/index"
+        options={{
+          title: 'Adicionar participantes',
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <LeftIcon
+              onPress={() => {
+                router.back()
+              }}
+            />
+          ),
+          headerRight: () => <Question />,
+        }}
+      />
+
+      <Stack.Screen
+        name="newGroup/conditionPage/index"
+        options={{
+          title: 'Novo Grupo',
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <LeftIcon
+              onPress={() => {
+                router.back()
+              }}
+            />
+          ),
+          headerRight: () => <Question />,
+        }}
+      />
+
+      <Stack.Screen
+        name="newGroup/resume/index"
+        options={{
+          title: 'Resumo',
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <LeftIcon
+              onPress={() => {
+                router.back()
+              }}
+            />
+          ),
+          headerRight: () => <Question />,
+        }}
+      />
+
+      <Stack.Screen
+        name="newGroup/success/index"
+        options={{
+          title: 'Sucesso',
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerLeft: () => <View />,
+          headerRight: () => <Close onPress={() => router.replace('/groups')} />,
         }}
       />
     </Stack>
