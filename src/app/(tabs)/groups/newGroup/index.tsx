@@ -98,9 +98,7 @@ export default function NewGroup() {
         )
 
         setCategoriesList(categories)
-        setSelectedCategory(
-          groupData.descricaoCategoria || 'Selecione a categoria',
-        )
+        setSelectedCategory(groupData.descricaoCategoria || 'Outros')
         setGroupImage(groupData.imgGrupo || '')
       } catch (error) {
         console.log('Erro ao conectar com a API de categorias', error)
