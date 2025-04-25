@@ -2,17 +2,16 @@ import { useState } from 'react'
 import { View, Text, ScrollView, Alert } from 'react-native'
 import { Link, router } from 'expo-router'
 
-import { styles as globalStyles } from '@/src/app/styles'
 import styles from './styles'
 
 import { axiosPrivateClient } from '@/src/utils/axios'
 import { useAuthStore } from '@/src/store/useAuthStore'
 import { useGroupStore } from '@/src/store/useGroupStore'
-import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 
 import UserImage from '@/src/assets/images/user-circle.svg'
 import PencilBlack from '@/src/assets/images/pencil-black.svg'
 import ActivityIndicatorComponent from '@/src/components/ActivityIndicatorComponent'
+import Footer from '../../components/Footer'
 
 const validOptions = {
   0: 'Igualitária',
@@ -158,28 +157,7 @@ const Resume: React.FC = () => {
           gap: 16,
         }}
       >
-        <ButtonCustomizer.Root
-          type="tertiaryHalfWidth"
-          onPress={() => {
-            removeGroupData()
-            router.replace('/groups')
-          }}
-        >
-          <ButtonCustomizer.Title
-            title="Cancelar"
-            customStyles={globalStyles.secondaryButtonText}
-          />
-        </ButtonCustomizer.Root>
-
-        <ButtonCustomizer.Root
-          type="primaryHalfWidth"
-          onPress={() => handleSubmit()}
-        >
-          <ButtonCustomizer.Title
-            title="Criar"
-            customStyles={globalStyles.primaryButtonText}
-          />
-        </ButtonCustomizer.Root>
+        <Footer handleSubmit={handleSubmit} />
       </View>
     </ScrollView>
   )

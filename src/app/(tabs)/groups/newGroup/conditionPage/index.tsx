@@ -10,16 +10,15 @@ import { styles } from './styles'
 import { useEffect, useState } from 'react'
 import TeamSpirit from '@/src/assets/images/teamSpirit.svg'
 import { theme } from '@/src/theme'
-import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
-import { styles as globalStyles } from '@/src/app/styles'
 import { router } from 'expo-router'
 import { useGroupStore } from '@/src/store/useGroupStore'
+import Footer from '../../components/Footer'
+
+type Options = 'equal' | 'value' | 'percentage' | 'quota' | null
 
 export default function ConditionPage() {
-  const [selectedOption, setSelectedOption] = useState<
-    'equal' | 'value' | 'percentage' | 'quota' | null
-  >(null)
-  const { groupData, setGroupData, removeGroupData } = useGroupStore()
+  const [selectedOption, setSelectedOption] = useState<Options>(null)
+  const { groupData, setGroupData } = useGroupStore()
 
   const handleSubmit = () => {
     if (selectedOption === null) {
@@ -47,14 +46,7 @@ export default function ConditionPage() {
         3: 'quota',
       }
 
-      setSelectedOption(
-        validOptions[groupData?.tipoDivisao] as
-        | 'equal'
-        | 'value'
-        | 'percentage'
-        | 'quota'
-        | null,
-      )
+      setSelectedOption(validOptions[groupData?.tipoDivisao] as Options)
     }
   }, [groupData?.tipoDivisao])
 
@@ -301,24 +293,7 @@ export default function ConditionPage() {
               : { paddingBottom: 25 },
           ]}
         >
-          <ButtonCustomizer.Root
-            type="tertiaryHalfWidth"
-            onPress={() => {
-              removeGroupData()
-              router.replace('/groups')
-            }}
-          >
-            <ButtonCustomizer.Title
-              title="Cancelar"
-              customStyles={globalStyles.secondaryButtonText}
-            />
-          </ButtonCustomizer.Root>
-          <ButtonCustomizer.Root type="primaryHalfWidth" onPress={handleSubmit}>
-            <ButtonCustomizer.Title
-              title="Continuar"
-              customStyles={globalStyles.primaryButtonText}
-            />
-          </ButtonCustomizer.Root>
+          <Footer handleSubmit={handleSubmit} />
         </View>
       </View>
     </ScrollView>

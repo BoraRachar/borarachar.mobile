@@ -6,7 +6,6 @@ import { axiosPrivateClient } from '@/src/utils/axios'
 
 import ActivityIndicatorComponent from '@/src/components/ActivityIndicatorComponent'
 import ActionLinkButton from '@/src/components/ActionLinkButton'
-import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 
 import useKeyboardStatus from '@/src/utils/keyboardUtils'
 import { useAuthStore } from '@/src/store/useAuthStore'
@@ -15,10 +14,10 @@ import LinkIcon from '@/src/assets/images/linkIcon.svg'
 import AddFriendIcon from '@/src/assets/images/addFriendIcon.svg'
 import Search from '@/src/assets/images/search.svg'
 
-import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from '../styles'
 import { theme } from '@/src/theme'
 import { useGroupStore } from '@/src/store/useGroupStore'
+import Footer from '../../components/Footer'
 
 interface Friend {
   amigoId: string
@@ -37,7 +36,7 @@ export default function AddParticipants() {
 
   const isKeyboardVisible = useKeyboardStatus()
   const { userCod } = useAuthStore()
-  const { groupData, setGroupData, removeGroupData } = useGroupStore()
+  const { groupData, setGroupData } = useGroupStore()
 
   // Alterna a seleção de um amigo
   const toggleSelection = (item: Friend) => {
@@ -186,29 +185,7 @@ export default function AddParticipants() {
       </View>
 
       {/* Botão */}
-      {!isKeyboardVisible && (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <ButtonCustomizer.Root
-            type="tertiaryHalfWidth"
-            onPress={() => {
-              removeGroupData()
-              router.replace('/groups')
-            }}
-          >
-            <ButtonCustomizer.Title
-              title="Cancelar"
-              customStyles={globalStyles.secondaryButtonText}
-            />
-          </ButtonCustomizer.Root>
-
-          <ButtonCustomizer.Root type="primaryHalfWidth" onPress={handleSubmit}>
-            <ButtonCustomizer.Title
-              title="Proximo"
-              customStyles={globalStyles.primaryButtonText}
-            />
-          </ButtonCustomizer.Root>
-        </View>
-      )}
+      {!isKeyboardVisible && <Footer handleSubmit={handleSubmit} />}
     </View>
   )
 }
