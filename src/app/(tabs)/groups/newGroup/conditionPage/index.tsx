@@ -56,7 +56,7 @@ export default function ConditionPage() {
         | null,
       )
     }
-  }, [])
+  }, [groupData?.tipoDivisao])
 
   return (
     <ScrollView style={styles.container}>

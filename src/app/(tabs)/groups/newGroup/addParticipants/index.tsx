@@ -90,7 +90,7 @@ export default function AddParticipants() {
         }
       }
       fetchFriends()
-    }, []),
+    }, [groupData.participantes, groupData.nomeParticipantes, userCod]),
   )
 
   // Atualiza a lista filtrada conforme o usuário digita

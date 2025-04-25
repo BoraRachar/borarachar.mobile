@@ -29,6 +29,7 @@ import Pencil from '@/src/assets/images/pencil.svg'
 import { theme } from '@/src/theme'
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from './styles'
+import ModalComponent from '@/src/components/ModalComponent'
 
 interface FormData {
   name: string
@@ -51,8 +52,10 @@ export default function NewGroup() {
   const [groupImage, setGroupImage] = useState<string>('')
   const [categoriesList, setCategoriesList] = useState<Categories[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [modalVisible, setModalVisible] = useState(false)
 
   const { groupData, setGroupData, removeGroupData } = useGroupStore()
+
   const {
     control,
     handleSubmit,
@@ -78,6 +81,11 @@ export default function NewGroup() {
     if (!result.canceled) {
       setGroupImage(result.assets[0].base64 ?? '')
     }
+  }
+
+  const handleCancelAddGroup = () => {
+    removeGroupData()
+    router.replace('/groups')
   }
 
   useEffect(() => {
@@ -125,6 +133,15 @@ export default function NewGroup() {
 
   return (
     <View style={styles.container}>
+      <ModalComponent
+        type="complete"
+        title="Deseja realmente sair?"
+        description="Você perderá a edição do grupo"
+        textButton1="Cancelar"
+        textButton2="Confirmar"
+        onPress={() => handleCancelAddGroup()}
+        showModal={[modalVisible, setModalVisible]}
+      />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={{ flex: 1, gap: 8 }}>
           {/* Header */}
@@ -238,8 +255,7 @@ export default function NewGroup() {
           <ButtonCustomizer.Root
             type="tertiaryHalfWidth"
             onPress={() => {
-              removeGroupData()
-              router.replace('/groups')
+              setModalVisible(true)
             }}
           >
             <ButtonCustomizer.Title
