@@ -28,9 +28,10 @@ const Resume: React.FC = () => {
 
   const handleSubmit = async () => {
     setIsLoading(true)
-    // remove descricaoCategoria e nomeParticipantes do payload
-    const { descricaoCategoria, nomeParticipantes, ...rest } = groupData
-    const payload = { userCod, ...rest }
+    const newGroupData = { ...groupData }
+    delete newGroupData.descricaoCategoria
+    delete newGroupData.nomeParticipantes
+    const payload = { userCod, ...newGroupData }
 
     try {
       const response = await axiosPrivateClient.post('/grupos', payload)
