@@ -179,7 +179,7 @@ export default function AddParticipants() {
             <ActionLinkButton
               text="Adicionar amigo"
               icon={<AddFriendIcon />}
-              link="/friendsv/addNewFriendsPage"
+              link="/friends/addNewFriendsPage"
             />
           </View>
         </View>

@@ -16,7 +16,7 @@ export default function FriendsLayout() {
           headerLeft: () => (
             <LeftIcon
               onPress={() => {
-                router.back()
+                router.push('/(tabs)')
               }}
             />
           ),
@@ -50,7 +50,7 @@ export default function FriendsLayout() {
           headerLeft: () => (
             <LeftIcon
               onPress={() => {
-                router.back()
+                router.push('/friends/')
               }}
             />
           ),

@@ -1,8 +1,7 @@
 import { Text, TouchableOpacity, View } from 'react-native'
 import styles from './styles'
-import { router } from 'expo-router'
+import { router, Href } from 'expo-router'
 import { ReactNode } from 'react'
-import { Href } from 'expo-router'
 
 interface LinkButtonProps {
   text: string
@@ -10,7 +9,11 @@ interface LinkButtonProps {
   link: Href<string | object>
 }
 
-export default function ActionLinkButton({ text, icon, link }: LinkButtonProps) {
+export default function ActionLinkButton({
+  text,
+  icon,
+  link,
+}: LinkButtonProps) {
   return (
     <View style={styles.containerButton}>
       <Text style={[styles.text, styles.textButton]}>{text}</Text>
