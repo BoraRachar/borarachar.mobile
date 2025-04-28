@@ -170,7 +170,7 @@ export default function AddParticipants() {
             <ActionLinkButton
               text="Convidar com link"
               icon={<LinkIcon />}
-              link="/friends/addNewFriendsPage"
+              link="/friends/emailInvitationPage"
             />
           </View>
 
