@@ -7,30 +7,27 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "environment": "development",
+      "channel": "development",
       "android": {
-        "buildType": "apk",
-        "env": {
-          "EXPO_PUBLIC_API_BASE_URL": "https://borarachar.microbr.online/v1/"
-        }
-      }
-    },
-    "test": {
-      "distribution": "internal",
-      "android": {
-        "buildType": "apk",
-        "env": {
-          "EXPO_PUBLIC_API_BASE_URL": "https://borarachar.microbr.online/v1/"
-        }
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
       }
     },
     "preview": {
-      "distribution": "store",
-      "env": {
-        "EXPO_PUBLIC_API_BASE_URL": "https://borarachar.microbr.online/v1/"
+      "distribution": "internal",
+      "environment": "preview",
+      "channel": "preview",
+      "android": {
+        "buildType": "apk"
       }
     },
     "production": {
       "distribution": "store",
+      "environment": "production",
+      "channel": "production",
       "autoIncrement": true
     }
   },

@@ -2,6 +2,19 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+# Then run `eas env:pull development` to generate the .env.local file that looks like this
+
+  Login to eas
+   ```bash
+   eas login
+   ```
+  
+  choose between development, preview or production env
+   ```bash
+   eas env:pull
+   ``` 
+
+
 ## Get started
 
 1. Install dependencies
