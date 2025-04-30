@@ -9,7 +9,7 @@ const PROJECT_SLUG = 'borarachar-mobile'
 const OWNER = 'rachaconta'
 
 // App production config
-const APP_NAME = 'BoraRachar'
+const APP_NAME = 'Bora Rachar'
 const BUNDLE_IDENTIFIER = 'com.rachaconta.borarachar.mobile'
 const PACKAGE_NAME = 'com.rachaconta.borarachar.mobile'
 const SCHEME = 'app-scheme'
@@ -23,7 +23,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ...config,
     name,
     slug: PROJECT_SLUG,
-    version: '1.0.4',
+    version: '1.0.4.1',
     orientation: 'portrait',
     icon,
     scheme,
