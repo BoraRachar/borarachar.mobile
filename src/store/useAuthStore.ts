@@ -37,7 +37,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   initializeAuthState: async () => {
     const accessToken = await SecureStoreUtils.getItem('acessToken')
     if (accessToken) {
-      set({ isAuthenticated: true })
+      set({ isAuthenticated: false }) // retirado a opção de login automatico depois do primeiro acesso
     }
   },
 }))
