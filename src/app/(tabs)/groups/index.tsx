@@ -68,8 +68,7 @@ export default function Groups() {
         ) : (
           <FlatList
             data={dataGroups ?? []}
-            keyExtractor={(item) => item.groupId}
-            extraData={dataGroups}
+            keyExtractor={(_, index) => index.toString()}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={
               <Text style={[styles.emptyGroup, styles.text, styles.textLight]}>
