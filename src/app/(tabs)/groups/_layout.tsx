@@ -100,7 +100,26 @@ export default function GroupsLayout() {
           headerShown: true,
           headerTitleAlign: 'center',
           headerLeft: () => <View />,
-          headerRight: () => <Close onPress={() => router.replace('/groups')} />,
+          headerRight: () => (
+            <Close onPress={() => router.replace('/groups')} />
+          ),
+        }}
+      />
+
+      <Stack.Screen
+        name="groupDetails/index"
+        options={{
+          title: 'Grupo',
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <LeftIcon
+              onPress={() => {
+                router.back()
+              }}
+            />
+          ),
+          headerRight: () => <Question />,
         }}
       />
     </Stack>
