@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native'
 
-const GroupDetails = () => {
+const Details = () => {
   return (
     <View>
       <Text>GroupDetails</Text>
@@ -8,4 +8,4 @@ const GroupDetails = () => {
   )
 }
 
-export default GroupDetails
+export default Details
