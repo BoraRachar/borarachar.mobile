@@ -78,12 +78,7 @@ export default function Groups() {
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
-                  onPress={() =>
-                    router.push({
-                      pathname: '/(tabs)/groups/groupDetails',
-                      params: { data: item.groupId },
-                    })
-                  }
+                  onPress={() => router.push('/(tabs)/groups/details')}
                   style={styles.containerGroup}
                 >
                   <View style={{ flexDirection: 'row', gap: 16 }}>

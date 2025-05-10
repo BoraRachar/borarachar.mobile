@@ -107,7 +107,7 @@ export default function GroupsLayout() {
       />
 
       <Stack.Screen
-        name="groupDetails/index"
+        name="details/index"
         options={{
           title: 'Grupo',
           headerShown: true,
