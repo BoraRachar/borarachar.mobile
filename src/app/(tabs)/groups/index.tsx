@@ -19,6 +19,9 @@ export default function Groups() {
             </View>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={() => router.push('/groups/editGroup')}>
+          <Text>Editar Grupo</Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
