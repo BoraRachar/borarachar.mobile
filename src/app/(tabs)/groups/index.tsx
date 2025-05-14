@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { router } from 'expo-router'
 
+import ActivityIndicatorComponent from '@/src/components/ActivityIndicatorComponent'
+
+import { useGroupStore } from '@/src/store/useGroupStore'
 import { useAuthStore } from '@/src/store/useAuthStore'
 import { axiosPrivateClient } from '@/src/utils/axios'
 
@@ -11,20 +14,26 @@ import ArrowRight from '@/src/assets/images/chevron-arrow-right.svg'
 
 import { styles } from './styles'
 import { Image } from 'expo-image'
-import ActivityIndicatorComponent from '@/src/components/ActivityIndicatorComponent'
 
 interface Group {
+  nome: string
   groupId: string
   descricao: string
-  img: string
-  participantes: number
+  imgGrupo: string
+  totalParticipantes: number
 }
 
 export default function Groups() {
-  const [dataGroups, setDataGroups] = useState<Group[]>([])
+  const [groupDataList, setGroupDataList] = useState<Group[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
   const { userCod } = useAuthStore()
+  const { setGroupData } = useGroupStore()
+
+  const handleGroupPress = async (group: Group) => {
+    await setGroupData(group)
+    router.push('/(tabs)/groups/details')
+  }
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -38,7 +47,7 @@ export default function Groups() {
           },
         })
 
-        setDataGroups(data.data)
+        setGroupDataList(data.data)
       } catch (error) {
         console.log('Houve um erro ao buscar os grupos', error)
       } finally {
@@ -67,7 +76,7 @@ export default function Groups() {
           <ActivityIndicatorComponent />
         ) : (
           <FlatList
-            data={dataGroups ?? []}
+            data={groupDataList ?? []}
             keyExtractor={(_, index) => index.toString()}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={
@@ -78,14 +87,16 @@ export default function Groups() {
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
-                  onPress={() => router.push('/(tabs)/groups/details')}
+                  onPress={() => handleGroupPress(item)}
                   style={styles.containerGroup}
                 >
                   <View style={{ flexDirection: 'row', gap: 16 }}>
                     <View style={styles.containerImage}>
-                      {item.img ? (
+                      {item.imgGrupo ? (
                         <Image
-                          source={{ uri: `data:image/jpeg;base64,${item.img}` }}
+                          source={{
+                            uri: `data:image/jpeg;base64,${item.imgGrupo}`,
+                          }}
                           style={{ width: '100%', height: '100%' }}
                           alt="imagem do grupo"
                         />
@@ -95,9 +106,9 @@ export default function Groups() {
                     </View>
 
                     <View>
-                      <Text style={styles.text}>{item.descricao}</Text>
+                      <Text style={styles.text}>{item.nome}</Text>
                       <Text style={[styles.text, styles.textLight]}>
-                        {`${item.participantes} participantes`}
+                        {`${item.totalParticipantes} participantes`}
                       </Text>
                     </View>
                   </View>

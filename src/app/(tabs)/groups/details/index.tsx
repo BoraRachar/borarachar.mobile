@@ -1,6 +1,10 @@
+import { useEffect } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { axiosPrivateClient } from '@/src/utils/axios'
 
-import Photograph from '@/src/assets/images/photograph.svg'
+import { useAuthStore } from '@/src/store/useAuthStore'
+import { useGroupStore } from '@/src/store/useGroupStore'
+
 import { theme } from '@/src/theme'
 import {
   horizontalScale,
@@ -8,26 +12,57 @@ import {
   verticalScale,
 } from '@/src/utils/responsiveUtils'
 
+import Photograph from '@/src/assets/images/photograph.svg'
 import PencilBlack from '@/src/assets/images/pencil-black.svg'
 import Money from '@/src/assets/images/money.svg'
 import AddFriendIcon from '@/src/assets/images/addFriendIcon.svg'
+import { Image } from 'expo-image'
 
 const Details = () => {
+  const { userCod } = useAuthStore()
+  const { groupData, setGroupData } = useGroupStore()
+
+  useEffect(() => {
+    const fetchDetailsGroup = async () => {
+      const { data } = await axiosPrivateClient.get('grupos/detalhes-grupo', {
+        params: {
+          userCod,
+          grupoId: groupData?.grupoId,
+        },
+      })
+
+      setGroupData(data.data)
+    }
+
+    fetchDetailsGroup()
+  }, [groupData?.grupoId, setGroupData, userCod])
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.imageContainer}>
-          <Photograph width={32} height={32} />
+          {groupData.imgGrupo ? (
+            <Image
+              source={{
+                uri: `data:image/jpeg;base64,${groupData.imgGrupo}`,
+              }}
+              style={{ width: '100%', height: '100%' }}
+              alt="imagem do grupo"
+            />
+          ) : (
+            <Photograph width={32} height={32} />
+          )}
         </View>
+
         <View style={{ gap: 8 }}>
           <Text style={[styles.text, { fontFamily: theme.fontFamily.bold }]}>
-            Nome do grupo
+            {groupData.nome}
           </Text>
           <Text style={[styles.text, { fontFamily: theme.fontFamily.regular }]}>
-            Categoria
+            {groupData.categoria}
           </Text>
           <Text style={[styles.text, { fontFamily: theme.fontFamily.regular }]}>
-            Breve descrição do grupo
+            {groupData.descricao}
           </Text>
         </View>
       </View>
