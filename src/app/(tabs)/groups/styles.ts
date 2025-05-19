@@ -35,9 +35,33 @@ export const styles = StyleSheet.create({
     lineHeight: verticalScale(24),
     color: theme.colors.primaryColor,
   },
+  textLight: {
+    fontFamily: theme.fontFamily.regular,
+  },
   addButton: {
     backgroundColor: theme.colors.third,
     borderRadius: 50,
     padding: 14,
+  },
+  containerGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: verticalScale(12),
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.Gray[300],
+  },
+  containerImage: {
+    backgroundColor: theme.colors.third,
+    borderRadius: 50,
+    padding: 8,
+    width: 48,
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyGroup: {
+    textAlign: 'center',
+    paddingVertical: verticalScale(40),
   },
 })
