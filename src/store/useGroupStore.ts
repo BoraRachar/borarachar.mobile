@@ -11,6 +11,7 @@ interface GroupData {
   participantes?: string[]
   TotalParticipantes?: number
   grupoId?: string
+  isAdm?: boolean
 }
 
 interface GroupState {

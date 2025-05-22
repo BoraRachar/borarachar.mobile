@@ -1,9 +1,17 @@
 import { useEffect } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image } from 'expo-image'
+
 import { axiosPrivateClient } from '@/src/utils/axios'
 
 import { useAuthStore } from '@/src/store/useAuthStore'
 import { useGroupStore } from '@/src/store/useGroupStore'
+
+import PhotographIcon from '@/src/assets/images/photograph.svg'
+import PencilBlackIcon from '@/src/assets/images/pencil-black.svg'
+import MoneyIcon from '@/src/assets/images/money.svg'
+import AddFriendIcon from '@/src/assets/images/addFriendIcon.svg'
+import GroupIcon from '@/src/assets/images/group.svg'
 
 import { theme } from '@/src/theme'
 import {
@@ -11,12 +19,6 @@ import {
   rem,
   verticalScale,
 } from '@/src/utils/responsiveUtils'
-
-import Photograph from '@/src/assets/images/photograph.svg'
-import PencilBlack from '@/src/assets/images/pencil-black.svg'
-import Money from '@/src/assets/images/money.svg'
-import AddFriendIcon from '@/src/assets/images/addFriendIcon.svg'
-import { Image } from 'expo-image'
 
 const Details = () => {
   const { userCod } = useAuthStore()
@@ -37,6 +39,8 @@ const Details = () => {
     fetchDetailsGroup()
   }, [groupData?.grupoId, setGroupData, userCod])
 
+  console.log(groupData)
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -50,7 +54,7 @@ const Details = () => {
               alt="imagem do grupo"
             />
           ) : (
-            <Photograph width={32} height={32} />
+            <PhotographIcon width={32} height={32} />
           )}
         </View>
 
@@ -68,26 +72,46 @@ const Details = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
-          <View style={styles.iconContainer}>
-            <PencilBlack width={22} height={22} />
-          </View>
-          <Text style={styles.label}>Editar{'\n'}grupo</Text>
-        </TouchableOpacity>
+        {groupData?.isAdm ? (
+          <>
+            <TouchableOpacity style={styles.button}>
+              <View style={styles.iconContainer}>
+                <PencilBlackIcon width={22} height={22} />
+              </View>
+              <Text style={styles.label}>Editar{'\n'}grupo</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
-          <View style={styles.iconContainer}>
-            <Money width={22} height={22} />
-          </View>
-          <Text style={styles.label}>Nova{'\n'}despesa</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.button}>
+              <View style={styles.iconContainer}>
+                <MoneyIcon width={22} height={22} />
+              </View>
+              <Text style={styles.label}>Nova{'\n'}despesa</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
-          <View style={styles.iconContainer}>
-            <AddFriendIcon width={22} height={22} />
-          </View>
-          <Text style={styles.label}>Adicionar{'\n'}participantes</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.button}>
+              <View style={styles.iconContainer}>
+                <AddFriendIcon width={22} height={22} />
+              </View>
+              <Text style={styles.label}>Gerenciar{'\n'}participantes</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity style={styles.button}>
+              <View style={styles.iconContainer}>
+                <MoneyIcon width={22} height={22} />
+              </View>
+              <Text style={styles.label}>Nova{'\n'}despesa</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.button}>
+              <View style={styles.iconContainer}>
+                <GroupIcon width={22} height={22} />
+              </View>
+              <Text style={styles.label}>Ver{'\n'}participantes</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
 
       <View>
@@ -144,7 +168,7 @@ export const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   button: {
     alignItems: 'center',
