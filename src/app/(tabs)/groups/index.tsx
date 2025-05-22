@@ -28,7 +28,7 @@ export default function Groups() {
   const [loading, setLoading] = useState<boolean>(false)
 
   const { userCod } = useAuthStore()
-  const { setGroupData } = useGroupStore()
+  const { setGroupData, removeGroupData } = useGroupStore()
 
   const handleGroupPress = async (group: Group) => {
     await setGroupData(group)
@@ -64,7 +64,12 @@ export default function Groups() {
       <View style={styles.containerButton}>
         <Text style={styles.text}>Criar novo grupo</Text>
 
-        <TouchableOpacity onPress={() => router.push('/groups/newGroup')}>
+        <TouchableOpacity
+          onPress={() => {
+            removeGroupData()
+            router.push('/groups/newGroup')
+          }}
+        >
           <View style={styles.addButton}>
             <Plus />
           </View>

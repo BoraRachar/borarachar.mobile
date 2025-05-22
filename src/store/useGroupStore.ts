@@ -4,11 +4,11 @@ interface GroupData {
   nome?: string
   imgGrupo?: string
   descricao?: string
-  descricaoCategoria?: string
   idCategoria?: string
   categoria?: string
   tipoDivisao?: number
   participantes?: string[]
+  nomeParticipantes?: string[]
   TotalParticipantes?: number
   grupoId?: string
   isAdm?: boolean

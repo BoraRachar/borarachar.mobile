@@ -111,7 +111,7 @@ export default function NewGroup() {
     const dataStored = {
       nome: data.name,
       descricao: data.description,
-      categoria: selectedCategory,
+      descricaoCategoria: selectedCategory,
       idCategoria: categoriesList.find(
         (item) => item.descricao === selectedCategory,
       )?.idCategoria,

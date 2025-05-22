@@ -101,6 +101,7 @@ export default function AddParticipants() {
   const handleSubmit = () => {
     selected &&
       setGroupData({ participantes: selected, nomeParticipantes: amigoNome })
+
     router.push('/groups/newGroup/conditionPage')
   }
 

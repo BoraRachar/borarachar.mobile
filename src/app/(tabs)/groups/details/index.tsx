@@ -1,11 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Image } from 'expo-image'
 
 import { axiosPrivateClient } from '@/src/utils/axios'
-
 import { useAuthStore } from '@/src/store/useAuthStore'
 import { useGroupStore } from '@/src/store/useGroupStore'
+
+import ActivityIndicatorComponent from '@/src/components/ActivityIndicatorComponent'
 
 import PhotographIcon from '@/src/assets/images/photograph.svg'
 import PencilBlackIcon from '@/src/assets/images/pencil-black.svg'
@@ -19,27 +20,38 @@ import {
   rem,
   verticalScale,
 } from '@/src/utils/responsiveUtils'
+import { router } from 'expo-router'
 
 const Details = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const { userCod } = useAuthStore()
   const { groupData, setGroupData } = useGroupStore()
 
   useEffect(() => {
     const fetchDetailsGroup = async () => {
-      const { data } = await axiosPrivateClient.get('grupos/detalhes-grupo', {
-        params: {
-          userCod,
-          grupoId: groupData?.grupoId,
-        },
-      })
+      setIsLoading(true)
+      try {
+        const { data } = await axiosPrivateClient.get('grupos/detalhes-grupo', {
+          params: {
+            userCod,
+            grupoId: groupData?.grupoId,
+          },
+        })
 
-      setGroupData(data.data)
+        setGroupData(data.data)
+      } catch (error) {
+        console.log('Houve um erro ao buscar os grupos', error)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
     fetchDetailsGroup()
   }, [groupData?.grupoId, setGroupData, userCod])
 
-  console.log(groupData)
+  if (isLoading) {
+    return <ActivityIndicatorComponent />
+  }
 
   return (
     <View style={styles.container}>
@@ -74,7 +86,10 @@ const Details = () => {
       <View style={styles.buttonContainer}>
         {groupData?.isAdm ? (
           <>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => router.push('/(tabs)/groups/editGroup')}
+            >
               <View style={styles.iconContainer}>
                 <PencilBlackIcon width={22} height={22} />
               </View>

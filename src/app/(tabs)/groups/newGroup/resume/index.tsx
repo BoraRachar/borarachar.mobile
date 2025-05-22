@@ -28,7 +28,7 @@ const Resume: React.FC = () => {
   const handleSubmit = async () => {
     setIsLoading(true)
     const newGroupData = { ...groupData }
-    delete newGroupData.descricaoCategoria
+    delete newGroupData.categoria
     delete newGroupData.nomeParticipantes
     const payload = { userCod, ...newGroupData }
 
@@ -70,7 +70,7 @@ const Resume: React.FC = () => {
             <Text style={styles.titleItem}>Nome do Grupo</Text>
             <Text style={styles.textItem}>{groupData.nome}</Text>
             <Text style={[styles.category, styles.titleItem]}>
-              {groupData.descricaoCategoria}
+              {groupData.categoria}
             </Text>
           </View>
           <View>
