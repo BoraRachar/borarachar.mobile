@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { FlatList, Text, View } from 'react-native'
+import { useCallback, useState } from 'react'
+import { FlatList, Text, View, TouchableOpacity } from 'react-native'
 import { router, useFocusEffect } from 'expo-router'
 
 import { axiosPrivateClient } from '@/src/utils/axios'
@@ -22,15 +22,17 @@ import {
 import { colors } from '@/src/theme/colors'
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from '../styles'
+import ModalParticipants from '../components/ModalParticipants'
 
 export default function ManagerParticipants() {
   const [isLoading, setIsLoading] = useState(true)
   const [participantsList, setParticipantsList] = useState([])
+  const [modalVisible, setModalVisible] = useState(false)
 
-  const { groupData, setGroupData } = useGroupStore()
+  const { groupData } = useGroupStore()
   const isKeyboardVisible = useKeyboardStatus()
 
-  const fetchparticipantsList = async () => {
+  const fetchparticipantsList = useCallback(async () => {
     try {
       const { data } = await axiosPrivateClient.get(
         'participantes/lista-participantes',
@@ -40,50 +42,59 @@ export default function ManagerParticipants() {
           },
         },
       )
-      setParticipantsList(data.data)
 
-      console.log(data)
+      setParticipantsList(data.data)
+      console.log(data.data)
     } catch (error) {
       __DEV__ && console.log(error)
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [groupData])
 
-  useFocusEffect(() => {
-    fetchparticipantsList()
-  })
+  useFocusEffect(
+    useCallback(() => {
+      fetchparticipantsList()
+    }, [fetchparticipantsList]),
+  )
 
   const RenderItem = ({ item }) => {
     return (
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: 8,
-        }}
-      >
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <ModalParticipants
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          item={item}
+        />
         <View
-          style={{ flexDirection: 'row', alignItems: 'center', gap: rem(16) }}
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: 8,
+          }}
         >
-          <UserIcon width={48} height={48} />
+          <View
+            style={{ flexDirection: 'row', alignItems: 'center', gap: rem(16) }}
+          >
+            <UserIcon width={48} height={48} />
 
-          <View>
-            <Text style={styles.text}>{item.nome}</Text>
-            <Text style={[styles.text, styles.textLight]}>
-              {`@${item.apelido}`}
-            </Text>
-            <Text style={[styles.text, styles.textLight]}>{item.email}</Text>
+            <View>
+              <Text style={styles.text}>{item.nome}</Text>
+              <Text style={[styles.text, styles.textLight]}>
+                {`@${item.apelido}`}
+              </Text>
+              <Text style={[styles.text, styles.textLight]}>{item.email}</Text>
+            </View>
           </View>
-        </View>
 
-        {item.isAdm && (
-          <Text style={[styles.text, { paddingRight: horizontalScale(18) }]}>
-            Admin
-          </Text>
-        )}
-      </View>
+          {item.isAdm && (
+            <Text style={[styles.text, { paddingRight: horizontalScale(18) }]}>
+              Admin
+            </Text>
+          )}
+        </View>
+      </TouchableOpacity>
     )
   }
 
