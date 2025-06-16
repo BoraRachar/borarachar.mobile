@@ -139,6 +139,23 @@ export default function GroupsLayout() {
           headerRight: () => <Question />,
         }}
       />
+
+      <Stack.Screen
+        name="manageParticipants/index"
+        options={{
+          title: 'Gerenciar Participantes',
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <LeftIcon
+              onPress={() => {
+                router.push('/(tabs)/groups/details')
+              }}
+            />
+          ),
+          headerRight: () => <Question />,
+        }}
+      />
     </Stack>
   )
 }

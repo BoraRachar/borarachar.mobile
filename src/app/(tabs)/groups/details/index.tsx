@@ -103,7 +103,10 @@ const Details = () => {
               <Text style={styles.label}>Nova{'\n'}despesa</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => router.push('/(tabs)/groups/manageParticipants')}
+            >
               <View style={styles.iconContainer}>
                 <AddFriendIcon width={22} height={22} />
               </View>

@@ -25,7 +25,7 @@ const schema = yup.object().shape({
   email: yup
     .string()
     .required('O campo deve ser preenchido')
-    .default('jrnalves@gmail.com'),
+    .default('jotar1@gmail.com'),
   password: yup
     .string()
     .required('O campo deve ser preenchido')
@@ -103,7 +103,7 @@ export default function Login() {
               render={({ field: { onChange, value } }) => (
                 <InputComponent
                   label="E-mail ou usuário"
-                  value={value}
+                  value={value || 'jotar1@gmail.com'}
                   onChangeText={onChange}
                   placeholder="joão@mail.com"
                   errorOrSucess={errors.email?.message}
@@ -123,7 +123,7 @@ export default function Login() {
                 <>
                   <InputComponent
                     label="Senha"
-                    value={value}
+                    value={value || '@!Junior123'}
                     onChangeText={(text) => {
                       setValidPassword(null)
                       setRequestErrorMessage(null)
