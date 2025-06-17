@@ -3,9 +3,6 @@ import { colors } from '@/src/theme/colors'
 import { fontFamily } from '@/src/theme/font-family'
 import ModalComponent from '@/src/components/ModalComponent'
 
-import { useGroupStore } from '@/src/store/useGroupStore'
-import { useAuthStore } from '@/src/store/useAuthStore'
-
 import {
   horizontalScale,
   rem,
@@ -15,14 +12,59 @@ import {
 import CloseIcon from '@/src/assets/images/close-roudend.svg'
 import { useState } from 'react'
 
+// interface SelectedParticipantProps {
+//   apelido: string
+//   email: string
+//   hasPendent: boolean
+//   isAdm: boolean
+//   nome: string
+//   participanteId: string
+// }
+
+interface ModalParticipantsProps {
+  modalVisible: boolean
+  setModalVisible: (value: boolean) => void
+  removeParticipant: () => void
+}
+
 export default function ModalParticipants({
   modalVisible,
   setModalVisible,
-  item,
-}) {
+  removeParticipant,
+}: ModalParticipantsProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const { userCod } = useAuthStore()
-  const { groupData } = useGroupStore()
+
+  const handleShowDeleteModal = () => {
+    setModalVisible(false)
+    setShowDeleteModal(true)
+  }
+
+  const handleRemoveParticipant = () => {
+    removeParticipant()
+    setShowDeleteModal(false)
+  }
+
+  // const handleRemoveParticipant = async () => {
+  //   try {
+  //     await axiosPrivateClient.delete('participantes/delete-participantes', {
+  //       data: {
+  //         userCod,
+  //         grupoId: groupData.grupoId,
+  //         idParticipantes: [selectedParticipant.participanteId],
+  //       },
+  //     })
+
+  //     setParticipantsList((prev: SelectedParticipantProps[]) =>
+  //       prev.filter(
+  //         (item) => item.participanteId !== selectedParticipant.participanteId,
+  //       ),
+  //     )
+  //   } catch (error) {
+  //     console.log('Erro ao remover participante', error)
+  //   } finally {
+  //     setShowDeleteModal(false)
+  //   }
+  // }
 
   return (
     <View>
@@ -47,7 +89,7 @@ export default function ModalParticipants({
 
               <View style={styles.separator} />
 
-              <TouchableOpacity onPress={() => setShowDeleteModal(true)}>
+              <TouchableOpacity onPress={() => handleShowDeleteModal()}>
                 <Text style={[styles.text, { color: 'red' }]}>
                   Remover participantes
                 </Text>
@@ -56,13 +98,15 @@ export default function ModalParticipants({
           </View>
         </View>
       </Modal>
+
+      {/* Modal de deletar participantes */}
       <ModalComponent
         showModal={[showDeleteModal, setShowDeleteModal]}
         type="complete"
-        title={`Deseja remover o PARTICIPANTES?`}
+        title={`Deseja remover PARTICIPANTE?`}
         textButton1="Não remover"
         textButton2="Remover"
-        onPress={() => setShowDeleteModal(true)}
+        onPress={handleRemoveParticipant}
       />
     </View>
   )

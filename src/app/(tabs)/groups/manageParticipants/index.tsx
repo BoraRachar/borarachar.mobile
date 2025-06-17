@@ -2,18 +2,19 @@ import { useCallback, useState } from 'react'
 import { FlatList, Text, View, TouchableOpacity } from 'react-native'
 import { router, useFocusEffect } from 'expo-router'
 
+import ActionLinkButton from '@/src/components/ActionLinkButton'
+import ActivityIndicatorComponent from '@/src/components/ActivityIndicatorComponent'
 import { axiosPrivateClient } from '@/src/utils/axios'
 import { useGroupStore } from '@/src/store/useGroupStore'
-import ActionLinkButton from '@/src/components/ActionLinkButton'
+import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
+import ModalParticipants from '../components/ModalParticipants'
+import useKeyboardStatus from '@/src/utils/keyboardUtils'
 
 import LinkIcon from '@/src/assets/images/linkIcon.svg'
 import AddFriendIcon from '@/src/assets/images/addFriendIcon.svg'
 import UserIcon from '@/src/assets/images/user-circle.svg'
-import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 
-import useKeyboardStatus from '@/src/utils/keyboardUtils'
-import ActivityIndicatorComponent from '@/src/components/ActivityIndicatorComponent'
-
+import { useAuthStore } from '@/src/store/useAuthStore'
 import {
   horizontalScale,
   rem,
@@ -22,13 +23,26 @@ import {
 import { colors } from '@/src/theme/colors'
 import { styles as globalStyles } from '@/src/app/styles'
 import { styles } from '../styles'
-import ModalParticipants from '../components/ModalParticipants'
+
+interface ParticipantType {
+  apelido: string
+  email: string
+  hasPendent: boolean
+  isAdm: boolean
+  nome: string
+  participanteId: string
+}
 
 export default function ManagerParticipants() {
   const [isLoading, setIsLoading] = useState(true)
-  const [participantsList, setParticipantsList] = useState([])
+  const [participantsList, setParticipantsList] = useState<ParticipantType[]>(
+    [],
+  )
+  const [selectedParticipant, setSelectedParticipant] =
+    useState<ParticipantType>()
   const [modalVisible, setModalVisible] = useState(false)
 
+  const { userCod } = useAuthStore()
   const { groupData } = useGroupStore()
   const isKeyboardVisible = useKeyboardStatus()
 
@@ -44,7 +58,6 @@ export default function ManagerParticipants() {
       )
 
       setParticipantsList(data.data)
-      console.log(data.data)
     } catch (error) {
       __DEV__ && console.log(error)
     } finally {
@@ -52,20 +65,42 @@ export default function ManagerParticipants() {
     }
   }, [groupData])
 
+  const handleSelectedParticipant = (item: ParticipantType) => {
+    setSelectedParticipant(item)
+    setModalVisible(true)
+  }
+
+  const removeParticipant = async () => {
+    try {
+      // Remove o participante na API
+      await axiosPrivateClient.delete('participantes/delete-participantes', {
+        data: {
+          userCod,
+          grupoId: groupData.grupoId,
+          idParticipantes: [selectedParticipant?.participanteId],
+        },
+      })
+
+      // Remove o participante da lista local
+      setParticipantsList((prev) =>
+        prev.filter(
+          (item) => item.participanteId !== selectedParticipant?.participanteId,
+        ),
+      )
+    } catch (error) {
+      console.log('Erro ao remover participante', error)
+    }
+  }
+
   useFocusEffect(
     useCallback(() => {
       fetchparticipantsList()
     }, [fetchparticipantsList]),
   )
 
-  const RenderItem = ({ item }) => {
+  const RenderItem = ({ item }: { item: ParticipantType }) => {
     return (
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <ModalParticipants
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          item={item}
-        />
+      <TouchableOpacity onPress={() => handleSelectedParticipant(item)}>
         <View
           style={{
             flexDirection: 'row',
@@ -104,6 +139,11 @@ export default function ManagerParticipants() {
 
   return (
     <View style={styles.container}>
+      <ModalParticipants
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        removeParticipant={removeParticipant}
+      />
       <View style={{ flex: 1 }}>
         <Text style={[styles.text, styles.textLight]}>
           Participantes: {participantsList.length}
