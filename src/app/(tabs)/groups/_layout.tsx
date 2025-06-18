@@ -156,6 +156,23 @@ export default function GroupsLayout() {
           headerRight: () => <Question />,
         }}
       />
+
+      <Stack.Screen
+        name="manageParticipants/participants"
+        options={{
+          title: 'Adicionar Participantes',
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <LeftIcon
+              onPress={() => {
+                router.back()
+              }}
+            />
+          ),
+          headerRight: () => <Question />,
+        }}
+      />
     </Stack>
   )
 }

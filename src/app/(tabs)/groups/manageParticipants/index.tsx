@@ -43,7 +43,7 @@ export default function ManagerParticipants() {
   const [modalVisible, setModalVisible] = useState(false)
 
   const { userCod } = useAuthStore()
-  const { groupData } = useGroupStore()
+  const { groupData, setGroupData } = useGroupStore()
   const isKeyboardVisible = useKeyboardStatus()
 
   const fetchparticipantsList = useCallback(async () => {
@@ -178,7 +178,7 @@ export default function ManagerParticipants() {
           <ActionLinkButton
             text="Adicionar participantes"
             icon={<AddFriendIcon />}
-            link="/friends/addNewFriendsPage"
+            link="/(tabs)/groups/manageParticipants/participants"
           />
         </View>
 
