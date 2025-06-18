@@ -115,7 +115,7 @@ export default function GroupsLayout() {
           headerLeft: () => (
             <LeftIcon
               onPress={() => {
-                router.back()
+                router.push('/(tabs)/groups')
               }}
             />
           ),
