@@ -107,19 +107,13 @@ export default function Participants() {
   }
 
   const handleSubmit = async () => {
-    selected &&
-      setGroupData({ participantes: selected, nomeParticipantes: amigoNome })
-    //   router.push('/groups/newGroup/conditionPage')
-    console.log(selected)
     try {
-      const response = await axiosPrivateClient.post('participantes', {
-        data: {
-          userCod,
-          grupoId: groupData?.grupoId,
-          idParticipantes: selected,
-        },
+      await axiosPrivateClient.post('participantes', {
+        idParticipantes: selected,
+        grupoId: groupData?.grupoId,
+        userCod,
       })
-      console.log(response)
+      router.push('/groups/manageParticipants')
     } catch (error) {
       console.log('Error: ', error)
     }
@@ -133,7 +127,7 @@ export default function Participants() {
     <View style={styles.container}>
       <View style={{ flex: 1, gap: 30 }}>
         <View>
-          <Text style={styles.label}>Adicionar participantes teste</Text>
+          <Text style={styles.label}>Adicionar participantes</Text>
 
           <View style={styles.searchInputContainer}>
             <TextInput
@@ -192,7 +186,10 @@ export default function Participants() {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <ButtonCustomizer.Root
             type="tertiaryHalfWidth"
-            onPress={() => router.push('/(tabs)/groups/details')}
+            onPress={() => {
+              setGroupData({ participantes: [], nomeParticipantes: [] })
+              router.push('/(tabs)/groups/details')
+            }}
           >
             <ButtonCustomizer.Title
               title="Cancelar"
