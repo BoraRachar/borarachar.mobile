@@ -25,18 +25,26 @@ interface ModalParticipantsProps {
   modalVisible: boolean
   setModalVisible: (value: boolean) => void
   removeParticipant: () => void
+  setAdmin: () => void
 }
 
 export default function ModalParticipants({
   modalVisible,
   setModalVisible,
   removeParticipant,
+  setAdmin,
 }: ModalParticipantsProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showSetAdminModal, setShowSetAdminModal] = useState(false)
 
-  const handleShowDeleteModal = () => {
+  const handleShowSetAdmin = () => {
     setModalVisible(false)
-    setShowDeleteModal(true)
+    setShowSetAdminModal(true)
+  }
+
+  const handleSetAdmin = () => {
+    setAdmin()
+    setShowSetAdminModal(false)
   }
 
   const handleRemoveParticipant = () => {
@@ -44,27 +52,10 @@ export default function ModalParticipants({
     setShowDeleteModal(false)
   }
 
-  // const handleRemoveParticipant = async () => {
-  //   try {
-  //     await axiosPrivateClient.delete('participantes/delete-participantes', {
-  //       data: {
-  //         userCod,
-  //         grupoId: groupData.grupoId,
-  //         idParticipantes: [selectedParticipant.participanteId],
-  //       },
-  //     })
-
-  //     setParticipantsList((prev: SelectedParticipantProps[]) =>
-  //       prev.filter(
-  //         (item) => item.participanteId !== selectedParticipant.participanteId,
-  //       ),
-  //     )
-  //   } catch (error) {
-  //     console.log('Erro ao remover participante', error)
-  //   } finally {
-  //     setShowDeleteModal(false)
-  //   }
-  // }
+  const handleShowDeleteModal = () => {
+    setModalVisible(false)
+    setShowDeleteModal(true)
+  }
 
   return (
     <View>
@@ -83,7 +74,7 @@ export default function ModalParticipants({
               <CloseIcon />
             </TouchableOpacity>
             <View>
-              <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <TouchableOpacity onPress={() => handleShowSetAdmin()}>
                 <Text style={styles.text}>Tornar administrador</Text>
               </TouchableOpacity>
 
@@ -107,6 +98,16 @@ export default function ModalParticipants({
         textButton1="Não remover"
         textButton2="Remover"
         onPress={handleRemoveParticipant}
+      />
+
+      {/* Modal de setar como admin */}
+      <ModalComponent
+        showModal={[showSetAdminModal, setShowSetAdminModal]}
+        type="complete"
+        title={`Definir Participante como administrador`}
+        textButton1="Não Definir"
+        textButton2="Definir"
+        onPress={handleSetAdmin}
       />
     </View>
   )

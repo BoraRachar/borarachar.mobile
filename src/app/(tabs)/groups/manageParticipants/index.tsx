@@ -43,7 +43,7 @@ export default function ManagerParticipants() {
   const [modalVisible, setModalVisible] = useState(false)
 
   const { userCod } = useAuthStore()
-  const { groupData, setGroupData } = useGroupStore()
+  const { groupData } = useGroupStore()
   const isKeyboardVisible = useKeyboardStatus()
 
   const fetchparticipantsList = useCallback(async () => {
@@ -68,6 +68,20 @@ export default function ManagerParticipants() {
   const handleSelectedParticipant = (item: ParticipantType) => {
     setSelectedParticipant(item)
     setModalVisible(true)
+  }
+
+  // Setar Usuário como admin
+  const setAdmin = async () => {
+    try {
+      await axiosPrivateClient.post('participantes/isadm', {
+        data: {
+          grupoId: groupData.grupoId,
+          participanteId: selectedParticipant?.participanteId,
+        },
+      })
+    } catch (error) {
+      __DEV__ && console.log(error)
+    }
   }
 
   const removeParticipant = async () => {
@@ -143,6 +157,7 @@ export default function ManagerParticipants() {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         removeParticipant={removeParticipant}
+        setAdmin={setAdmin}
       />
       <View style={{ flex: 1 }}>
         <Text style={[styles.text, styles.textLight]}>
