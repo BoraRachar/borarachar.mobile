@@ -45,7 +45,7 @@ const schema = yup.object().shape({
   description: yup.string(),
 })
 
-export default function NewGroup() {
+export default function Index() {
   const [groupImage, setGroupImage] = useState<string>('')
   const [categoriesList, setCategoriesList] = useState<Categories[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('')
@@ -108,18 +108,20 @@ export default function NewGroup() {
   }, [groupData.imgGrupo, groupData.categoria])
 
   const handleData = (data: FormData) => {
+    const categoria = categoriesList.find(
+      (category) => category.descricao === selectedCategory,
+    )
+
     const dataStored = {
       nome: data.name,
       descricao: data.description,
-      descricaoCategoria: selectedCategory,
-      idCategoria: categoriesList.find(
-        (item) => item.descricao === selectedCategory,
-      )?.idCategoria,
+      idCategoria: categoria?.idCategoria,
+      categoria: categoria?.descricao,
       imgGrupo: groupImage,
     }
 
     setGroupData(dataStored)
-    router.push('/groups/newGroup/addParticipants')
+    router.push('/groups/editGroup/editConditionPage')
   }
 
   return (
