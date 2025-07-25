@@ -16,17 +16,19 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
 import { useGroupStore } from '@/src/store/useGroupStore'
-
+import ModalComponent from '@/src/components/ModalComponent'
+import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import useKeyboardStatus from '@/src/utils/keyboardUtils'
-import { axiosClient } from '@/src/utils/axios'
+import { axiosClient, axiosPrivateClient } from '@/src/utils/axios'
 import { verticalScale } from '@/src/utils/responsiveUtils'
 
 import Photograph from '@/src/assets/images/photograph.svg'
 import Pencil from '@/src/assets/images/pencil.svg'
 
+import { styles as globalStyles } from '@/src/app/styles'
 import { theme } from '@/src/theme'
 import { styles } from './styles'
-import Footer from '../components/Footer'
+import { useAuthStore } from '@/src/store/useAuthStore'
 
 interface FormData {
   name: string
@@ -46,10 +48,12 @@ const schema = yup.object().shape({
 })
 
 export default function Index() {
-  const [groupImage, setGroupImage] = useState<string>('')
+  const [modalVisible, setModalVisible] = useState(false)
   const [categoriesList, setCategoriesList] = useState<Categories[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [groupImage, setGroupImage] = useState<string>('')
 
+  const { userCod } = useAuthStore()
   const { groupData, setGroupData } = useGroupStore()
 
   const {
@@ -76,6 +80,33 @@ export default function Index() {
 
     if (!result.canceled) {
       setGroupImage(result.assets[0].base64 ?? '')
+    }
+  }
+
+  const handleData = async (data: FormData) => {
+    const categoria = categoriesList.find(
+      (category) => category.descricao === selectedCategory,
+    )
+
+    const dataStored = {
+      ...groupData,
+      nome: data.name,
+      descricao: data.description,
+      idCategoria: categoria?.idCategoria,
+      categoria: categoria?.descricao,
+      imgGrupo: groupImage,
+    }
+
+    try {
+      await setGroupData(dataStored)
+      await axiosPrivateClient.put('grupos', {
+        userCod,
+        ...dataStored,
+      })
+    } catch (error) {
+      __DEV__ && console.log(error)
+    } finally {
+      router.push('/groups/details')
     }
   }
 
@@ -106,23 +137,6 @@ export default function Index() {
 
     fetchCategories()
   }, [groupData.imgGrupo, groupData.categoria])
-
-  const handleData = (data: FormData) => {
-    const categoria = categoriesList.find(
-      (category) => category.descricao === selectedCategory,
-    )
-
-    const dataStored = {
-      nome: data.name,
-      descricao: data.description,
-      idCategoria: categoria?.idCategoria,
-      categoria: categoria?.descricao,
-      imgGrupo: groupImage,
-    }
-
-    setGroupData(dataStored)
-    router.push('/groups/editGroup/editConditionPage')
-  }
 
   return (
     <View style={styles.container}>
@@ -234,7 +248,39 @@ export default function Index() {
       </TouchableWithoutFeedback>
 
       {/* Botão */}
-      {!isKeyboardVisible && <Footer handleSubmit={handleSubmit(handleData)} />}
+      {!isKeyboardVisible && (
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <ButtonCustomizer.Root
+            type="tertiaryHalfWidth"
+            onPress={() => setModalVisible(true)}
+          >
+            <ButtonCustomizer.Title
+              title="Cancelar"
+              customStyles={globalStyles.secondaryButtonText}
+            />
+          </ButtonCustomizer.Root>
+
+          <ButtonCustomizer.Root
+            type="primaryHalfWidth"
+            onPress={handleSubmit(handleData)}
+          >
+            <ButtonCustomizer.Title
+              title="Salvar"
+              customStyles={globalStyles.primaryButtonText}
+            />
+          </ButtonCustomizer.Root>
+        </View>
+      )}
+
+      <ModalComponent
+        type="complete"
+        title="Deseja realmente sair?"
+        description="Você perderá a edição do grupo"
+        textButton1="Cancelar"
+        textButton2="Confirmar"
+        onPress={() => router.back()}
+        showModal={[modalVisible, setModalVisible]}
+      />
     </View>
   )
 }
