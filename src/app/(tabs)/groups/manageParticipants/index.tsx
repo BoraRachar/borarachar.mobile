@@ -7,7 +7,7 @@ import ActivityIndicatorComponent from '@/src/components/ActivityIndicatorCompon
 import { axiosPrivateClient } from '@/src/utils/axios'
 import { useGroupStore } from '@/src/store/useGroupStore'
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
-import ModalParticipants from '../components/ModalParticipants'
+import ModalComponent from '@/src/components/ModalComponent'
 import useKeyboardStatus from '@/src/utils/keyboardUtils'
 
 import LinkIcon from '@/src/assets/images/linkIcon.svg'
@@ -15,6 +15,7 @@ import AddFriendIcon from '@/src/assets/images/addFriendIcon.svg'
 import UserIcon from '@/src/assets/images/user-circle.svg'
 
 import { useAuthStore } from '@/src/store/useAuthStore'
+
 import {
   horizontalScale,
   rem,
@@ -57,7 +58,16 @@ export default function ManagerParticipants() {
         },
       )
 
-      setParticipantsList(data.data)
+      // Organiza a lista de participantes, colocando os administradores no topo
+      const dataSorted = data.data.sort(
+        (a: ParticipantType, b: ParticipantType) => {
+          if (a.isAdm && !b.isAdm) return -1
+          if (!a.isAdm && b.isAdm) return 1
+          return a.nome.localeCompare(b.nome)
+        },
+      )
+
+      setParticipantsList(dataSorted)
     } catch (error) {
       __DEV__ && console.log(error)
     } finally {
@@ -68,20 +78,6 @@ export default function ManagerParticipants() {
   const handleSelectedParticipant = (item: ParticipantType) => {
     setSelectedParticipant(item)
     setModalVisible(true)
-  }
-
-  // Setar Usuário como admin
-  const setAdmin = async () => {
-    try {
-      await axiosPrivateClient.post('participantes/isadm', {
-        data: {
-          grupoId: groupData.grupoId,
-          participanteId: selectedParticipant?.participanteId,
-        },
-      })
-    } catch (error) {
-      __DEV__ && console.log(error)
-    }
   }
 
   const removeParticipant = async () => {
@@ -103,6 +99,8 @@ export default function ManagerParticipants() {
       )
     } catch (error) {
       console.log('Erro ao remover participante', error)
+    } finally {
+      setModalVisible(false)
     }
   }
 
@@ -153,12 +151,16 @@ export default function ManagerParticipants() {
 
   return (
     <View style={styles.container}>
-      <ModalParticipants
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        removeParticipant={removeParticipant}
-        setAdmin={setAdmin}
+      <ModalComponent
+        title="Remover participante"
+        description={`Deseja remover ${selectedParticipant?.nome}?`}
+        textButton1="Cancelar"
+        textButton2="Remover"
+        type="complete"
+        showModal={[modalVisible, setModalVisible]}
+        onPress={removeParticipant}
       />
+
       <View style={{ flex: 1 }}>
         <Text style={[styles.text, styles.textLight]}>
           Participantes: {participantsList.length}
