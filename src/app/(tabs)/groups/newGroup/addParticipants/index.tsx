@@ -27,12 +27,12 @@ interface Friend {
 
 export default function AddParticipants() {
   const [isLoading, setIsLoading] = useState(false)
-  const [friends, setFriends] = useState<Friend[]>()
-  const [selected, setSelected] = useState<string[]>([])
+  const [friendsList, setFriendsList] = useState<Friend[]>()
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [filteredFriends, setFilteredFriends] = useState<Friend[] | undefined>(
     [],
   )
-  const [amigoNome, setAmigoNome] = useState<string[]>([])
+  const [selectedNames, setSelectedNames] = useState<string[]>([])
 
   const isKeyboardVisible = useKeyboardStatus()
   const { userCod } = useAuthStore()
@@ -42,7 +42,7 @@ export default function AddParticipants() {
   const toggleSelection = (item: Friend) => {
     const { amigoId, nome } = item
 
-    setSelected((prev) => {
+    setSelectedIds((prev) => {
       if (prev.includes(amigoId)) {
         return prev.filter((item) => item !== amigoId)
       }
@@ -50,7 +50,7 @@ export default function AddParticipants() {
       return [...prev, amigoId]
     })
 
-    setAmigoNome((prev) => {
+    setSelectedNames((prev) => {
       if (prev.includes(nome)) {
         return prev.filter((item) => item !== nome)
       }
@@ -77,10 +77,10 @@ export default function AddParticipants() {
           )
 
           if (data.statusCode === 200) {
-            setFriends(data.data)
+            setFriendsList(data.data)
             setFilteredFriends(data.data)
-            setSelected([...(groupData.participantes || [])])
-            setAmigoNome([...(groupData.nomeParticipantes || [])])
+            setSelectedIds([...(groupData.participantes || [])])
+            setSelectedNames([...(groupData.nomeParticipantes || [])])
           }
         } catch (error) {
           console.log('Erro ao Buscar Amigos', error)
@@ -94,13 +94,18 @@ export default function AddParticipants() {
 
   // Atualiza a lista filtrada conforme o usuário digita
   const handleSearch = (text: string) => {
-    const filtered = friends?.filter((friend) => friend.nome.includes(text))
+    const filtered = friendsList?.filter((friend) =>
+      friend.nome.toLowerCase().includes(text.toLowerCase()),
+    )
     setFilteredFriends(filtered)
   }
 
   const handleSubmit = () => {
-    selected &&
-      setGroupData({ participantes: selected, nomeParticipantes: amigoNome })
+    selectedIds &&
+      setGroupData({
+        participantes: selectedIds,
+        nomeParticipantes: selectedNames,
+      })
 
     router.push('/groups/newGroup/conditionPage')
   }
@@ -118,7 +123,7 @@ export default function AddParticipants() {
           <View style={styles.searchInputContainer}>
             <TextInput
               placeholder={
-                friends ? 'Procurar amigos...' : 'Sem amigos cadastrados'
+                friendsList ? 'Procurar amigos...' : 'Sem amigos cadastrados'
               }
               onChangeText={handleSearch}
               style={{ flex: 1 }}
@@ -132,7 +137,7 @@ export default function AddParticipants() {
                 data={filteredFriends}
                 keyExtractor={(item) => item.amigoId}
                 renderItem={({ item }) => {
-                  const isSelected = selected.includes(item.amigoId)
+                  const isSelected = selectedIds.includes(item.amigoId)
 
                   return (
                     <TouchableOpacity

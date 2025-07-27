@@ -110,7 +110,9 @@ export default function Participants() {
 
   // Atualiza a lista filtrada conforme o usuário digita
   const handleSearch = (text: string) => {
-    const filtered = friends?.filter((friend) => friend.nome.includes(text))
+    const filtered = friends?.filter((friend) =>
+      friend.nome.toLowerCase().includes(text.toLowerCase()),
+    )
     setFilteredFriends(filtered)
   }
 
