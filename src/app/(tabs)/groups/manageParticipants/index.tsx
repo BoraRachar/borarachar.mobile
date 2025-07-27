@@ -44,7 +44,7 @@ export default function ManagerParticipants() {
   const [modalVisible, setModalVisible] = useState(false)
 
   const { userCod } = useAuthStore()
-  const { groupData } = useGroupStore()
+  const { groupData, setGroupData } = useGroupStore()
   const isKeyboardVisible = useKeyboardStatus()
 
   const fetchparticipantsList = useCallback(async () => {
@@ -58,8 +58,8 @@ export default function ManagerParticipants() {
         },
       )
 
-      // Organiza a lista de participantes, colocando os administradores no topo
-      const dataSorted = data.data.sort(
+      // Organiza a lista de participantes, colocando o admin como primeiro da Lista
+      const organizeDataWithAdminFirst = data.data.sort(
         (a: ParticipantType, b: ParticipantType) => {
           if (a.isAdm && !b.isAdm) return -1
           if (!a.isAdm && b.isAdm) return 1
@@ -67,13 +67,16 @@ export default function ManagerParticipants() {
         },
       )
 
-      setParticipantsList(dataSorted)
+      setParticipantsList(organizeDataWithAdminFirst)
+      setGroupData({
+        participantes: organizeDataWithAdminFirst,
+      })
     } catch (error) {
       __DEV__ && console.log(error)
     } finally {
       setIsLoading(false)
     }
-  }, [groupData])
+  }, [groupData, setGroupData])
 
   const handleSelectedParticipant = (item: ParticipantType) => {
     setSelectedParticipant(item)

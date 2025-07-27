@@ -40,7 +40,7 @@ export default function Participants() {
   const [filteredFriends, setFilteredFriends] = useState<Friend[] | undefined>(
     [],
   )
-  const [amigoNome, setAmigoNome] = useState<string[]>([])
+  // const [amigoNome, setAmigoNome] = useState<string[]>([])
 
   const isKeyboardVisible = useKeyboardStatus()
   const { userCod } = useAuthStore()
@@ -48,7 +48,7 @@ export default function Participants() {
 
   // Alterna a seleção de um amigo
   const toggleSelection = (item: Friend) => {
-    const { amigoId, nome } = item
+    const { amigoId } = item
 
     setSelected((prev) => {
       if (prev.includes(amigoId)) {
@@ -58,13 +58,13 @@ export default function Participants() {
       return [...prev, amigoId]
     })
 
-    setAmigoNome((prev) => {
-      if (prev.includes(nome)) {
-        return prev.filter((item) => item !== nome)
-      }
+    // setAmigoNome((prev) => {
+    //   if (prev.includes(nome)) {
+    //     return prev.filter((item) => item !== nome)
+    //   }
 
-      return [...prev, nome]
-    })
+    //   return [...prev, nome]
+    // })
   }
 
   // Busca amigos na API ao carregar a tela
@@ -85,10 +85,18 @@ export default function Participants() {
           )
 
           if (data.statusCode === 200) {
-            setFriends(data.data)
-            setFilteredFriends(data.data)
-            setSelected([...(groupData.participantes || [])])
-            setAmigoNome([...(groupData.nomeParticipantes || [])])
+            console.log(groupData.participantes)
+            const listOfNamesOfGroupParticipants = groupData.participantes?.map(
+              (participant) => participant.nome,
+            )
+
+            const listOfFriendsNotParticipatingInTheGroup = data.data.filter(
+              (friend: Friend) =>
+                listOfNamesOfGroupParticipants?.includes(friend.nome) === false,
+            )
+            setFriends(listOfFriendsNotParticipatingInTheGroup)
+            setFilteredFriends(listOfFriendsNotParticipatingInTheGroup)
+            // setAmigoNome([...(groupData.nomeParticipantes || [])])
           }
         } catch (error) {
           console.log('Erro ao Buscar Amigos', error)
@@ -97,7 +105,7 @@ export default function Participants() {
         }
       }
       fetchFriends()
-    }, [groupData.participantes, groupData.nomeParticipantes, userCod]),
+    }, [userCod, groupData.participantes]),
   )
 
   // Atualiza a lista filtrada conforme o usuário digita
