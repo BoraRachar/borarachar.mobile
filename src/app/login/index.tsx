@@ -22,14 +22,8 @@ import { ErrorResponse } from '@/src/interfaces/types'
 import { AxiosError } from 'axios'
 
 const schema = yup.object().shape({
-  email: yup
-    .string()
-    .required('O campo deve ser preenchido')
-    .default('jotar1@gmail.com'),
-  password: yup
-    .string()
-    .required('O campo deve ser preenchido')
-    .default('@!Junior123'),
+  email: yup.string().required('O campo deve ser preenchido'),
+  password: yup.string().required('O campo deve ser preenchido'),
 })
 
 export default function Login() {
@@ -103,7 +97,7 @@ export default function Login() {
               render={({ field: { onChange, value } }) => (
                 <InputComponent
                   label="E-mail ou usuário"
-                  value={value || 'jotar1@gmail.com'}
+                  value={value}
                   onChangeText={onChange}
                   placeholder="joão@mail.com"
                   errorOrSucess={errors.email?.message}
@@ -123,7 +117,7 @@ export default function Login() {
                 <>
                   <InputComponent
                     label="Senha"
-                    value={value || '@!Junior123'}
+                    value={value}
                     onChangeText={(text) => {
                       setValidPassword(null)
                       setRequestErrorMessage(null)
