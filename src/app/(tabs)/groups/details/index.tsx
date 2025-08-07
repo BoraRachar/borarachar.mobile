@@ -21,9 +21,11 @@ import {
   verticalScale,
 } from '@/src/utils/responsiveUtils'
 import { router } from 'expo-router'
+import ModalParticipantes from '../components/modalParticipantes'
 
 const Details = () => {
   const [isLoading, setIsLoading] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
   const { userCod } = useAuthStore()
   const { groupData, setGroupData } = useGroupStore()
 
@@ -122,12 +124,19 @@ const Details = () => {
               <Text style={styles.label}>Nova{'\n'}despesa</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setModalVisible(true)}
+            >
               <View style={styles.iconContainer}>
                 <GroupIcon width={22} height={22} />
               </View>
               <Text style={styles.label}>Ver{'\n'}participantes</Text>
             </TouchableOpacity>
+            <ModalParticipantes
+              visible={modalVisible}
+              setModalVisible={setModalVisible}
+            />
           </>
         )}
       </View>
