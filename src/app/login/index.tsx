@@ -22,14 +22,8 @@ import { ErrorResponse } from '@/src/interfaces/types'
 import { AxiosError } from 'axios'
 
 const schema = yup.object().shape({
-  email: yup
-    .string()
-    .required('O campo deve ser preenchido')
-    .default('jotar4@gmail.com'),
-  password: yup
-    .string()
-    .required('O campo deve ser preenchido')
-    .default('@!Junior123'),
+  email: yup.string().required('O campo deve ser preenchido'),
+  password: yup.string().required('O campo deve ser preenchido'),
 })
 
 export default function Login() {
