@@ -199,7 +199,7 @@ export default function ParticipantsManagement() {
           <ActionLinkButton
             text="Adicionar participantes"
             icon={<AddFriendIcon />}
-            link="/(tabs)/groups/manageParticipants/participants"
+            link="/(tabs)/groups/participantsManagement/participants"
           />
         </View>
 

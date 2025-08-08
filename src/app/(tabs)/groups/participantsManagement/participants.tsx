@@ -85,7 +85,6 @@ export default function Participants() {
           )
 
           if (data.statusCode === 200) {
-            console.log(groupData.participantes)
             const listOfNamesOfGroupParticipants = groupData.participantes?.map(
               (participant) => participant.nome,
             )

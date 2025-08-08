@@ -49,7 +49,7 @@ export default function Groups() {
 
         setGroupDataList(data.data)
       } catch (error) {
-        console.log('Houve um erro ao buscar os grupos', error)
+        __DEV__ && console.log('Houve um erro ao buscar os grupos', error)
       } finally {
         setLoading(false)
       }
