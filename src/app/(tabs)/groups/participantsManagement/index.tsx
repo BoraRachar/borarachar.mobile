@@ -34,7 +34,7 @@ interface ParticipantType {
   participanteId: string
 }
 
-export default function ManagerParticipants() {
+export default function ParticipantsManagement() {
   const [isLoading, setIsLoading] = useState(true)
   const [participantsList, setParticipantsList] = useState<ParticipantType[]>(
     [],
@@ -180,6 +180,7 @@ export default function ManagerParticipants() {
           <FlatList
             data={participantsList}
             renderItem={RenderItem}
+            keyExtractor={(item) => item.participanteId}
             showsVerticalScrollIndicator={false}
           />
         </View>

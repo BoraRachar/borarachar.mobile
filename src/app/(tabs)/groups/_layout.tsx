@@ -141,7 +141,7 @@ export default function GroupsLayout() {
       />
 
       <Stack.Screen
-        name="manageParticipants/index"
+        name="participantsManagement/index"
         options={{
           title: 'Gerenciar Participantes',
           headerShown: true,
@@ -158,7 +158,7 @@ export default function GroupsLayout() {
       />
 
       <Stack.Screen
-        name="manageParticipants/participants"
+        name="participantsManagement/participants"
         options={{
           title: 'Adicionar Participantes',
           headerShown: true,
@@ -171,6 +171,23 @@ export default function GroupsLayout() {
             />
           ),
           headerRight: () => <Question />,
+        }}
+      />
+
+      <Stack.Screen
+        name="participantsList/index"
+        options={{
+          title: 'Participantes',
+          presentation: 'transparentModal',
+          animation: 'fade',
+          headerShown: false,
+          // headerRight: () => (
+          //   <LeftIcon
+          //     onPress={() => {
+          //       router.back()
+          //     }}
+          //   />
+          // ),
         }}
       />
     </Stack>

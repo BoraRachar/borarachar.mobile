@@ -123,7 +123,7 @@ export default function Participants() {
         grupoId: groupData?.grupoId,
         userCod,
       })
-      router.push('/groups/manageParticipants')
+      router.push('/groups/participantsManagement')
     } catch (error) {
       console.log('Error: ', error)
     }
