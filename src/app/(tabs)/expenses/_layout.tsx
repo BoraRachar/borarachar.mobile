@@ -24,6 +24,22 @@ export default function ExpensesLayout() {
                     headerRight: () => <Question />,
                 }}
             />
+            <Stack.Screen
+                name="newExpense/value/index"
+                options={{
+                    title: 'Valor',
+                    headerShown: true,
+                    headerTitleAlign: 'center',
+                    headerLeft: () => (
+                        <LeftIcon
+                            onPress={() => {
+                                router.back()
+                            }}
+                        />
+                    ),
+                    headerRight: () => <Question />,
+                }}
+            />
         </Stack>
     )
 }
