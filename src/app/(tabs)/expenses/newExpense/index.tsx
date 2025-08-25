@@ -82,7 +82,7 @@ export default function NewExpense() {
 
   return (
     <KeyboardAvoidingView style={styles.modalContainer}>
-      <ProgressBarComponent totalSteps={100} currentStep={20} />
+      <ProgressBarComponent totalSteps={100} currentStep={25} />
       <View style={styles.formContainer}>
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Como você deseja chamar essa despesa?</Text>
