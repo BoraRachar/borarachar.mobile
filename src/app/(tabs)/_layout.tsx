@@ -33,9 +33,10 @@ export default function Layout() {
       />
 
       <Tabs.Screen
-        name="expenses/index"
+        name="expenses"
         options={{
-          title: 'Desepesas',
+          title: 'Despesas',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <Ionicons name="add-circle-outline" size={24} color={color} />
           ),

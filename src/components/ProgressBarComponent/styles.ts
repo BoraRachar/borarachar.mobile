@@ -3,7 +3,8 @@ import { theme } from '@/src/theme'
 
 export const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: 32,
+    marginBottom: 20,
     alignItems: 'center',
   },
   progressBarBackground: {
