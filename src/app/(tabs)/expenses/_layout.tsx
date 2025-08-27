@@ -40,6 +40,24 @@ export default function ExpensesLayout() {
                     headerRight: () => <Question />,
                 }}
             />
+
+            <Stack.Screen
+                name="newExpense/group/index"
+                options={{
+                    title: 'Grupo',
+                    headerShown: true,
+                    headerTitleAlign: 'center',
+                    headerLeft: () => (
+                        <LeftIcon
+                            onPress={() => {
+                                router.back()
+                            }}
+                        />
+                    ),
+                    headerRight: () => <Question />,
+                }}
+            />
+
         </Stack>
     )
 }

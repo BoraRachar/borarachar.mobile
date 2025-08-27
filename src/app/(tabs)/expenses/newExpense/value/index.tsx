@@ -2,6 +2,7 @@ import { Text, View, TextInput, KeyboardAvoidingView, Platform } from 'react-nat
 import { Ionicons } from '@expo/vector-icons'
 import { useForm, Controller, useWatch } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { router } from 'expo-router'
 import * as yup from 'yup'
 
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
@@ -59,7 +60,7 @@ export default function ExpenseValue() {
         setExpenseData({ ...expenseData, value: numValue })
         console.log('Expense Data Updated:', { ...expenseData, value: numValue })
         // vá para a próxima etapa se quiser
-        // router.push('/expenses/newExpense/group')
+        router.push('/expenses/newExpense/group')
     }
 
     return (
