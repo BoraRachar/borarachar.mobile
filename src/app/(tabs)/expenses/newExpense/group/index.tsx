@@ -1,24 +1,24 @@
 import { View, Text, KeyboardAvoidingView, TouchableOpacity, FlatList } from 'react-native';
 import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
-
+import { useGroupStore } from '@/src/store/useGroupStore';
 import { axiosPrivateClient } from '@/src/utils/axios';
 import { useAuthStore } from '@/src/store/useAuthStore';
 
 
 import ProgressBarComponent from '@/src/components/ProgressBarComponent';
-import ActivityIndicatorComponent from '@/src/components/ActivityIndicatorComponent';
 import Plus from '@/src/assets/images/plus.svg';
 
 import { styles } from './styles';
 import { Image } from 'expo-image';
 import GroupIcon from '@/src/assets/images/group.svg';
 import { RadioButton } from 'react-native-paper';
+import { theme } from '@/src/theme';
 
 interface Group {
     name: string;
     nome: string;
-    groupId: string;
+    grupoId: string;
     descricao: string;
     imgGrupo: string;
     totalParticipantes: number;
@@ -28,14 +28,13 @@ interface Group {
 export default function SelectGroup() {
     
     const { userCod } = useAuthStore();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { removeGroupData } = useGroupStore();
     const [groups, setGroups] = useState<Group[]>([]);
     const [selectedGroup, setSelectedGroup] = useState< string >('');
 
     useEffect(() => {
         const fetchGroups = async () => {
           try {
-            setIsLoading(true);
             const { data } = await axiosPrivateClient.get('grupos/lista-grupos', {
               params: {
                 userCod,
@@ -47,13 +46,21 @@ export default function SelectGroup() {
             setGroups(data.data);
           } catch (error) {
             __DEV__ && console.log('Houve um erro ao buscar os grupos', error);
-          } finally {
-            setIsLoading(false);
           }
         };
-    
+        
         fetchGroups();
-    }, [userCod])
+      }, [userCod])
+
+      const handleSelectGroup = (grupoId: string) => {
+          if(!selectedGroup) {
+            return theme.colors.primaryColor;
+          }
+  
+          return grupoId === selectedGroup
+            ? theme.colors.primaryColor
+            : theme.colors.secondaryColor;
+      }
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -65,6 +72,7 @@ export default function SelectGroup() {
 
         <TouchableOpacity
           onPress={() => {
+            removeGroupData();
             router.push('/groups/newGroup')
           }}
         >
@@ -75,16 +83,14 @@ export default function SelectGroup() {
       </View>
 
       <View style={styles.containerList}>
-        <RadioButton.Group
-            value={selectedGroup}
-            onValueChange={setSelectedGroup}
-        >
         <FlatList
           data={groups ?? []}
-          keyExtractor={(_, index) => index.toString()}
+          keyExtractor={(item) => item.grupoId}
           showsVerticalScrollIndicator={false}
           renderItem={
             ({ item }) => {
+
+              // const isSelected = item.grupoId === selectedGroup;
               return (
                 <TouchableOpacity
                   style={styles.containerGroup}
@@ -100,29 +106,41 @@ export default function SelectGroup() {
                           alt="imagem do grupo"
                         />
                       ) : (
-                        <GroupIcon />
+                        <GroupIcon 
+                        stroke={handleSelectGroup(item.grupoId)} />
                       )}
                     </View>
 
                     <View style={styles.containerDescription}>
-                      <Text style={styles.text}>{item.nome}</Text>
-                      <Text style={[styles.text, styles.textLight]}>
+                      <Text style={[
+                          styles.text,
+                          {color:handleSelectGroup(item.grupoId)}
+                        ]}>
+                          {item.nome}
+                      </Text>
+                      <Text style={[
+                        styles.text, 
+                        styles.textLight,
+                        {color:handleSelectGroup(item.grupoId)}
+                        ]}>
                         {`${item.totalParticipantes} participantes`}
                       </Text>
                     </View>
                   </View>
 
                   <RadioButton 
-                  value={item.groupId}
+                  value={item.grupoId}
+                  status={ selectedGroup === item.grupoId  ? 'checked' : 'unchecked'}
+                  onPress={() => setSelectedGroup(item.grupoId)}
+                  color={handleSelectGroup(item.grupoId)}
+                  uncheckedColor={handleSelectGroup(item.grupoId)}
                   />
                 </TouchableOpacity>
               )
           }
           }
         />
-        </RadioButton.Group>
       </View>
-
     </KeyboardAvoidingView>
   );
 }
