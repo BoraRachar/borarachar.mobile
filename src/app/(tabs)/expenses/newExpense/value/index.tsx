@@ -65,7 +65,7 @@ export default function ExpenseValue() {
 
     return (
         <KeyboardAvoidingView style={styles.container} >
-            <ProgressBarComponent totalSteps={100} currentStep={50} />
+            <ProgressBarComponent totalSteps={100} currentStep={40} />
 
             <View style={styles.formContainer}>
                 <Text style={styles.label}>Qual o valor dessa despesa?</Text>

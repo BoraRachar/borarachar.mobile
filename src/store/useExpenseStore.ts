@@ -5,6 +5,7 @@ interface ExpenseData {
     description?: string
     selectedDate?: Date | null
     value?: number
+    grupoId?: string
 }
 
 interface ExpenseState {

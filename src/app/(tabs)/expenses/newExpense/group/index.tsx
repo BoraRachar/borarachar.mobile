@@ -4,16 +4,20 @@ import { router } from 'expo-router';
 import { useGroupStore } from '@/src/store/useGroupStore';
 import { axiosPrivateClient } from '@/src/utils/axios';
 import { useAuthStore } from '@/src/store/useAuthStore';
+import { useExpenseStore } from '@/src/store/useExpenseStore';
 
 
 import ProgressBarComponent from '@/src/components/ProgressBarComponent';
 import Plus from '@/src/assets/images/plus.svg';
+import { ButtonCustomizer } from '@/src/components/ButtonCustomizer';
 
 import { styles } from './styles';
 import { Image } from 'expo-image';
 import GroupIcon from '@/src/assets/images/group.svg';
 import { RadioButton } from 'react-native-paper';
 import { theme } from '@/src/theme';
+import { Ionicons } from '@expo/vector-icons';
+
 
 interface Group {
     name: string;
@@ -24,11 +28,13 @@ interface Group {
     totalParticipantes: number;
 }
 
-
 export default function SelectGroup() {
     
     const { userCod } = useAuthStore();
     const { removeGroupData } = useGroupStore();
+    const {expenseData, setExpenseData} = useExpenseStore()
+
+
     const [groups, setGroups] = useState<Group[]>([]);
     const [selectedGroup, setSelectedGroup] = useState< string >('');
 
@@ -62,9 +68,25 @@ export default function SelectGroup() {
             : theme.colors.secondaryColor;
       }
 
+
+      function handleNext(){
+        if(!selectedGroup){
+          return
+        }
+
+       setExpenseData({ 
+        ...expenseData, 
+        grupoId: selectedGroup 
+      })
+
+        console.log('selectedGroup ', selectedGroup);
+        console.log("Update expenseData: ", { ...expenseData });
+      }
+
+
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <ProgressBarComponent totalSteps={100} currentStep={75} />
+      <ProgressBarComponent totalSteps={100} currentStep={60} />
       <Text style={styles.title}>Em qual grupo foi realizada?</Text>
 
       <View style={styles.containerButton}>
@@ -129,11 +151,11 @@ export default function SelectGroup() {
                   </View>
 
                   <RadioButton 
-                  value={item.grupoId}
-                  status={ selectedGroup === item.grupoId  ? 'checked' : 'unchecked'}
-                  onPress={() => setSelectedGroup(item.grupoId)}
-                  color={handleSelectGroup(item.grupoId)}
-                  uncheckedColor={handleSelectGroup(item.grupoId)}
+                    value={item.grupoId}
+                    status={ selectedGroup === item.grupoId  ? 'checked' : 'unchecked'}
+                    onPress={() => setSelectedGroup(item.grupoId)}
+                    color={handleSelectGroup(item.grupoId)}
+                    uncheckedColor={handleSelectGroup(item.grupoId)}
                   />
                 </TouchableOpacity>
               )
@@ -141,6 +163,22 @@ export default function SelectGroup() {
           }
         />
       </View>
+
+      <View style={styles.containerButton}>
+        <ButtonCustomizer.Root
+          type="primary"
+          onPress={handleNext}
+          disabled={!selectedGroup}
+          customStyles={!selectedGroup ? styles.disabledButton : styles.nextButton}
+        >
+          <ButtonCustomizer.Title
+            title="Devedor"
+            customStyles={styles.nextButtonText}
+          />
+          <Ionicons name="arrow-forward" size={20} color={theme.colors.white} style={{ marginLeft: 8 }} />
+        </ButtonCustomizer.Root>
+      </View>
+
     </KeyboardAvoidingView>
   );
 }

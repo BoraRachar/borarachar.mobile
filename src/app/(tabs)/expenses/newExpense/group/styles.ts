@@ -70,5 +70,24 @@ export const styles = StyleSheet.create({
     },
     textUnselected: {
         color: theme.colors.secondaryColor
+    },
+    nextButton: {
+        flex: 1,
+        height: 48,
+        backgroundColor: theme.colors.Gray[600],
+        borderRadius: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 8,
+    },
+    nextButtonText: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: theme.colors.white,
+        fontFamily: theme.fontFamily.semiBold,
+    },
+    disabledButton: {
+        backgroundColor: theme.colors.fourth,
     }
 })
