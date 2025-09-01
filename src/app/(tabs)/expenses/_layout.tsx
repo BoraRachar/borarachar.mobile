@@ -58,6 +58,23 @@ export default function ExpensesLayout() {
                 }}
             />
 
+            <Stack.Screen
+                name="newExpense/payers/index"
+                options={{
+                    title: 'Pagadores',
+                    headerShown: true,
+                    headerTitleAlign: 'center',
+                    headerLeft: () => (
+                        <LeftIcon
+                            onPress={() => {
+                                router.back()
+                            }}
+                        />
+                    ),
+                    headerRight: () => <Question />,
+                }}
+            />
+
         </Stack>
     )
 }

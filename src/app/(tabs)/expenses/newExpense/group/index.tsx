@@ -75,12 +75,12 @@ export default function SelectGroup() {
         }
 
        setExpenseData({ 
-        ...expenseData, 
         grupoId: selectedGroup 
       })
 
-        console.log('selectedGroup ', selectedGroup);
-        console.log("Update expenseData: ", { ...expenseData });
+      console.log("Update expenseData: ", { ...expenseData });
+
+      router.push('/expenses/newExpense/payers')
       }
 
 
