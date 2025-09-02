@@ -75,7 +75,9 @@ export default function SelectGroup() {
         }
 
        setExpenseData({ 
-        grupoId: selectedGroup 
+        ...expenseData,
+        grupoId: selectedGroup,
+        userCod
       })
 
       console.log("Update expenseData: ", { ...expenseData });
