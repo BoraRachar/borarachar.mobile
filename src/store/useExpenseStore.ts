@@ -6,6 +6,8 @@ interface ExpenseData {
     selectedDate?: Date | null
     value?: number
     grupoId?: string
+    userCod?: string | null
+    pagadores?: string[]
 }
 
 interface ExpenseState {
