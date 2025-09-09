@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
+import { router } from "expo-router";
 import { useState, useEffect } from "react";
 import { axiosPrivateClient } from "@/src/utils/axios";
 import { useExpenseStore } from "@/src/store/useExpenseStore";
@@ -14,7 +15,6 @@ import ProgressBarComponent from "@/src/components/ProgressBarComponent";
 import Checkbox from "expo-checkbox";
 import { ButtonCustomizer } from "@/src/components/ButtonCustomizer";
 import UserIcon from "@/src/assets/images/user.svg";
-import { Ionicons } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 import { theme } from "@/src/theme";
@@ -37,59 +37,57 @@ export default function Payers() {
     []
   );
 
-  
   useEffect(() => {
-      const fetchParticipants = async () => {
-          try {
-              const { data } = await axiosPrivateClient.get(
-                  "participantes/lista-participantes",
-                  {
-                      params: {
-                          grupoId: expenseData.grupoId,
-                        },
-                    }
-                );
-                
-                setParticipants(data.data);
-                console.log(participants);
-            } catch (error) {
-                console.log("Error: ", error);
-            }
-        };
-        fetchParticipants();
-    }, [userCod]);
+    const fetchParticipants = async () => {
+      try {
+        const { data } = await axiosPrivateClient.get(
+          "participantes/lista-participantes",
+          {
+            params: {
+              grupoId: expenseData.grupoId,
+            },
+          }
+        );
 
-    const toggleSelection = (participantId: string) => {
-      setSelectedParticipants((prev) =>
-        prev.includes(participantId)
-          ? prev.filter((item) => item !== participantId)
-          : [...prev, participantId]
-      );
-      console.log(selectedParticipants);
+        setParticipants(data.data);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
     };
+    fetchParticipants();
+  }, [userCod]);
 
-    function handleNext(){
-        if(selectedParticipants.length === 0){
-            return
-        }
-        setExpenseData({
-            ...expenseData,
-             pagadores: selectedParticipants
-            })
-        console.log("Expense Data Updated: ", {...expenseData, pagadores: selectedParticipants})
+  const toggleSelection = (participantId: string) => {
+    setSelectedParticipants((prev) =>
+      prev.includes(participantId)
+        ? prev.filter((item) => item !== participantId)
+        : [...prev, participantId]
+    );
+  };
+
+  function handleNext() {
+    if (selectedParticipants.length === 0) {
+      return;
     }
-    
+    setExpenseData({
+      ...expenseData,
+      recebedores: selectedParticipants,
+    });
+    console.log("Expense Data Updated: ", {
+      ...expenseData,
+      recebedores: selectedParticipants,
+    });
+  }
+
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ProgressBarComponent totalSteps={100} currentStep={80} />
 
       <View style={styles.containerDescription}>
-        <Text style={styles.title}>
-          Selecione a pessoa que irá pagar pela despesa.
-        </Text>
+        <Text style={styles.title}>Quem bancou a despesa?</Text>
         <Text style={styles.text}>
-          Selecione quem irá <Text style={styles.textBold}>dividir</Text> o
-          valor desta despesa
+          Indique quem quitou esta conta — quem for marcado receberá os
+          pagamentos
         </Text>
       </View>
 
@@ -124,21 +122,34 @@ export default function Payers() {
         />
       </View>
 
-                <View style={styles.containerButton}>
-                  <ButtonCustomizer.Root
-                    type="primary"
-                    onPress={handleNext}
-                    disabled={selectedParticipants.length === 0}
-                    customStyles={selectedParticipants.length === 0 ? styles.disabledButton : styles.nextButton}
-                  >
-                    <ButtonCustomizer.Title
-                      title="Credor"
-                      customStyles={styles.nextButtonText}
-                    />
-                    <Ionicons name="arrow-forward" size={20} color={theme.colors.white} style={{ marginLeft: 8 }} />
-                  </ButtonCustomizer.Root>
-                </View>
+      <View style={styles.containerButton}>
+        <ButtonCustomizer.Root
+          type="secondary"
+          onPress={() => router.back()}
+          customStyles={styles.backButton}
+        >
+          <ButtonCustomizer.Title
+            title="Voltar"
+            customStyles={styles.backButtonText}
+          />
+        </ButtonCustomizer.Root>
 
+        <ButtonCustomizer.Root
+          type="primary"
+          onPress={handleNext}
+          disabled={selectedParticipants.length === 0}
+          customStyles={
+            selectedParticipants.length === 0
+              ? styles.disabledButton
+              : styles.nextButton
+          }
+        >
+          <ButtonCustomizer.Title
+            title="Continuar"
+            customStyles={styles.nextButtonText}
+          />
+        </ButtonCustomizer.Root>
+      </View>
     </KeyboardAvoidingView>
   );
 }

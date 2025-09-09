@@ -21,7 +21,6 @@ import { Image } from "expo-image";
 import GroupIcon from "@/src/assets/images/group.svg";
 import { RadioButton } from "react-native-paper";
 import { theme } from "@/src/theme";
-import { Ionicons } from "@expo/vector-icons";
 
 interface Group {
   name: string;
@@ -50,7 +49,6 @@ export default function SelectGroup() {
             "metaData.pageSize": 10,
           },
         });
-        console.log(data.data);
         setGroups(data.data);
       } catch (error) {
         __DEV__ && console.log("Houve um erro ao buscar os grupos", error);
@@ -80,8 +78,6 @@ export default function SelectGroup() {
       grupoId: selectedGroup,
       userCod,
     });
-
-    console.log("Update expenseData: ", { ...expenseData });
 
     router.push("/expenses/newExpense/payers");
   }
