@@ -23,7 +23,6 @@ import { RadioButton } from "react-native-paper";
 import { theme } from "@/src/theme";
 
 interface Group {
-  name: string;
   nome: string;
   grupoId: string;
   descricao: string;
