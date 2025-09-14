@@ -145,6 +145,17 @@ export default function NewExpense() {
       </View>
       <View style={styles.buttonContainer}>
         <ButtonCustomizer.Root
+          type="secondary"
+          onPress={() => router.back()}
+          customStyles={styles.backButton}
+        >
+          <ButtonCustomizer.Title
+            title="Cancelar"
+            customStyles={styles.backButtonText}
+          />
+        </ButtonCustomizer.Root>
+
+        <ButtonCustomizer.Root
           type="primary"
           onPress={handleSubmit(handleNext)}
           disabled={!canProceed}
@@ -155,7 +166,7 @@ export default function NewExpense() {
           }
         >
           <ButtonCustomizer.Title
-            title="Valor"
+            title="Continuar"
             customStyles={styles.nextButtonText}
           />
           <Ionicons name="arrow-forward" size={20} color={theme.colors.white} style={{ marginLeft: 8 }} />

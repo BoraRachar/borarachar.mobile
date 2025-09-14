@@ -104,6 +104,17 @@ export default function ExpenseValue() {
 
       <View style={styles.buttonContainer}>
         <ButtonCustomizer.Root
+          type="secondary"
+          onPress={() => router.back()}
+          customStyles={styles.backButton}
+        >
+          <ButtonCustomizer.Title
+            title="Voltar"
+            customStyles={styles.backButtonText}
+          />
+        </ButtonCustomizer.Root>
+
+        <ButtonCustomizer.Root
           type="primary"
           onPress={handleSubmit(handleNext)}
           disabled={!canProceed}
@@ -114,7 +125,7 @@ export default function ExpenseValue() {
           }
         >
           <ButtonCustomizer.Title
-            title="Grupo"
+            title="Continuar"
             customStyles={styles.nextButtonText}
           />
           <Ionicons

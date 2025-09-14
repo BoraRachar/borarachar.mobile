@@ -41,6 +41,21 @@ export const styles = StyleSheet.create({
         gap: 16,
         flexDirection: 'row',
     },
+    backButton: {
+        flex: 1,
+        height: 48,
+        backgroundColor: theme.colors.third,
+        borderRadius: 8,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    backButtonText: {
+        fontSize: 16,
+        fontWeight: "600",
+        color: theme.colors.primaryColor,
+        fontFamily: theme.fontFamily.semiBold,
+    },
     nextButton: {
         flex: 1,
         height: 48,
