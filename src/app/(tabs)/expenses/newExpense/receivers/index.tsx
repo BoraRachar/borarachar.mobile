@@ -28,7 +28,7 @@ interface ParticipantType {
   hasPendent: boolean;
 }
 
-export default function Payers() {
+export default function Receivers() {
   const { expenseData, setExpenseData } = useExpenseStore();
   const { userCod } = useAuthStore();
 
@@ -48,7 +48,6 @@ export default function Payers() {
             },
           }
         );
-
         setParticipants(data.data);
       } catch (error) {
         console.log("Error: ", error);
@@ -69,11 +68,7 @@ export default function Payers() {
     if (selectedParticipants.length === 0) {
       return;
     }
-    setExpenseData({
-      ...expenseData,
-      recebedores: selectedParticipants,
-    });
-    router.push("/expenses/newExpense/receivers");
+    // router.push('/expenses/newExpense/resume')
   }
 
   return (
@@ -81,10 +76,9 @@ export default function Payers() {
       <ProgressBarComponent totalSteps={100} currentStep={80} />
 
       <View style={styles.containerDescription}>
-        <Text style={styles.title}>Quem bancou a despesa?</Text>
+        <Text style={styles.title}>Quem vai rachar?</Text>
         <Text style={styles.text}>
-          Indique quem quitou esta conta — quem for marcado receberá os
-          pagamentos
+          Selecione os amigos que dividirão essa despesa.
         </Text>
       </View>
 
@@ -93,29 +87,43 @@ export default function Payers() {
           data={participants ?? []}
           keyExtractor={(item) => item.participanteId}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.containerItem}>
-              <View style={styles.itemContent}>
-                <View style={styles.containerUser}>
-                  <View style={styles.userIcon}>
-                    <UserIcon width={26} height={26} />
-                  </View>
+          renderItem={({ item }) => {
+            const isPayer = (expenseData.recebedores ?? []).includes(
+              item.participanteId
+            );
 
-                  <Text style={styles.checkboxText}>{item.nome}</Text>
+            return (
+              <TouchableOpacity style={styles.containerItem}>
+                <View style={styles.itemContent}>
+                  <View style={styles.containerUser}>
+                    <View style={styles.userIcon}>
+                      <UserIcon width={26} height={26} />
+                    </View>
+
+                    <View style={styles.payerContainer}>
+                      <Text style={styles.checkboxText}>{item.nome}</Text>
+
+                      {isPayer && (
+                        <Text style={styles.payerText}>
+                          Essa é a pessoa que quitou a despesa.
+                        </Text>
+                      )}
+                    </View>
+                  </View>
+                  <Checkbox
+                    style={styles.checkbox}
+                    value={selectedParticipants.includes(item.participanteId)}
+                    onValueChange={() => toggleSelection(item.participanteId)}
+                    color={
+                      selectedParticipants.includes(item.participanteId)
+                        ? theme.colors.primaryColor
+                        : undefined
+                    }
+                  />
                 </View>
-                <Checkbox
-                  style={styles.checkbox}
-                  value={selectedParticipants.includes(item.participanteId)}
-                  onValueChange={() => toggleSelection(item.participanteId)}
-                  color={
-                    selectedParticipants.includes(item.participanteId)
-                      ? theme.colors.primaryColor
-                      : undefined
-                  }
-                />
-              </View>
-            </TouchableOpacity>
-          )}
+              </TouchableOpacity>
+            );
+          }}
         />
       </View>
 
