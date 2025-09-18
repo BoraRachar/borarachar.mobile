@@ -1,5 +1,6 @@
 import {
   KeyboardAvoidingView,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
@@ -8,6 +9,9 @@ import { useExpenseStore } from '@/src/store/useExpenseStore'
 
 import PencilIcon from '@/src/assets/images/pencil-strong.svg'
 import { styles } from './styles'
+import { styles as globalStyles } from '@/src/app/styles'
+import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
+import { router } from 'expo-router'
 
 const formatadorMoeda = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -37,7 +41,7 @@ export default function Resume() {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <ScrollView style={styles.container}>
       <ListItem title="O que" content={expenseData?.expenseName} />
       <ListItem
         title="Quanto"
@@ -61,6 +65,30 @@ export default function Resume() {
       {expenseData?.description && (
         <ListItem title="Descrição" content={expenseData?.description} />
       )}
-    </KeyboardAvoidingView>
+
+      <View style={styles.buttonContainer}>
+        <ButtonCustomizer.Root
+          type="tertiaryHalfWidth"
+          onPress={() => router.back()}
+          customStyles={globalStyles.tertiaryButtonHalfWidth}
+        >
+          <ButtonCustomizer.Title
+            title="Cancelar"
+            customStyles={globalStyles.tertiaryButtonText}
+          />
+        </ButtonCustomizer.Root>
+
+        <ButtonCustomizer.Root
+          type="primaryHalfWidth"
+          onPress={() => console.log('teste')}
+          customStyles={globalStyles.primaryButtonHalfWidth}
+        >
+          <ButtonCustomizer.Title
+            title="Incluir"
+            customStyles={globalStyles.primaryButtonText}
+          />
+        </ButtonCustomizer.Root>
+      </View>
+    </ScrollView>
   )
 }

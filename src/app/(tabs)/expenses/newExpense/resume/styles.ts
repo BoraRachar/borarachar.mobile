@@ -27,4 +27,9 @@ export const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.semiBold,
     fontSize: theme.sizes.fontSize16,
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 24,
+  },
 })
