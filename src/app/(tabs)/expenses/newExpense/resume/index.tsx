@@ -9,6 +9,11 @@ import { useExpenseStore } from '@/src/store/useExpenseStore'
 import PencilIcon from '@/src/assets/images/pencil-strong.svg'
 import { styles } from './styles'
 
+const formatadorMoeda = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+})
+
 export default function Resume() {
   const { expenseData } = useExpenseStore()
   const ListItem = ({
@@ -34,7 +39,12 @@ export default function Resume() {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ListItem title="O que" content={expenseData?.expenseName} />
-      <ListItem title="Quanto" content={expenseData?.value} />
+      <ListItem
+        title="Quanto"
+        content={
+          expenseData?.value && formatadorMoeda.format(expenseData.value)
+        }
+      />
       <ListItem title="Onde (Grupo)" content={expenseData?.grupoId} />
       <ListItem
         title="Quem bancou"
