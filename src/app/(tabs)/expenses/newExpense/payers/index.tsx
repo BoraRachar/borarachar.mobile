@@ -4,79 +4,74 @@ import {
   Text,
   View,
   TouchableOpacity,
-} from "react-native";
-import { router } from "expo-router";
-import { useState, useEffect } from "react";
-import { axiosPrivateClient } from "@/src/utils/axios";
-import { useExpenseStore } from "@/src/store/useExpenseStore";
-import { useAuthStore } from "@/src/store/useAuthStore";
+} from 'react-native'
+import { router } from 'expo-router'
+import { useState, useEffect } from 'react'
+import { axiosPrivateClient } from '@/src/utils/axios'
+import { useExpenseStore } from '@/src/store/useExpenseStore'
+import { useAuthStore } from '@/src/store/useAuthStore'
 
-import ProgressBarComponent from "@/src/components/ProgressBarComponent";
-import Checkbox from "expo-checkbox";
-import { ButtonCustomizer } from "@/src/components/ButtonCustomizer";
-import UserIcon from "@/src/assets/images/user.svg";
+import ProgressBarComponent from '@/src/components/ProgressBarComponent'
+import Checkbox from 'expo-checkbox'
+import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
+import UserIcon from '@/src/assets/images/user.svg'
 
-import { styles } from "./styles";
-import { theme } from "@/src/theme";
+import { styles } from './styles'
+import { theme } from '@/src/theme'
 
 interface ParticipantType {
-  participanteId: string;
-  nome: string;
-  email: string;
-  apelido: string;
-  isAdm: boolean;
-  hasPendent: boolean;
+  participanteId: string
+  nome: string
+  email: string
+  apelido: string
+  isAdm: boolean
+  hasPendent: boolean
 }
 
 export default function Payers() {
-  const { expenseData, setExpenseData } = useExpenseStore();
-  const { userCod } = useAuthStore();
+  const { expenseData, setExpenseData } = useExpenseStore()
+  const { userCod } = useAuthStore()
 
-  const [participants, setParticipants] = useState<ParticipantType[]>([]);
-  const [selectedParticipants, setSelectedParticipants] = useState<string[]>(
-    []
-  );
+  const [participants, setParticipants] = useState<ParticipantType[]>([])
+  const [selectedParticipants, setSelectedParticipants] = useState<string[]>([])
 
   useEffect(() => {
     const fetchParticipants = async () => {
       try {
         const { data } = await axiosPrivateClient.get(
-          "participantes/lista-participantes",
+          'participantes/lista-participantes',
           {
             params: {
               grupoId: expenseData.grupoId,
             },
-          }
-        );
+          },
+        )
 
-        setParticipants(data.data);
+        setParticipants(data.data)
       } catch (error) {
-        console.log("Error: ", error);
+        console.log('Error: ', error)
       }
-    };
-    fetchParticipants();
-  }, [userCod]);
+    }
+    fetchParticipants()
+  }, [userCod])
 
   const toggleSelection = (participantId: string) => {
     setSelectedParticipants((prev) =>
       prev.includes(participantId)
         ? prev.filter((item) => item !== participantId)
-        : [...prev, participantId]
-    );
-  };
+        : [...prev, participantId],
+    )
+  }
 
   function handleNext() {
     if (selectedParticipants.length === 0) {
-      return;
+      return
     }
     setExpenseData({
       ...expenseData,
       recebedores: selectedParticipants,
-    });
-    console.log("Expense Data Updated: ", {
-      ...expenseData,
-      recebedores: selectedParticipants,
-    });
+    })
+    router.push('/expenses/newExpense/resume')
   }
 
   return (
@@ -151,5 +146,5 @@ export default function Payers() {
         </ButtonCustomizer.Root>
       </View>
     </KeyboardAvoidingView>
-  );
+  )
 }
