@@ -74,7 +74,7 @@ export default function SelectGroup() {
 
     setExpenseData({
       ...expenseData,
-      grupoId: selectedGroup,
+      idGrupo: selectedGroup,
       userCod,
     });
 

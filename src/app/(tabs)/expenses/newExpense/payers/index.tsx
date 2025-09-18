@@ -44,7 +44,7 @@ export default function Payers() {
           "participantes/lista-participantes",
           {
             params: {
-              grupoId: expenseData.grupoId,
+              grupoId: expenseData.idGrupo,
             },
           }
         );
