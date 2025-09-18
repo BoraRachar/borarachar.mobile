@@ -44,7 +44,7 @@ export default function Receivers() {
           "participantes/lista-participantes",
           {
             params: {
-              grupoId: expenseData.grupoId,
+              grupoId: expenseData.idGrupo,
             },
           }
         );
@@ -68,7 +68,11 @@ export default function Receivers() {
     if (selectedParticipants.length === 0) {
       return;
     }
-    // router.push('/expenses/newExpense/resume')
+    setExpenseData({
+      ...expenseData,
+      pagadores: selectedParticipants,
+    });
+    router.push("/expenses/newExpense/resume");
   }
 
   return (
