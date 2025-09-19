@@ -50,6 +50,10 @@ export default function Payers() {
         );
 
         setParticipants(data.data);
+
+        if (expenseData.recebedores) {
+          setSelectedParticipants(expenseData.recebedores);
+        }
       } catch (error) {
         console.log("Error: ", error);
       }

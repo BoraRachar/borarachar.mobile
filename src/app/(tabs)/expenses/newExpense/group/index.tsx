@@ -49,6 +49,10 @@ export default function SelectGroup() {
           },
         });
         setGroups(data.data);
+
+        if (expenseData.idGrupo) {
+          setSelectedGroup(expenseData.idGrupo);
+        }
       } catch (error) {
         __DEV__ && console.log("Houve um erro ao buscar os grupos", error);
       }

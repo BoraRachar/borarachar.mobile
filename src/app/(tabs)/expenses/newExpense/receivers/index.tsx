@@ -49,6 +49,10 @@ export default function Receivers() {
           }
         );
         setParticipants(data.data);
+
+        if (expenseData.pagadores) {
+          setSelectedParticipants(expenseData.pagadores);
+        }
       } catch (error) {
         console.log("Error: ", error);
       }
@@ -123,6 +127,7 @@ export default function Receivers() {
                         ? theme.colors.primaryColor
                         : undefined
                     }
+                    disabled={isPayer}
                   />
                 </View>
               </TouchableOpacity>
