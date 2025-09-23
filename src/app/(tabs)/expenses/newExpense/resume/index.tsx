@@ -7,6 +7,8 @@ import { styles as globalStyles } from '@/src/app/styles'
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import { router, Href } from 'expo-router'
 import { axiosPrivateClient } from '@/src/utils/axios'
+import { useState } from 'react'
+import CancelExpenseModal from './CancelExpenseModal'
 
 const formatadorMoeda = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -14,6 +16,7 @@ const formatadorMoeda = new Intl.NumberFormat('pt-BR', {
 })
 
 export default function Resume() {
+  const [isModalVisible, setIsModalVisible] = useState(false)
   const { expenseData, removeExpenseData } = useExpenseStore()
 
   const handleInsertExpense = async () => {
@@ -109,10 +112,7 @@ export default function Resume() {
       <View style={styles.buttonContainer}>
         <ButtonCustomizer.Root
           type="tertiaryHalfWidth"
-          onPress={() => {
-            removeExpenseData()
-            router.replace('/expenses/newExpense')
-          }}
+          onPress={() => setIsModalVisible(true)}
           customStyles={globalStyles.tertiaryButtonHalfWidth}
         >
           <ButtonCustomizer.Title
@@ -132,6 +132,10 @@ export default function Resume() {
           />
         </ButtonCustomizer.Root>
       </View>
+      <CancelExpenseModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+      />
     </ScrollView>
   )
 }
