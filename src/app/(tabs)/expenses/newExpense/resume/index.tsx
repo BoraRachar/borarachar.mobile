@@ -6,6 +6,7 @@ import { styles } from './styles'
 import { styles as globalStyles } from '@/src/app/styles'
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 import { router, Href } from 'expo-router'
+import { axiosPrivateClient } from '@/src/utils/axios'
 
 const formatadorMoeda = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -14,6 +15,28 @@ const formatadorMoeda = new Intl.NumberFormat('pt-BR', {
 
 export default function Resume() {
   const { expenseData, removeExpenseData } = useExpenseStore()
+
+  const handleInsertExpense = async () => {
+    console.log('Inserting expense:', expenseData)
+    console.log(String(expenseData.dataRealizacao))
+    try {
+      axiosPrivateClient.post('/despesas', {
+        nome: expenseData?.nome,
+        valorDespesa: expenseData?.valorDespesa,
+        descricao: expenseData?.descricao,
+        dataRealizacao: String(expenseData?.dataRealizacao),
+        idGrupo: expenseData?.idGrupo,
+        pagadoresIds: expenseData?.pagadores,
+        recebedoresIds: expenseData?.recebedores,
+      })
+      router.dismissAll()
+      removeExpenseData()
+      router.replace('/(tabs)/home')
+    } catch (error) {
+      console.error('Error inserting expense:', error)
+    }
+  }
+
   const ListItem = ({
     title,
     content,
@@ -100,7 +123,7 @@ export default function Resume() {
 
         <ButtonCustomizer.Root
           type="primaryHalfWidth"
-          onPress={() => console.log('teste')}
+          onPress={() => handleInsertExpense()}
           customStyles={globalStyles.primaryButtonHalfWidth}
         >
           <ButtonCustomizer.Title
