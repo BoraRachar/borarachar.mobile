@@ -17,7 +17,7 @@ const formatadorMoeda = new Intl.NumberFormat('pt-BR', {
 
 export default function Resume() {
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const { expenseData, removeExpenseData } = useExpenseStore()
+  const { expenseData } = useExpenseStore()
 
   const handleInsertExpense = async () => {
     try {
@@ -30,12 +30,10 @@ export default function Resume() {
         pagadoresIds: expenseData?.pagadores,
         recebedoresIds: expenseData?.recebedores,
       })
-      removeExpenseData()
+
+      router.replace('/(tabs)/expenses/newExpense/success')
     } catch (error) {
       console.error('Error inserting expense:', error)
-    } finally {
-      router.dismissAll()
-      router.replace('/(tabs)/home')
     }
   }
 

@@ -109,6 +109,22 @@ export default function ExpensesLayout() {
           ),
         }}
       />
+
+      <Stack.Screen
+        name="newExpense/success/index"
+        options={{
+          title: 'Sucesso',
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <LeftIcon
+              onPress={() => {
+                router.back()
+              }}
+            />
+          ),
+        }}
+      />
     </Stack>
   )
 }
