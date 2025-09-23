@@ -56,7 +56,7 @@ export default function ExpenseValue() {
   const { control, handleSubmit } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
-      valueDigits: numberToDigits(expenseData.value),
+      valueDigits: numberToDigits(expenseData.valorDespesa),
     },
     mode: "onChange",
   });
@@ -66,7 +66,7 @@ export default function ExpenseValue() {
 
   const handleNext = (data: FormData) => {
     const numValue = digitsToNumber(data.valueDigits);
-    setExpenseData({ ...expenseData, value: numValue });
+    setExpenseData({ ...expenseData, valorDespesa: numValue });
     router.push("/expenses/newExpense/group");
   };
 
