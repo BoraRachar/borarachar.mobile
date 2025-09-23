@@ -4,90 +4,96 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   FlatList,
-} from "react-native";
-import { useState, useEffect } from "react";
-import { router } from "expo-router";
-import { useGroupStore } from "@/src/store/useGroupStore";
-import { axiosPrivateClient } from "@/src/utils/axios";
-import { useAuthStore } from "@/src/store/useAuthStore";
-import { useExpenseStore } from "@/src/store/useExpenseStore";
+} from 'react-native'
+import { useState, useEffect } from 'react'
+import { router } from 'expo-router'
+import { useGroupStore } from '@/src/store/useGroupStore'
+import { axiosPrivateClient } from '@/src/utils/axios'
+import { useAuthStore } from '@/src/store/useAuthStore'
+import { useExpenseStore } from '@/src/store/useExpenseStore'
 
-import ProgressBarComponent from "@/src/components/ProgressBarComponent";
-import Plus from "@/src/assets/images/plus.svg";
-import { ButtonCustomizer } from "@/src/components/ButtonCustomizer";
+import ProgressBarComponent from '@/src/components/ProgressBarComponent'
+import Plus from '@/src/assets/images/plus.svg'
+import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
 
-import { styles } from "./styles";
-import { Image } from "expo-image";
-import GroupIcon from "@/src/assets/images/group.svg";
-import { RadioButton } from "react-native-paper";
-import { theme } from "@/src/theme";
+import { styles } from './styles'
+import { Image } from 'expo-image'
+import GroupIcon from '@/src/assets/images/group.svg'
+import { RadioButton } from 'react-native-paper'
+import { theme } from '@/src/theme'
+import ActivityIndicatorComponent from '@/src/components/ActivityIndicatorComponent'
+import { set } from 'react-hook-form'
 
 interface Group {
-  nome: string;
-  grupoId: string;
-  descricao: string;
-  imgGrupo: string;
-  totalParticipantes: number;
+  nome: string
+  grupoId: string
+  descricao: string
+  imgGrupo: string
+  totalParticipantes: number
 }
 
 export default function SelectGroup() {
-  const { userCod } = useAuthStore();
-  const { removeGroupData } = useGroupStore();
-  const { expenseData, setExpenseData } = useExpenseStore();
+  const { userCod } = useAuthStore()
+  const { removeGroupData } = useGroupStore()
+  const { expenseData, setExpenseData } = useExpenseStore()
+  const [loading, setLoading] = useState(false)
 
-  const [groups, setGroups] = useState<Group[]>([]);
-  const [selectedGroup, setSelectedGroup] = useState<string>("");
+  const [groups, setGroups] = useState<Group[]>([])
+  const [selectedGroup, setSelectedGroup] = useState<string>('')
 
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const { data } = await axiosPrivateClient.get("grupos/lista-grupos", {
+        setLoading(true)
+        const { data } = await axiosPrivateClient.get('grupos/lista-grupos', {
           params: {
             userCod,
-            "metaData.pageNumber": 1,
-            "metaData.pageSize": 10,
+            'metaData.pageNumber': 1,
+            'metaData.pageSize': 10,
           },
-        });
-        setGroups(data.data);
+        })
+        setGroups(data.data)
 
         if (expenseData.idGrupo) {
-          setSelectedGroup(expenseData.idGrupo);
+          setSelectedGroup(expenseData.idGrupo)
         }
       } catch (error) {
-        __DEV__ && console.log("Houve um erro ao buscar os grupos", error);
+        __DEV__ && console.log('Houve um erro ao buscar os grupos', error)
+      } finally {
+        setLoading(false)
       }
-    };
+    }
 
-    fetchGroups();
-  }, [userCod]);
+    fetchGroups()
+  }, [userCod, expenseData.idGrupo])
 
   const handleSelectGroup = (grupoId: string) => {
     if (!selectedGroup) {
-      return theme.colors.primaryColor;
+      return theme.colors.primaryColor
     }
 
     return grupoId === selectedGroup
       ? theme.colors.primaryColor
-      : theme.colors.secondaryColor;
-  };
+      : theme.colors.secondaryColor
+  }
 
   function handleNext() {
     if (!selectedGroup) {
-      return;
+      return
     }
 
     const selectedGroupData = groups.find(
-      (group) => group.grupoId === selectedGroup
-    );
+      (group) => group.grupoId === selectedGroup,
+    )
 
     setExpenseData({
       ...expenseData,
       idGrupo: selectedGroup,
       userCod,
       nomeGrupo: selectedGroupData?.nome,
-    });
+    })
 
-    router.push("/expenses/newExpense/payers");
+    router.push('/expenses/newExpense/payers')
   }
 
   return (
@@ -100,8 +106,8 @@ export default function SelectGroup() {
 
         <TouchableOpacity
           onPress={() => {
-            removeGroupData();
-            router.push("/groups/newGroup");
+            removeGroupData()
+            router.push('/groups/newGroup')
           }}
         >
           <View style={styles.addButton}>
@@ -110,65 +116,69 @@ export default function SelectGroup() {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.containerList}>
-        <FlatList
-          data={groups ?? []}
-          keyExtractor={(item) => item.grupoId}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => {
-            // const isSelected = item.grupoId === selectedGroup;
-            return (
-              <TouchableOpacity style={styles.containerGroup}>
-                <View style={{ flexDirection: "row", gap: 16 }}>
-                  <View style={styles.containerImage}>
-                    {item.imgGrupo ? (
-                      <Image
-                        source={{
-                          uri: `data:image/jpeg;base64,${item.imgGrupo}`,
-                        }}
-                        style={{ width: "100%", height: "100%" }}
-                        alt="imagem do grupo"
-                      />
-                    ) : (
-                      <GroupIcon stroke={handleSelectGroup(item.grupoId)} />
-                    )}
+      {loading ? (
+        <ActivityIndicatorComponent />
+      ) : (
+        <View style={styles.containerList}>
+          <FlatList
+            data={groups ?? []}
+            keyExtractor={(item) => item.grupoId}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => {
+              // const isSelected = item.grupoId === selectedGroup;
+              return (
+                <TouchableOpacity style={styles.containerGroup}>
+                  <View style={{ flexDirection: 'row', gap: 16 }}>
+                    <View style={styles.containerImage}>
+                      {item.imgGrupo ? (
+                        <Image
+                          source={{
+                            uri: `data:image/jpeg;base64,${item.imgGrupo}`,
+                          }}
+                          style={{ width: '100%', height: '100%' }}
+                          alt="imagem do grupo"
+                        />
+                      ) : (
+                        <GroupIcon stroke={handleSelectGroup(item.grupoId)} />
+                      )}
+                    </View>
+
+                    <View style={styles.containerDescription}>
+                      <Text
+                        style={[
+                          styles.text,
+                          { color: handleSelectGroup(item.grupoId) },
+                        ]}
+                      >
+                        {item.nome}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.text,
+                          styles.textLight,
+                          { color: handleSelectGroup(item.grupoId) },
+                        ]}
+                      >
+                        {`${item.totalParticipantes} participantes`}
+                      </Text>
+                    </View>
                   </View>
 
-                  <View style={styles.containerDescription}>
-                    <Text
-                      style={[
-                        styles.text,
-                        { color: handleSelectGroup(item.grupoId) },
-                      ]}
-                    >
-                      {item.nome}
-                    </Text>
-                    <Text
-                      style={[
-                        styles.text,
-                        styles.textLight,
-                        { color: handleSelectGroup(item.grupoId) },
-                      ]}
-                    >
-                      {`${item.totalParticipantes} participantes`}
-                    </Text>
-                  </View>
-                </View>
-
-                <RadioButton
-                  value={item.grupoId}
-                  status={
-                    selectedGroup === item.grupoId ? "checked" : "unchecked"
-                  }
-                  onPress={() => setSelectedGroup(item.grupoId)}
-                  color={handleSelectGroup(item.grupoId)}
-                  uncheckedColor={handleSelectGroup(item.grupoId)}
-                />
-              </TouchableOpacity>
-            );
-          }}
-        />
-      </View>
+                  <RadioButton
+                    value={item.grupoId}
+                    status={
+                      selectedGroup === item.grupoId ? 'checked' : 'unchecked'
+                    }
+                    onPress={() => setSelectedGroup(item.grupoId)}
+                    color={handleSelectGroup(item.grupoId)}
+                    uncheckedColor={handleSelectGroup(item.grupoId)}
+                  />
+                </TouchableOpacity>
+              )
+            }}
+          />
+        </View>
+      )}
 
       <View style={styles.containerBottomButton}>
         <ButtonCustomizer.Root
@@ -197,5 +207,5 @@ export default function SelectGroup() {
         </ButtonCustomizer.Root>
       </View>
     </KeyboardAvoidingView>
-  );
+  )
 }
