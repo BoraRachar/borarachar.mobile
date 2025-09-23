@@ -5,7 +5,7 @@ import PencilIcon from '@/src/assets/images/pencil-strong.svg'
 import { styles } from './styles'
 import { styles as globalStyles } from '@/src/app/styles'
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
-import { router } from 'expo-router'
+import { router, Href } from 'expo-router'
 
 const formatadorMoeda = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -17,9 +17,11 @@ export default function Resume() {
   const ListItem = ({
     title,
     content,
+    editlink,
   }: {
     title: string
     content: string | number | undefined
+    editlink: Href<string>
   }) => {
     return (
       <View style={styles.listItem}>
@@ -27,7 +29,10 @@ export default function Resume() {
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.content}>{content}</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.push(editlink)}
+          disabled={!editlink}
+        >
           <PencilIcon width={20} height={20} />
         </TouchableOpacity>
       </View>
@@ -36,29 +41,46 @@ export default function Resume() {
 
   return (
     <ScrollView style={styles.container}>
-      <ListItem title="O que" content={expenseData?.nome} />
+      <ListItem
+        title="O que"
+        content={expenseData?.nome}
+        editlink="/(tabs)/expenses/newExpense"
+      />
+
       <ListItem
         title="Quanto"
         content={
           expenseData?.valorDespesa &&
           formatadorMoeda.format(expenseData?.valorDespesa)
         }
+        editlink="/(tabs)/expenses/newExpense/value"
       />
-      <ListItem title="Onde (Grupo)" content={expenseData?.nomeGrupo} />
+      <ListItem
+        title="Onde (Grupo)"
+        content={expenseData?.nomeGrupo}
+        editlink="/(tabs)/expenses/newExpense/group"
+      />
       <ListItem
         title="Quem bancou"
         content={expenseData?.recebedoresNome?.join(',')}
+        editlink="/(tabs)/expenses/newExpense/receivers"
       />
       <ListItem
         title="Quem vai pagar"
         content={expenseData?.pagadoresNome?.join(',')}
+        editlink="/(tabs)/expenses/newExpense/payers"
       />
       <ListItem
         title="Quando"
         content={expenseData?.dataRealizacao?.toLocaleDateString('pt-BR')}
+        editlink="/(tabs)/expenses/newExpense"
       />
       {expenseData?.descricao && (
-        <ListItem title="Descrição" content={expenseData?.descricao} />
+        <ListItem
+          title="Descrição"
+          content={expenseData?.descricao}
+          editlink="/(tabs)/expenses/newExpense"
+        />
       )}
 
       <View style={styles.buttonContainer}>
