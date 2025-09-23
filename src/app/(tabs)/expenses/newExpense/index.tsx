@@ -1,39 +1,41 @@
-import { useState } from "react";
+import { useState } from 'react'
 import {
   Text,
   View,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useForm, Controller, useWatch } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { router } from "expo-router";
+} from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import { useForm, Controller, useWatch } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import { router } from 'expo-router'
 
-import { ButtonCustomizer } from "@/src/components/ButtonCustomizer";
-import { CalendarComponent } from "@/src/components/CalendarComponent";
-import { useExpenseStore } from "@/src/store/useExpenseStore";
-import { theme } from "@/src/theme";
-import { styles } from "./styles";
-import ProgressBarComponent from "@/src/components/ProgressBarComponent";
+import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
+import { CalendarComponent } from '@/src/components/CalendarComponent'
+import { useExpenseStore } from '@/src/store/useExpenseStore'
+import { theme } from '@/src/theme'
+import { styles } from './styles'
+import ProgressBarComponent from '@/src/components/ProgressBarComponent'
+import useKeyboardStatus from '@/src/utils/keyboardUtils'
 
 interface FormData {
-  expenseName: string;
-  description?: string;
+  expenseName: string
+  description?: string
 }
 
 const schema = yup.object().shape({
-  expenseName: yup.string().required("Nome da despesa é obrigatório"),
+  expenseName: yup.string().required('Nome da despesa é obrigatório'),
   description: yup.string().optional(),
-});
+})
 
 export default function NewExpense() {
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [showCalendar, setShowCalendar] = useState(false)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const { expenseData, setExpenseData } = useExpenseStore()
 
-  const { expenseData, setExpenseData } = useExpenseStore();
+  const isKeyboardVisible = useKeyboardStatus()
 
   const {
     control,
@@ -42,52 +44,52 @@ export default function NewExpense() {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      expenseName: expenseData.nome || "",
-      description: expenseData.descricao || "",
+      expenseName: expenseData.nome || '',
+      description: expenseData.descricao || '',
     },
-  });
+  })
 
   const expenseName = useWatch({
     control,
-    name: "expenseName",
-    defaultValue: "",
-  });
+    name: 'expenseName',
+    defaultValue: '',
+  })
 
   const formatDate = (date: Date | null) => {
     if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
-      return "DD / MM / YYYY";
+      return 'DD / MM / YYYY'
     }
 
-    return date.toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    })
+  }
 
-  const canProceed = expenseName.trim().length >= 1 && selectedDate !== null;
+  const canProceed = expenseName.trim().length >= 1 && selectedDate !== null
 
   const openCalendar = () => {
-    setShowCalendar(true);
-  };
+    setShowCalendar(true)
+  }
 
   const closeCalendar = () => {
-    setShowCalendar(false);
-  };
+    setShowCalendar(false)
+  }
 
   const handleNext = (data: FormData) => {
     const expenseDataToStore = {
       nome: data.expenseName,
       descricao: data.description,
       dataRealizacao: selectedDate,
-    };
+    }
 
-    setExpenseData(expenseDataToStore);
-    router.push("/expenses/newExpense/value");
-  };
+    setExpenseData(expenseDataToStore)
+    router.push('/expenses/newExpense/value')
+  }
 
   return (
-    <KeyboardAvoidingView style={styles.modalContainer}>
+    <View style={styles.modalContainer}>
       <ProgressBarComponent totalSteps={100} currentStep={20} />
       <View style={styles.formContainer}>
         <View style={styles.inputGroup}>
@@ -145,51 +147,54 @@ export default function NewExpense() {
             {selectedDate ? (
               <Text style={styles.dateText}>{formatDate(selectedDate)}</Text>
             ) : (
-              <Text style={styles.helperDateText}>{"DD / MM / YYYY"}</Text>
+              <Text style={styles.helperDateText}>{'DD / MM / YYYY'}</Text>
             )}
             <Ionicons name="calendar" size={24} color={theme.colors.fourth} />
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <ButtonCustomizer.Root
-          type="secondary"
-          onPress={() => router.back()}
-          customStyles={styles.backButton}
-        >
-          <ButtonCustomizer.Title
-            title="Cancelar"
-            customStyles={styles.backButtonText}
-          />
-        </ButtonCustomizer.Root>
 
-        <ButtonCustomizer.Root
-          type="primary"
-          onPress={handleSubmit(handleNext)}
-          disabled={!canProceed}
-          customStyles={
-            !canProceed
-              ? [styles.nextButton, styles.disabledButton]
-              : styles.nextButton
-          }
-        >
-          <ButtonCustomizer.Title
-            title="Continuar"
-            customStyles={styles.nextButtonText}
-          />
-          <Ionicons
-            name="arrow-forward"
-            size={20}
-            color={theme.colors.white}
-            style={{ marginLeft: 8 }}
-          />
-        </ButtonCustomizer.Root>
-      </View>
+      {!isKeyboardVisible && (
+        <View style={styles.buttonContainer}>
+          <ButtonCustomizer.Root
+            type="secondary"
+            onPress={() => router.back()}
+            customStyles={styles.backButton}
+          >
+            <ButtonCustomizer.Title
+              title="Cancelar"
+              customStyles={styles.backButtonText}
+            />
+          </ButtonCustomizer.Root>
+
+          <ButtonCustomizer.Root
+            type="primary"
+            onPress={handleSubmit(handleNext)}
+            disabled={!canProceed}
+            customStyles={
+              !canProceed
+                ? [styles.nextButton, styles.disabledButton]
+                : styles.nextButton
+            }
+          >
+            <ButtonCustomizer.Title
+              title="Continuar"
+              customStyles={styles.nextButtonText}
+            />
+            <Ionicons
+              name="arrow-forward"
+              size={20}
+              color={theme.colors.white}
+              style={{ marginLeft: 8 }}
+            />
+          </ButtonCustomizer.Root>
+        </View>
+      )}
       <CalendarComponent
         visible={showCalendar}
         onClose={closeCalendar}
         onConfirm={(d) => {
-          setSelectedDate(d);
+          setSelectedDate(d)
         }}
         defaultValue={selectedDate ?? null}
         autoSelectIfEmpty
@@ -197,6 +202,6 @@ export default function NewExpense() {
         weekStartsOn={1}
         title="Selecionar data"
       />
-    </KeyboardAvoidingView>
-  );
+    </View>
+  )
 }
