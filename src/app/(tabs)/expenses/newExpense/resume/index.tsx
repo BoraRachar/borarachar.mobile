@@ -20,8 +20,6 @@ export default function Resume() {
   const { expenseData, removeExpenseData } = useExpenseStore()
 
   const handleInsertExpense = async () => {
-    console.log('Inserting expense:', expenseData)
-    console.log(String(expenseData.dataRealizacao))
     try {
       axiosPrivateClient.post('/despesas', {
         nome: expenseData?.nome,
@@ -32,11 +30,12 @@ export default function Resume() {
         pagadoresIds: expenseData?.pagadores,
         recebedoresIds: expenseData?.recebedores,
       })
-      router.dismissAll()
       removeExpenseData()
-      router.replace('/(tabs)/home')
     } catch (error) {
       console.error('Error inserting expense:', error)
+    } finally {
+      router.dismissAll()
+      router.replace('/(tabs)/home')
     }
   }
 
