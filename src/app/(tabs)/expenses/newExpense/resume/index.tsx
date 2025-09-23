@@ -1,32 +1,25 @@
-import {
-  KeyboardAvoidingView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { useExpenseStore } from "@/src/store/useExpenseStore";
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { useExpenseStore } from '@/src/store/useExpenseStore'
 
-import PencilIcon from "@/src/assets/images/pencil-strong.svg";
-import { styles } from "./styles";
-import { styles as globalStyles } from "@/src/app/styles";
-import { ButtonCustomizer } from "@/src/components/ButtonCustomizer";
-import { router } from "expo-router";
+import PencilIcon from '@/src/assets/images/pencil-strong.svg'
+import { styles } from './styles'
+import { styles as globalStyles } from '@/src/app/styles'
+import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
+import { router } from 'expo-router'
 
-const formatadorMoeda = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-});
+const formatadorMoeda = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+})
 
 export default function Resume() {
-  const { expenseData } = useExpenseStore();
-  console.log(expenseData);
+  const { expenseData, removeExpenseData } = useExpenseStore()
   const ListItem = ({
     title,
     content,
   }: {
-    title: string;
-    content: string | number | undefined;
+    title: string
+    content: string | number | undefined
   }) => {
     return (
       <View style={styles.listItem}>
@@ -38,8 +31,8 @@ export default function Resume() {
           <PencilIcon width={20} height={20} />
         </TouchableOpacity>
       </View>
-    );
-  };
+    )
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -54,15 +47,15 @@ export default function Resume() {
       <ListItem title="Onde (Grupo)" content={expenseData?.nomeGrupo} />
       <ListItem
         title="Quem bancou"
-        content={expenseData?.recebedoresNome?.join(",")}
+        content={expenseData?.recebedoresNome?.join(',')}
       />
       <ListItem
         title="Quem vai pagar"
-        content={expenseData?.pagadoresNome?.join(",")}
+        content={expenseData?.pagadoresNome?.join(',')}
       />
       <ListItem
         title="Quando"
-        content={expenseData?.dataRealizacao?.toLocaleDateString("pt-BR")}
+        content={expenseData?.dataRealizacao?.toLocaleDateString('pt-BR')}
       />
       {expenseData?.descricao && (
         <ListItem title="Descrição" content={expenseData?.descricao} />
@@ -71,7 +64,10 @@ export default function Resume() {
       <View style={styles.buttonContainer}>
         <ButtonCustomizer.Root
           type="tertiaryHalfWidth"
-          onPress={() => router.back()}
+          onPress={() => {
+            removeExpenseData()
+            router.replace('/expenses/newExpense')
+          }}
           customStyles={globalStyles.tertiaryButtonHalfWidth}
         >
           <ButtonCustomizer.Title
@@ -82,7 +78,7 @@ export default function Resume() {
 
         <ButtonCustomizer.Root
           type="primaryHalfWidth"
-          onPress={() => console.log("teste")}
+          onPress={() => console.log('teste')}
           customStyles={globalStyles.primaryButtonHalfWidth}
         >
           <ButtonCustomizer.Title
@@ -92,5 +88,5 @@ export default function Resume() {
         </ButtonCustomizer.Root>
       </View>
     </ScrollView>
-  );
+  )
 }
