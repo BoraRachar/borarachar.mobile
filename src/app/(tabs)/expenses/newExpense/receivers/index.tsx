@@ -72,9 +72,17 @@ export default function Receivers() {
     if (selectedParticipants.length === 0) {
       return;
     }
+
+    const selectedParticipantsName = participants
+      .filter((participant) =>
+        selectedParticipants.includes(participant.participanteId)
+      )
+      .map((participant) => participant.nome);
+
     setExpenseData({
       ...expenseData,
       pagadores: selectedParticipants,
+      pagadoresNome: selectedParticipantsName,
     });
     router.push("/expenses/newExpense/resume");
   }

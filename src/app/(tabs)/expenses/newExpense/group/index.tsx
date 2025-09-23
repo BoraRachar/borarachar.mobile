@@ -76,10 +76,15 @@ export default function SelectGroup() {
       return;
     }
 
+    const selectedGroupData = groups.find(
+      (group) => group.grupoId === selectedGroup
+    );
+
     setExpenseData({
       ...expenseData,
       idGrupo: selectedGroup,
       userCod,
+      nomeGrupo: selectedGroupData?.nome,
     });
 
     router.push("/expenses/newExpense/payers");

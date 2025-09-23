@@ -73,9 +73,17 @@ export default function Payers() {
     if (selectedParticipants.length === 0) {
       return;
     }
+
+    const selectedParticipantsName = participants
+      .filter((participant) =>
+        selectedParticipants.includes(participant.participanteId)
+      )
+      .map((participant) => participant.nome);
+
     setExpenseData({
       ...expenseData,
       recebedores: selectedParticipants,
+      recebedoresNome: selectedParticipantsName,
     });
     router.push("/expenses/newExpense/receivers");
   }

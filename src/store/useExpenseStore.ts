@@ -6,9 +6,12 @@ export interface ExpenseData {
   dataRealizacao?: Date | null;
   valorDespesa?: number;
   idGrupo?: string;
+  nomeGrupo?: string;
   userCod?: string | null;
   recebedores?: string[];
+  recebedoresNome?: string[];
   pagadores?: string[];
+  pagadoresNome?: string[];
 }
 
 interface ExpenseState {

@@ -20,6 +20,7 @@ const formatadorMoeda = new Intl.NumberFormat("pt-BR", {
 
 export default function Resume() {
   const { expenseData } = useExpenseStore();
+  console.log(expenseData);
   const ListItem = ({
     title,
     content,
@@ -50,14 +51,14 @@ export default function Resume() {
           formatadorMoeda.format(expenseData?.valorDespesa)
         }
       />
-      <ListItem title="Onde (Grupo)" content={expenseData?.idGrupo} />
+      <ListItem title="Onde (Grupo)" content={expenseData?.nomeGrupo} />
       <ListItem
         title="Quem bancou"
-        content={expenseData?.recebedores?.join(",")}
+        content={expenseData?.recebedoresNome?.join(",")}
       />
       <ListItem
         title="Quem vai pagar"
-        content={expenseData?.pagadores?.join(",")}
+        content={expenseData?.pagadoresNome?.join(",")}
       />
       <ListItem
         title="Quando"
