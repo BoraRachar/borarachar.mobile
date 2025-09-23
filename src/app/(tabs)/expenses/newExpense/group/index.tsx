@@ -22,7 +22,6 @@ import GroupIcon from '@/src/assets/images/group.svg'
 import { RadioButton } from 'react-native-paper'
 import { theme } from '@/src/theme'
 import ActivityIndicatorComponent from '@/src/components/ActivityIndicatorComponent'
-import { set } from 'react-hook-form'
 
 interface Group {
   nome: string

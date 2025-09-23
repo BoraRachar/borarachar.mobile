@@ -1,11 +1,5 @@
 import { useState } from 'react'
-import {
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-} from 'react-native'
+import { Text, View, TextInput, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useForm, Controller, useWatch } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
