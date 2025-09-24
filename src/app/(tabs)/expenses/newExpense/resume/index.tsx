@@ -86,12 +86,12 @@ export default function Resume() {
       <ListItem
         title="Quem bancou"
         content={expenseData?.recebedoresNome?.join(',')}
-        editlink="/(tabs)/expenses/newExpense/receivers"
+        editlink="/(tabs)/expenses/newExpense/payers"
       />
       <ListItem
         title="Quem vai pagar"
         content={expenseData?.pagadoresNome?.join(',')}
-        editlink="/(tabs)/expenses/newExpense/payers"
+        editlink="/(tabs)/expenses/newExpense/receivers"
       />
       <ListItem
         title="Quando"

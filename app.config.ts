@@ -23,7 +23,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ...config,
     name,
     slug: PROJECT_SLUG,
-    version: '1.0.4.1',
+    version: '1.0.6',
     orientation: 'portrait',
     icon,
     scheme,
