@@ -62,7 +62,7 @@ const DATA = [
 export default function UserActivity() {
   return (
     <View style={styles.container}>
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         {/* Header com avatar e nome */}
         <View style={styles.header}>
           <AvatarImageComponent
