@@ -1,25 +1,25 @@
-import { KeyboardAvoidingView, Platform, Text, View } from 'react-native'
+import { useAuthStore } from '@/src/store/useAuthStore'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Link, router } from 'expo-router'
 import { Controller, FieldValues, useForm } from 'react-hook-form'
+import { KeyboardAvoidingView, Platform, Text, View } from 'react-native'
 import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useAuthStore } from '@/src/store/useAuthStore'
 
 import Header from '@/src/components/HeaderComponent'
 import InputComponent from '@/src/components/InputComponent'
 
 import ArrowBack from '@/src/assets/images/arrowBack.svg'
-import opeEye from '@/src/assets/images/openEye.svg'
 import closeEye from '@/src/assets/images/closeEye.svg'
+import opeEye from '@/src/assets/images/openEye.svg'
 
 import { styles as globalStyles } from '@/src/app/styles'
-import { styles } from './styles'
-import useKeyboardStatus from '@/src/utils/keyboardUtils'
 import { ButtonCustomizer } from '@/src/components/ButtonCustomizer'
-import { useState } from 'react'
-import { axiosClient } from '@/src/utils/axios'
 import { ErrorResponse } from '@/src/interfaces/types'
+import { axiosClient } from '@/src/utils/axios'
+import useKeyboardStatus from '@/src/utils/keyboardUtils'
 import { AxiosError } from 'axios'
+import { useState } from 'react'
+import { styles } from './styles'
 
 const schema = yup.object().shape({
   email: yup.string().required('O campo deve ser preenchido'),

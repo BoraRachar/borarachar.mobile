@@ -1,8 +1,8 @@
-import { Redirect, Tabs } from 'expo-router'
 import { useAuthStore } from '@/src/store/useAuthStore'
+import { Redirect, Tabs } from 'expo-router'
 
-import Ionicons from '@expo/vector-icons/Ionicons'
 import { theme } from '@/src/theme'
+import Ionicons from '@expo/vector-icons/Ionicons'
 export default function Layout() {
   const { isAuthenticated } = useAuthStore()
 
@@ -23,9 +23,10 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="activity/index"
+        name="activity"
         options={{
           title: 'Atividade',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <Ionicons name="swap-horizontal-outline" size={24} color={color} />
           ),
