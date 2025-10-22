@@ -3,6 +3,7 @@ import {
   horizontalScale,
   moderateScale,
   rem,
+  verticalScale,
 } from '@/src/utils/responsiveUtils'
 import { StyleSheet } from 'react-native'
 
@@ -23,7 +24,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontFamily: theme.fontFamily.bold,
-    fontSize: rem(24),
+    fontSize: rem(20),
   },
   description: {
     fontFamily: theme.fontFamily.regular,
@@ -35,6 +36,22 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
     alignItems: 'center',
-    marginTop: 12,
+  },
+  badge: {
+    borderRadius: 50,
+    width: 60,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageContainer: {
+    width: horizontalScale(56),
+    height: verticalScale(56),
+    borderWidth: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: theme.colors.primaryColor,
+    backgroundColor: theme.colors.third,
+    position: 'relative',
   },
 })

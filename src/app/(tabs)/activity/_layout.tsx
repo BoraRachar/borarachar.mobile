@@ -53,7 +53,6 @@ export default function ActivityLayout() {
               }}
             />
           ),
-          headerRight: () => <Question />,
         }}
       />
     </Stack>
