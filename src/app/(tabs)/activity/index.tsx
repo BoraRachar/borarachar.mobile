@@ -6,6 +6,7 @@ export default function Activity() {
     <View>
       <Text>Activity</Text>
       <Link href="/(tabs)/activity/userActivity">userActivity</Link>
+      <Link href="/(tabs)/activity/friendsActivity">FriendsActivity</Link>
     </View>
   )
 }
