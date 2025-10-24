@@ -100,7 +100,10 @@ export default function NewExpense() {
                   errors.expenseName ? styles.inputError : undefined,
                 ].filter(Boolean)}
                 value={value}
-                onChangeText={onChange}
+                onChangeText={(text) => {
+                  const formatedText = text.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s]/g, '')
+                  onChange(formatedText)
+                }}
                 placeholder="Ex: Pagamento da cerveja"
                 placeholderTextColor={theme.colors.fourth}
               />
