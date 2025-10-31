@@ -39,6 +39,22 @@ export default function ActivityLayout() {
           headerRight: () => <Question />,
         }}
       />
+
+      <Stack.Screen
+        name="friendsActivity/index"
+        options={{
+          title: 'Despesa',
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <LeftIcon
+              onPress={() => {
+                router.back()
+              }}
+            />
+          ),
+        }}
+      />
     </Stack>
   )
 }
