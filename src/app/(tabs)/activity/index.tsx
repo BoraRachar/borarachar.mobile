@@ -1,4 +1,10 @@
-import { Text, View, KeyboardAvoidingView, SectionList } from "react-native";
+import {
+  Text,
+  View,
+  KeyboardAvoidingView,
+  SectionList,
+  TouchableOpacity,
+} from "react-native";
 import { useState, useEffect } from "react";
 
 import Search from "@/src/assets/images/search.svg";
@@ -7,6 +13,7 @@ import TransferIcon from "@expo/vector-icons/FontAwesome6";
 
 import { styles } from "./styles";
 import { theme } from "@/src/theme";
+import { router } from "expo-router";
 
 const DATA = [
   {
@@ -172,6 +179,11 @@ const hasActivity =
   groupedData.length > 0 &&
   groupedData.some((section) => section.data.length > 0);
 
+function handleNext() {
+  // aqui falta a lógica para escolher se vai para a tela de usuario ou de amigo
+  router.push("/(tabs)/activity/userActivity");
+}
+
 export default function Activity() {
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(groupedData);
@@ -230,7 +242,10 @@ export default function Activity() {
               </View>
             )}
             renderItem={({ item }) => (
-              <View style={styles.activityItem}>
+              <TouchableOpacity
+                style={styles.activityItem}
+                onPress={handleNext}
+              >
                 <TransferIcon
                   name="money-bill-transfer"
                   size={24}
@@ -243,7 +258,7 @@ export default function Activity() {
                 <Text style={styles.activityValue}>
                   R$ {item.valor.toFixed(2)}
                 </Text>
-              </View>
+              </TouchableOpacity>
             )}
             showsVerticalScrollIndicator={false}
           />
